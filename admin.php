@@ -43,7 +43,7 @@ switch ($action) {
         break;
     
 
-        default:
+    default:
         showDashboard();
 }
 
@@ -114,6 +114,45 @@ function addProduct(){
     }
 }
 
+function editProduct()  {
+
+    $result = array();
+    $results['pageTitle'] = "Edit Product";
+    $results['formAction'] = "editProduct";
+
+    if (isset($_POST['saveChanges'])) {
+    
+        if (!$product = Product::getById((int)$_POST['product_id'])) {
+            header("Location: admin.php?error=productNotFound");
+            return;
+        }
+        $productdata = $_POST;
+        $product->storeFormValues($productdata);
+
+        $product->update();
+        // echo "<pre>";
+        // var_dump($product);
+        header("Location: admin.php?status=changesSaved");
+    } elseif (isset($_POST['cancel'])) {
+
+        // Admin has cancelled their edits: return to the products list
+        header("Location: admin.php");
+    } else {
+        $results['product'] = Product::getById((int)$_GET['product_id']);
+        require(TEMPLATE_PATH . "/admin/add_product.php");
+    }
+}
+
+function deleteProduct() {
+
+    if (!$product = Product::getById((int)$_GET['product_id'])) {
+        header("Location: admin.php?error=productNotFound");
+        return;
+    }
+    
+    $product->delete();
+    header("Location: admin.php?status=productDeleted");
+}
 
 
 ?>
