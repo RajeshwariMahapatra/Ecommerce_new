@@ -1,10 +1,10 @@
-<?php include './include/user_header.php' ?>
+<?php include 'templates/include/user_header.php' ?>
 <!-- //header -->
 <!-- breadcrumbs -->
 	<div class="breadcrumbs">
 		<div class="container">
 			<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-				<li><a href="home.php"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+				<li><a href="index.php?action=home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
 				<li class="active">Login Page</li>
 			</ol>
 		</div>
@@ -27,9 +27,9 @@
 				</form>
 			</div>
 			<h4 class="animated wow slideInUp" data-wow-delay=".5s">For New People</h4>
-			<p class="animated wow slideInUp" data-wow-delay=".5s"><a href="register.php">Register Here</a> (Or) go back to <a href="home.php">Home<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></p>
+			<p class="animated wow slideInUp" data-wow-delay=".5s"><a href="index.php?action=register">Register Here</a> (Or) go back to <a href="home.php">Home<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></p>
 		</div>
 	</div>
 <!-- //login -->
 <!-- footer -->
-<?php include './include/user_footer.php' ?>
+<?php include 'templates/include/user_footer.php' ?>

@@ -12,8 +12,8 @@ switch ( $action ) {
   case 'login':
     login();
     break;
-  case 'mail':
-    mail();
+  case 'contact':
+    contact();
     break;
   case 'products':
     products();
@@ -46,14 +46,17 @@ function checkout() {
     require(TEMPLATE_PATH . "/login.php");
   }
   
-  function mail() {
+  function contact() {
     $results = array();
-    $results['pageTitle'] = "Mail | Ecommerce";
-    require(TEMPLATE_PATH . "/mail.php");
+    $results['pageTitle'] = "Contact | Ecommerce";
+    require(TEMPLATE_PATH . "/contact.php");
   }
   
   function products() {
     $results = array();
+    $data = Product::getList(); // Assuming Product::getList() returns an array with 'results' and 'totalRows'
+    $results['products'] = $data['results'];
+    $results['totalRows'] = $data['totalRows'];
     $results['pageTitle'] = "Products | Ecommerce";
     require(TEMPLATE_PATH . "/products.php");
   }
@@ -70,13 +73,16 @@ function checkout() {
     require(TEMPLATE_PATH . "/single.php");
   }
 
-function home() {
+  function home() {
     $results = array();
-    $data = Article::getList(HOMEPAGE_NUM_ARTICLES);
+    $data = Product::getList();
+     // Assuming Product::getList() returns an array with 'results' and 'totalRows'
     $results['articles'] = $data['results'];
     $results['totalRows'] = $data['totalRows'];
+    // var_dump($data);
     $results['pageTitle'] = "Ecommerce";
     require(TEMPLATE_PATH . "/home.php");
-  }
+}
+
 
 ?>

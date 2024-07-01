@@ -33,9 +33,9 @@ class Product
     public $product_mrp = null;
 
     /**
-     * @var string The unique name of the product
-     */
-    public $product_selling_price  = null;
+     * @var string The selling price of the product
+    */
+    public $product_selling_price = null;
 
     /**
      * @var string The description of the product
@@ -178,7 +178,7 @@ class Product
         if (isset($data['product_category_id'])) $this->product_category_id = (int)$data['product_category_id'];
         if (isset($data['product_brand_id'])) $this->product_brand_id = (int)$data['product_brand_id'];
         if (isset($data['product_mrp'])) $this->product_mrp = $data['product_mrp'];
-        if (isset($data['product_selling_price '])) $this->product_selling_price  = $data['product_selling_price '];
+        if (isset($data['product_selling_price'])) $this->product_selling_price = $data['product_selling_price'];
         if (isset($data['product_name'])) $this->product_name = $data['product_name'];
         if (isset($data['product_desc'])) $this->product_desc = $data['product_desc'];
         if (isset($data['product_small_desc'])) $this->product_small_desc = $data['product_small_desc'];
@@ -207,16 +207,13 @@ class Product
     }
 
     /**
-     * Sets the object's properties using the edit form post values in the supplied array
-     *
-     * @param array $params The form post values
-     */
+    * @param array $params The form post values
+    */
     public function storeFormValues($params)
     {
         // Store all the parameters
         $this->__construct($params);
     }
-
     /**
      * Returns a Product object matching the given product ID
      *
@@ -251,7 +248,9 @@ class Product
         $list = array();
 
         while ($row = $st->fetch()) {
+            // var_dump($row);
             $product = new Product($row);
+            // var_dump($product);
             $list[] = $product;
         }
 
@@ -259,6 +258,8 @@ class Product
         $sql = "SELECT FOUND_ROWS() AS totalRows";
         $totalRows = $conn->query($sql)->fetch();
         $conn = null;
+        
+        // die();
         return (array("results" => $list, "totalRows" => $totalRows[0]));
     }
 
