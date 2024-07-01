@@ -113,7 +113,7 @@
                     </div>
 <div class=" form-group">
                                             <input type="submit" name="saveChanges" value="Save Changes" class="btn btn-primary">
-                                            <input type="submit" formnovalidate name="cancel" value="Cancel" class="btn btn-danger ml-2">
+                                            <input type="submit" formnovalidate name="cancel" value="Cancel" class="btn btn-secondary">
                                         </div>
                                     </form>
                                 </div>
