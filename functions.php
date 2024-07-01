@@ -1,22 +1,5 @@
 <?php
-ini_set( "display_errors", true );
-date_default_timezone_set( "Asia/Kolkata" );
-define( "DB_DSN", "mysql:host=localhost;dbname=ecommerce_new_db" );
-define( "DB_USERNAME", "root" );
-define( "DB_PASSWORD", "" );
-define( "CLASS_PATH", "classes" );
-define( "TEMPLATE_PATH", "templates" );
-define( "ADMIN_USERNAME", "admin" );
-define( "ADMIN_PASSWORD", "mypass" );
-define( "PRODUCT_IMAGE_PATH", "images/products" );
-define( "PRODUCT_IMAGE_URL", "images/products" );
-
-
-require( CLASS_PATH . "/ProductCategory.php" );
-require( CLASS_PATH . "/Product.php" );
-require( CLASS_PATH . "/Brand.php" );
-
-// require("config.php");
+require("config.php");
 // Generate Alphanumeric String for all the tables
 function generateRandomString($length = 12) {
     $alphanumeric = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
