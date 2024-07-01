@@ -94,10 +94,11 @@
 
                     <!-- Form -->
                     <form action="admin.php?action=<?php echo $results['formAction']; ?>" method="post">
-                        <!-- Add your form fields here -->
-                        <div class="form-group">
+                        <?php if (!empty($results['brand']->brand_id)) { ?>
+                            <input type="hidden" name="brand_id" value="<?php echo htmlspecialchars($results['brand']->brand_id) ?>" />
+                        <?php } ?> <div class="form-group">
                             <label for="brandName">Brand Name</label>
-                            <input type="text" class="form-control" id="brandName" name="brand_name" placeholder="Enter brand name" required>
+                            <input type="text" class="form-control" id="brandName" name="brand_name" placeholder="Enter brand name" required value="<?php echo htmlspecialchars($results['brand']->brand_name) ?>">
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" name="saveChanges" value="Save Changes">

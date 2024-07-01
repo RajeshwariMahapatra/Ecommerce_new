@@ -44,8 +44,8 @@ switch ($action) {
     case 'addBrand':
         addBrand();
         break;
-    case 'listBrand':
-        listBrand();
+    case 'listBrands':
+        listBrands();
         break;
     case 'editBrand':
         editBrand();
@@ -407,14 +407,14 @@ function editBrand()
         $brand->update();
 
         // Redirect to the admin page with a status message
-        header("Location: admin.php?status=brandUpdated");
+        header("Location: admin.php?action=listBrands&status=brandUpdated");
     } elseif (isset($_POST['cancel'])) {
         // Redirect to the admin page if the edit was cancelled
-        header("Location: admin.php");
+        header("Location: admin.php?action=listBrands");
     } else {
         // Retrieve the brand details for editing
         $results['brand'] = Brand::getById((int)$_GET['brand_id']);
-        require(TEMPLATE_PATH . "/admin/editBrand.php");
+        require(TEMPLATE_PATH . "/admin/addBrand.php");
     }
 }
 

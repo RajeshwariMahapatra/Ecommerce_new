@@ -110,6 +110,7 @@
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Name</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -117,7 +118,13 @@
                                                     <tr>
                                                         <td><?php echo htmlspecialchars($brand->brand_id); ?></td>
                                                         <td><?php echo htmlspecialchars($brand->brand_name); ?></td>
+                                                        <td>
+                                                        <!-- Add/Edit/Delete buttons here -->
+                                                        <a href="admin.php?action=editBrand&brand_id=<?php echo $brand->brand_id; ?>" class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="admin.php?action=deleteBrand&brand_id=<?php echo $brand->brand_id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                                    </td>
                                                     </tr>
+                                                    
                                                 <?php } ?>
                                             </tbody>
                                         </table>
