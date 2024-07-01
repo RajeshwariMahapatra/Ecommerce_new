@@ -35,13 +35,12 @@ class Product
     /**
      * @var string The unique name of the product
      */
-    public $product_selling_price  = null;
+    public $product_selling_price = null;
 
     /**
      * @var string The description of the product
      */
     public $product_name = null;
-
 
     /**
      * @var int The custom variables ID of the product
@@ -72,7 +71,6 @@ class Product
      * @var int The product image ID 5 of the product
      */
     public $product_product_image_3 = null;
-
 
     /**
      * @var int The dimensions ID of the product
@@ -119,7 +117,6 @@ class Product
      */
     public $product_certification = null;
 
-
     /**
      * @var string The code of the product
      */
@@ -160,7 +157,6 @@ class Product
      */
     public $product_created_on = null;
 
-
     /**
      * @var string The code of the product
      */
@@ -178,7 +174,7 @@ class Product
         if (isset($data['product_category_id'])) $this->product_category_id = (int)$data['product_category_id'];
         if (isset($data['product_brand_id'])) $this->product_brand_id = (int)$data['product_brand_id'];
         if (isset($data['product_mrp'])) $this->product_mrp = $data['product_mrp'];
-        if (isset($data['product_selling_price '])) $this->product_selling_price  = $data['product_selling_price '];
+        if (isset($data['product_selling_price'])) $this->product_selling_price = $data['product_selling_price'];
         if (isset($data['product_name'])) $this->product_name = $data['product_name'];
         if (isset($data['product_desc'])) $this->product_desc = $data['product_desc'];
         if (isset($data['product_small_desc'])) $this->product_small_desc = $data['product_small_desc'];
@@ -245,6 +241,7 @@ class Product
     {
         $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
         $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM Product ORDER BY product_id DESC LIMIT :numRows";
+
         $st = $conn->prepare($sql);
         $st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
         $st->execute();
@@ -263,7 +260,7 @@ class Product
     }
 
     /**
-     * Inserts the current Product object into the database, and sets its ID property.
+     * Inserts the current Product object into the database and sets its ID property.
      */
     public function insert()
     {
@@ -272,16 +269,15 @@ class Product
 
         // Insert the Product
         $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-        $sql = "INSERT INTO Product (product_identity, product_category_id, product_brand_id, product_mrp, product_selling_price, product_name, product_desc, product_small_desc,product_stock, product_product_image_1, product_product_image_2, product_product_image_3, product_breadth,product_volume,product_height,product_weight ,product_tags, product_tax, product_hsn_code, product_certification, product_barcode, product_sku, product_code,product_warranty,product_guarantee,product_offer_code,product_features,product_created_on,product_updated_on) VALUES (:product_identity, :product_category_id, :product_brand_id, :product_mrp, :product_selling_price, :product_name, :product_desc, :product_small_desc,:product_stock, :product_product_image_1, :product_product_image_2, :product_product_image_3, :product_breadth,:product_volume,:product_height,:product_weight ,:product_tags, :product_tax, :product_hsn_code, :product_certification, :product_barcode, :product_sku, :product_code,:product_warranty,:product_guarantee,:product_offer_code,:product_features,:product_created_on,:product_updated_on)";
+        $sql = "INSERT INTO Product ( product_identity, product_category_id, product_brand_id, product_mrp, product_selling_price, product_name, product_desc, product_small_desc, product_stock, product_product_image_1, product_product_image_2, product_product_image_3, product_shipping_time_est, product_breadth, product_volume, product_height, product_weight, product_tags, product_tax, product_hsn_code, product_certification, product_barcode, product_sku, product_code, product_warranty, product_guarantee, product_offer_code, product_features, product_created_on, product_updated_on ) VALUES ( :product_identity, :product_category_id, :product_brand_id, :product_mrp, :product_selling_price, :product_name, :product_desc, :product_small_desc, :product_stock, :product_product_image_1, :product_product_image_2, :product_product_image_3, :product_shipping_time_est, :product_breadth, :product_volume, :product_height, :product_weight, :product_tags, :product_tax, :product_hsn_code, :product_certification, :product_barcode, :product_sku, :product_code, :product_warranty, :product_guarantee, :product_offer_code, :product_features, :product_created_on, :product_updated_on )";
         $st = $conn->prepare($sql);
         $st->bindValue(":product_identity", $this->product_identity, PDO::PARAM_STR);
         $st->bindValue(":product_category_id", $this->product_category_id, PDO::PARAM_INT);
         $st->bindValue(":product_brand_id", $this->product_brand_id, PDO::PARAM_INT);
         $st->bindValue(":product_mrp", $this->product_mrp, PDO::PARAM_STR);
-        $st->bindValue(":product_mrp", $this->product_mrp, PDO::PARAM_STR);
-        $st->bindValue(":product_selling_price ", $this->product_selling_price , PDO::PARAM_STR);
-        $st->bindValue(":product_desc", $this->product_desc, PDO::PARAM_STR);
+        $st->bindValue(":product_selling_price", $this->product_selling_price, PDO::PARAM_STR);
         $st->bindValue(":product_name", $this->product_name, PDO::PARAM_STR);
+        $st->bindValue(":product_desc", $this->product_desc, PDO::PARAM_STR);
         $st->bindValue(":product_small_desc", $this->product_small_desc, PDO::PARAM_STR);
         $st->bindValue(":product_stock", $this->product_stock, PDO::PARAM_STR);
         $st->bindValue(":product_product_image_1", $this->product_product_image_1, PDO::PARAM_STR);
@@ -293,7 +289,7 @@ class Product
         $st->bindValue(":product_height", $this->product_height, PDO::PARAM_STR);
         $st->bindValue(":product_weight", $this->product_weight, PDO::PARAM_STR);
         $st->bindValue(":product_tags", $this->product_tags, PDO::PARAM_STR);
-        $st->bindValue(":product_tax", $this->product_tax, PDO::PARAM_STR);
+        $st->bindValue(":product_tax", $this->product_tax, PDO::PARAM_INT);
         $st->bindValue(":product_hsn_code", $this->product_hsn_code, PDO::PARAM_STR);
         $st->bindValue(":product_certification", $this->product_certification, PDO::PARAM_STR);
         $st->bindValue(":product_barcode", $this->product_barcode, PDO::PARAM_STR);
@@ -303,12 +299,71 @@ class Product
         $st->bindValue(":product_guarantee", $this->product_guarantee, PDO::PARAM_STR);
         $st->bindValue(":product_offer_code", $this->product_offer_code, PDO::PARAM_STR);
         $st->bindValue(":product_features", $this->product_features, PDO::PARAM_STR);
-        $st->bindValue(":product_created_on", $this->product_created_on, PDO::PARAM_INT);
-        $st->bindValue(":product_updated_on", $this->product_updated_on, PDO::PARAM_INT);
+        $st->bindValue(":product_created_on", $this->product_created_on, PDO::PARAM_STR);
+        $st->bindValue(":product_updated_on", $this->product_updated_on, PDO::PARAM_STR);
         $st->execute();
         $this->product_id = $conn->lastInsertId();
         $conn = null;
     }
+    /**
+     * Stores any image uploaded from the edit form
+     *
+     * @param assoc The 'image' element from the $_FILES array containing the file upload data
+     */
+
+    public function storeUploadedImages($images)
+    {
+        $this->deleteImages();
+
+        for ($i = 1; $i <= 3; $i++) {
+            if (isset($images["product_product_image_$i"]) && $images["product_product_image_$i"]['error'] == UPLOAD_ERR_OK) {
+                // Generate a unique name for the image file
+                $uniqueName = uniqid() . strtolower(strrchr($images["product_product_image_$i"]['name'], '.'));
+
+                // Define the image path and URL
+                $imagePath = PRODUCT_IMAGE_PATH . $uniqueName;
+                $imageURL = PRODUCT_IMAGE_URL . $uniqueName;
+
+                // Store the image
+                $tempFilename = trim($images["product_product_image_$i"]['tmp_name']);
+
+                if (is_uploaded_file($tempFilename)) {
+                    if (!(move_uploaded_file($tempFilename, $imagePath))) trigger_error("Product::storeUploadedImages(): Couldn't move uploaded file.", E_USER_ERROR);
+                    if (!(chmod($imagePath, 0666))) trigger_error("Product::storeUploadedImages(): Couldn't set permissions on uploaded file.", E_USER_ERROR);
+                }
+
+                // Save the image URL to the appropriate property
+                $this->{"product_product_image_$i"} = $imageURL;
+            }
+        }
+
+        $this->update();
+    }
+
+    public function deleteImages()
+    {
+        // Define the base path for image storage (adjust as per your setup)
+        $basePath = PRODUCT_IMAGE_PATH;
+
+        // Delete all images associated with the product
+        for ($i = 1; $i <= 3; $i++) {
+            if (!empty($this->{"product_product_image_$i"})) {
+                // Construct the full path from the stored URL
+                $imagePath = str_replace(PRODUCT_IMAGE_URL, $basePath, $this->{"product_product_image_$i"});
+
+                // Check if the file exists and delete it
+                if (file_exists($imagePath)) {
+                    if (!unlink($imagePath)) {
+                        trigger_error("Product::deleteImages(): Couldn't delete image file.", E_USER_ERROR);
+                    }
+                }
+
+                // Reset the image URL property
+                $this->{"product_product_image_$i"} = '';
+            }
+        }
+    }
+
 
     /**
      * Updates the current Product object in the database.
@@ -320,48 +375,15 @@ class Product
 
         // Update the Product
         $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-        $sql = "UPDATE Product 
-        SET 
-            product_identity = :product_identity,
-            product_category_id = :product_category_id,
-            product_brand_id = :product_brand_id,
-            product_mrp = :product_mrp,
-            product_selling_price = :product_selling_price,
-            product_name = :product_name,
-            product_desc = :product_desc,
-            product_small_desc = :product_small_desc,
-            product_stock = :product_stock,
-            product_product_image_1 = :product_product_image_1,
-            product_product_image_2 = :product_product_image_2,
-            product_product_image_3 = :product_product_image_3,
-            product_breadth = :product_breadth,
-            product_volume = :product_volume,
-            product_height = :product_height,
-            product_weight = :product_weight,
-            product_tags = :product_tags,
-            product_tax = :product_tax,
-            product_hsn_code = :product_hsn_code,
-            product_certification = :product_certification,
-            product_barcode = :product_barcode,
-            product_sku = :product_sku,
-            product_code = :product_code,
-            product_warranty = :product_warranty,
-            product_guarantee = :product_guarantee,
-            product_offer_code = :product_offer_code,
-            product_features = :product_features,
-            product_created_on = :product_created_on,
-            product_updated_on = :product_updated_on
-        WHERE 
-            product_id = :product_id";
+        $sql = "UPDATE Product SET product_identity=:product_identity, product_category_id=:product_category_id, product_brand_id=:product_brand_id, product_mrp=:product_mrp, product_selling_price=:product_selling_price, product_name=:product_name, product_desc=:product_desc, product_small_desc=:product_small_desc, product_stock=:product_stock, product_product_image_1=:product_product_image_1, product_product_image_2=:product_product_image_2, product_product_image_3=:product_product_image_3, product_shipping_time_est=:product_shipping_time_est, product_breadth=:product_breadth, product_volume=:product_volume, product_height=:product_height, product_weight=:product_weight, product_tags=:product_tags, product_tax=:product_tax, product_hsn_code=:product_hsn_code, product_certification=:product_certification, product_barcode=:product_barcode, product_sku=:product_sku, product_code=:product_code, product_warranty=:product_warranty, product_guarantee=:product_guarantee, product_offer_code=:product_offer_code, product_features=:product_features, product_created_on=:product_created_on, product_updated_on=:product_updated_on WHERE product_id = :product_id";
         $st = $conn->prepare($sql);
         $st->bindValue(":product_identity", $this->product_identity, PDO::PARAM_STR);
         $st->bindValue(":product_category_id", $this->product_category_id, PDO::PARAM_INT);
         $st->bindValue(":product_brand_id", $this->product_brand_id, PDO::PARAM_INT);
         $st->bindValue(":product_mrp", $this->product_mrp, PDO::PARAM_STR);
-        $st->bindValue(":product_mrp", $this->product_mrp, PDO::PARAM_STR);
-        $st->bindValue(":product_selling_price ", $this->product_selling_price , PDO::PARAM_STR);
-        $st->bindValue(":product_desc", $this->product_desc, PDO::PARAM_STR);
+        $st->bindValue(":product_selling_price", $this->product_selling_price, PDO::PARAM_STR);
         $st->bindValue(":product_name", $this->product_name, PDO::PARAM_STR);
+        $st->bindValue(":product_desc", $this->product_desc, PDO::PARAM_STR);
         $st->bindValue(":product_small_desc", $this->product_small_desc, PDO::PARAM_STR);
         $st->bindValue(":product_stock", $this->product_stock, PDO::PARAM_STR);
         $st->bindValue(":product_product_image_1", $this->product_product_image_1, PDO::PARAM_STR);
@@ -373,7 +395,7 @@ class Product
         $st->bindValue(":product_height", $this->product_height, PDO::PARAM_STR);
         $st->bindValue(":product_weight", $this->product_weight, PDO::PARAM_STR);
         $st->bindValue(":product_tags", $this->product_tags, PDO::PARAM_STR);
-        $st->bindValue(":product_tax", $this->product_tax, PDO::PARAM_STR);
+        $st->bindValue(":product_tax", $this->product_tax, PDO::PARAM_INT);
         $st->bindValue(":product_hsn_code", $this->product_hsn_code, PDO::PARAM_STR);
         $st->bindValue(":product_certification", $this->product_certification, PDO::PARAM_STR);
         $st->bindValue(":product_barcode", $this->product_barcode, PDO::PARAM_STR);
@@ -383,8 +405,9 @@ class Product
         $st->bindValue(":product_guarantee", $this->product_guarantee, PDO::PARAM_STR);
         $st->bindValue(":product_offer_code", $this->product_offer_code, PDO::PARAM_STR);
         $st->bindValue(":product_features", $this->product_features, PDO::PARAM_STR);
-        $st->bindValue(":product_created_on", $this->product_created_on, PDO::PARAM_INT);
-        $st->bindValue(":product_updated_on", $this->product_updated_on, PDO::PARAM_INT);
+        $st->bindValue(":product_created_on", $this->product_created_on, PDO::PARAM_STR);
+        $st->bindValue(":product_updated_on", $this->product_updated_on, PDO::PARAM_STR);
+        $st->bindValue(":product_id", $this->product_id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;
     }
