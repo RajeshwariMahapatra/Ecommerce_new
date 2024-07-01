@@ -1,7 +1,8 @@
 <?php
 ini_set( "display_errors", true );
 date_default_timezone_set( "Asia/Kolkata" );
-define( "DB_DSN", "mysql:host=localhost;dbname=ecommerce_new_db" );
+define( "DB_DSN", "mysql:host=localhost;dbname=ecommerce" );
+
 define( "DB_USERNAME", "root" );
 define( "DB_PASSWORD", "" );
 define( "CLASS_PATH", "classes" );
@@ -10,7 +11,7 @@ define( "ADMIN_USERNAME", "admin" );
 define( "ADMIN_PASSWORD", "mypass" );
 define( "PRODUCT_IMAGE_PATH", "images/products" );
 define( "PRODUCT_IMAGE_URL", "images/products" );
-
+require( CLASS_PATH . "/Pages.php" );
 require( CLASS_PATH . "/ProductCategory.php" );
 require( CLASS_PATH . "/Product.php" );
 require( CLASS_PATH . "/Brand.php" );
