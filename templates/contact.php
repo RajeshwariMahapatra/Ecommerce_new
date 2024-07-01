@@ -1,10 +1,10 @@
-<?php include './include/user_header.php' ?>
+<?php include 'templates/include/user_header.php' ?>
 <!-- //header -->
 <!-- breadcrumbs -->
 	<div class="breadcrumbs">
 		<div class="container">
 			<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-				<li><a href="home.php"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+				<li><a href="index.php?action=home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
 				<li class="active">Mail Us</li>
 			</ol>
 		</div>
@@ -28,7 +28,7 @@
 				</div>
 				<div class="col-md-4 mail-grid-right animated wow slideInRight" data-wow-delay=".5s">
 					<div class="mail-grid-right1">
-						<img src="images/3.png" alt=" " class="img-responsive" />
+						<img src="templates/images/3.png" alt=" " class="img-responsive" />
 						<h4>Rita Williumson <span>Manager</span></h4>
 						<ul class="phone-mail">
 							<li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>Phone: +1234 567 893</li>
@@ -49,4 +49,4 @@
 	</div>
 <!-- //mail -->
 <!-- footer -->
-<?php include './include/user_footer.php' ?>
+<?php include 'templates/include/user_footer.php' ?>

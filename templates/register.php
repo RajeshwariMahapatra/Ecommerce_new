@@ -1,10 +1,10 @@
-<?php include './include/user_header.php' ?>
+<?php include 'templates/include/user_header.php' ?>
 <!-- //header -->
 <!-- breadcrumbs -->
 	<div class="breadcrumbs">
 		<div class="container">
 			<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-				<li><a href="home.php"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+				<li><a href="index.php?action=home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
 				<li class="active">Register</li>
 			</ol>
 		</div>
@@ -27,10 +27,10 @@
 				</form>
 			</div>
 			<div class="register-home">
-				<a href="home.php">Home</a>
+				<a href="index.php?action=home">Home</a>
 			</div>
 		</div>
 	</div>
 <!-- //register -->
 <!-- footer -->
-<?php include './include/user_footer.php' ?>
+<?php include 'templates/include/user_footer.php' ?>

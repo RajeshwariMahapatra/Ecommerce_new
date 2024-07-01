@@ -1,10 +1,10 @@
-<?php include './include/user_header.php' ?>
+<?php include 'templates/include/user_header.php' ?>
 <!-- //header -->
 <!-- breadcrumbs -->
 	<div class="breadcrumbs">
 		<div class="container">
 			<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-				<li><a href="home.php"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+				<li><a href="index.php?action=home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
 				<li class="active">Furniture</li>
 			</ol>
 		</div>
@@ -16,22 +16,22 @@
 				<div class="categories animated wow slideInUp" data-wow-delay=".5s">
 					<h3>Categories</h3>
 					<ul class="cate">
-						<li><a href="furniture.php">Best Selling</a> <span>(15)</span></li>
-						<li><a href="furniture.php">Home Collections</a> <span>(16)</span></li>
+						<li><a href="index.php?action=furniture">Best Selling</a> <span>(15)</span></li>
+						<li><a href="index.php?action=furniture">Home Collections</a> <span>(16)</span></li>
 							<ul>
-								<li><a href="furniture.php">Cookware</a> <span>(2)</span></li>
-								<li><a href="furniture.php">Sofas</a> <span>(5)</span></li>
-								<li><a href="furniture.php">Dining Tables</a> <span>(1)</span></li>
-								<li><a href="furniture.php">New Arrivals</a> <span>(0)</span></li>
-								<li><a href="furniture.php">Home Decore</a> <span>(1)</span></li>
+								<li><a href="index.php?action=furniture">Cookware</a> <span>(2)</span></li>
+								<li><a href="index.php?action=furniture">Sofas</a> <span>(5)</span></li>
+								<li><a href="index.php?action=furniture">Dining Tables</a> <span>(1)</span></li>
+								<li><a href="index.php?action=furniture">New Arrivals</a> <span>(0)</span></li>
+								<li><a href="index.php?action=furniture">Home Decore</a> <span>(1)</span></li>
 							</ul>
-						<li><a href="furniture.php">Sales</a> <span>(15)</span></li>
-						<li><a href="furniture.php">Decorations</a> <span>(15)</span></li>
+						<li><a href="index.php?action=furniture">Sales</a> <span>(15)</span></li>
+						<li><a href="index.php?action=furniture">Decorations</a> <span>(15)</span></li>
 							<ul>
-								<li><a href="furniture.php">Wall Clock</a> <span>(2)</span></li>
-								<li><a href="furniture.php">New Arrivals</a> <span>(0)</span></li>
-								<li><a href="furniture.php">Lighting</a> <span>(1)</span></li>
-								<li><a href="furniture.php">Top Brands</a> <span>(0)</span></li>
+								<li><a href="index.php?action=furniture">Wall Clock</a> <span>(2)</span></li>
+								<li><a href="index.php?action=furniture">New Arrivals</a> <span>(0)</span></li>
+								<li><a href="index.php?action=furniture">Lighting</a> <span>(1)</span></li>
+								<li><a href="index.php?action=furniture">Top Brands</a> <span>(0)</span></li>
 							</ul>
 					</ul>
 				</div>
@@ -40,25 +40,25 @@
 					<div class="new-products-grids">
 						<div class="new-products-grid">
 							<div class="new-products-grid-left">
-								<a href="single.php"><img src="images/6.jpg" alt=" " class="img-responsive" /></a>
+								<a href="index.php?action=single"><img src="templates/images/6.jpg" alt=" " class="img-responsive" /></a>
 							</div>
 							<div class="new-products-grid-right">
-								<h4><a href="single.php">occaecat cupidatat</a></h4>
+								<h4><a href="index.php?action=single">occaecat cupidatat</a></h4>
 								<div class="rating">
 									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
+										<img src="templates/images/2.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
+										<img src="templates/images/2.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
+										<img src="templates/images/2.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
+										<img src="templates/images/1.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
+										<img src="templates/images/1.png" alt=" " class="img-responsive">
 									</div>
 									<div class="clearfix"> </div>
 								</div>
@@ -70,25 +70,25 @@
 						</div>
 						<div class="new-products-grid">
 							<div class="new-products-grid-left">
-								<a href="single.php"><img src="images/9.jpg" alt=" " class="img-responsive" /></a>
+								<a href="index.php?action=single"><img src="templates/images/9.jpg" alt=" " class="img-responsive" /></a>
 							</div>
 							<div class="new-products-grid-right">
-								<h4><a href="single.php">eum fugiat quo</a></h4>
+								<h4><a href="index.php?action=single">eum fugiat quo</a></h4>
 								<div class="rating">
 									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
+										<img src="templates/images/2.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
+										<img src="templates/images/2.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
+										<img src="templates/images/2.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
+										<img src="templates/images/1.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
+										<img src="templates/images/1.png" alt=" " class="img-responsive">
 									</div>
 									<div class="clearfix"> </div>
 								</div>
@@ -100,25 +100,25 @@
 						</div>
 						<div class="new-products-grid">
 							<div class="new-products-grid-left">
-								<a href="single.php"><img src="images/11.jpg" alt=" " class="img-responsive" /></a>
+								<a href="index.php?action=single"><img src="templates/images/11.jpg" alt=" " class="img-responsive" /></a>
 							</div>
 							<div class="new-products-grid-right">
-								<h4><a href="single.php">officia deserunt</a></h4>
+								<h4><a href="index.php?action=single">officia deserunt</a></h4>
 								<div class="rating">
 									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
+										<img src="templates/images/2.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
+										<img src="templates/images/2.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/2.png" alt=" " class="img-responsive">
+										<img src="templates/images/2.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
+										<img src="templates/images/1.png" alt=" " class="img-responsive">
 									</div>
 									<div class="rating-left">
-										<img src="images/1.png" alt=" " class="img-responsive">
+										<img src="templates/images/1.png" alt=" " class="img-responsive">
 									</div>
 									<div class="clearfix"> </div>
 								</div>
@@ -131,7 +131,7 @@
 					</div>
 				</div>
 				<div class="men-position animated wow slideInUp" data-wow-delay=".5s">
-					<a href="single.php"><img src="images/29.jpg" alt=" " class="img-responsive" /></a>
+					<a href="index.php?action=single"><img src="templates/images/29.jpg" alt=" " class="img-responsive" /></a>
 					<div class="men-position-pos">
 						<h4>Summer collection</h4>
 						<h5><span>55%</span> Flat Discount</h5>
@@ -160,7 +160,7 @@
 						<div class="clearfix"> </div>
 					</div>
 					<div class="products-right-grids-position animated wow slideInRight" data-wow-delay=".5s">
-						<img src="images/28.jpg" alt=" " class="img-responsive" />
+						<img src="templates/images/28.jpg" alt=" " class="img-responsive" />
 						<div class="products-right-grids-position1">
 							<h4>2016 New Collection</h4>
 							<p>Temporibus autem quibusdam et aut officiis debitis aut rerum 
@@ -173,32 +173,32 @@
 					<div class="col-md-4 products-right-grids-bottom-grid">
 						<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 							<div class="new-collections-grid1-image">
-								<a href="single.php" class="product-image"><img src="images/30.jpg" alt=" " class="img-responsive"></a>
+								<a href="index.php?action=single" class="product-image"><img src="templates/images/30.jpg" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.php">Quick View</a>
+									<a href="index.php?action=single">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
 									<div class="rating">
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
 							</div>
-							<h4><a href="single.php">Centre Table</a></h4>
+							<h4><a href="index.php?action=single">Centre Table</a></h4>
 							<p>Vel illum qui dolorem.</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 								<p><i>$325</i> <span class="item_price">$250</span><a class="item_add" href="#">add to cart </a></p>
@@ -206,32 +206,32 @@
 						</div>
 						<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 							<div class="new-collections-grid1-image">
-								<a href="single.php" class="product-image"><img src="images/32.jpg" alt=" " class="img-responsive"></a>
+								<a href="index.php?action=single" class="product-image"><img src="templates/images/32.jpg" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.php">Quick View</a>
+									<a href="index.php?action=single">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
 									<div class="rating">
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
 							</div>
-							<h4><a href="single.php">Media Cabinet</a></h4>
+							<h4><a href="index.php?action=single">Media Cabinet</a></h4>
 							<p>Vel illum qui dolorem.</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 								<p><i>$325</i> <span class="item_price">$250</span><a class="item_add" href="#">add to cart </a></p>
@@ -239,32 +239,32 @@
 						</div>
 						<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 							<div class="new-collections-grid1-image">
-								<a href="single.php" class="product-image"><img src="images/31.jpg" alt=" " class="img-responsive"></a>
+								<a href="index.php?action=single" class="product-image"><img src="templates/images/31.jpg" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.php">Quick View</a>
+									<a href="index.php?action=single">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
 									<div class="rating">
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
 							</div>
-							<h4><a href="single.php">Entertainment Unit</a></h4>
+							<h4><a href="index.php?action=single">Entertainment Unit</a></h4>
 							<p>Vel illum qui dolorem.</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 								<p><i>$585</i> <span class="item_price">$489</span><a class="item_add" href="#">add to cart </a></p>
@@ -274,32 +274,32 @@
 					<div class="col-md-4 products-right-grids-bottom-grid">
 						<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 							<div class="new-collections-grid1-image">
-								<a href="single.php" class="product-image"><img src="images/33.jpg" alt=" " class="img-responsive"></a>
+								<a href="index.php?action=single" class="product-image"><img src="templates/images/33.jpg" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.php">Quick View</a>
+									<a href="index.php?action=single">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
 									<div class="rating">
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
 							</div>
-							<h4><a href="single.php">2 Seater Sofa</a></h4>
+							<h4><a href="index.php?action=single">2 Seater Sofa</a></h4>
 							<p>Vel illum qui dolorem.</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 								<p><i>$280</i> <span class="item_price">$250</span><a class="item_add" href="#">add to cart </a></p>
@@ -307,32 +307,32 @@
 						</div>
 						<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 							<div class="new-collections-grid1-image">
-								<a href="single.php" class="product-image"><img src="images/6.jpg" alt=" " class="img-responsive"></a>
+								<a href="index.php?action=single" class="product-image"><img src="templates/images/6.jpg" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.php">Quick View</a>
+									<a href="index.php?action=single">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
 									<div class="rating">
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
 							</div>
-							<h4><a href="single.php">Street Lamp</a></h4>
+							<h4><a href="index.php?action=single">Street Lamp</a></h4>
 							<p>Vel illum qui dolorem.</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 								<p><i>$500</i> <span class="item_price">$480</span><a class="item_add" href="#">add to cart </a></p>
@@ -340,32 +340,32 @@
 						</div>
 						<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 							<div class="new-collections-grid1-image">
-								<a href="single.php" class="product-image"><img src="images/9.jpg" alt=" " class="img-responsive"></a>
+								<a href="index.php?action=single" class="product-image"><img src="templates/images/9.jpg" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.php">Quick View</a>
+									<a href="index.php?action=single">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
 									<div class="rating">
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
 							</div>
-							<h4><a href="single.php">Street Lamp</a></h4>
+							<h4><a href="index.php?action=single">Street Lamp</a></h4>
 							<p>Vel illum qui dolorem.</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 								<p><i>$585</i> <span class="item_price">$489</span><a class="item_add" href="#">add to cart </a></p>
@@ -375,32 +375,32 @@
 					<div class="col-md-4 products-right-grids-bottom-grid">
 						<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 							<div class="new-collections-grid1-image">
-								<a href="single.php" class="product-image"><img src="images/10.jpg" alt=" " class="img-responsive"></a>
+								<a href="index.php?action=single" class="product-image"><img src="templates/images/10.jpg" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.php">Quick View</a>
+									<a href="index.php?action=single">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
 									<div class="rating">
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
 							</div>
-							<h4><a href="single.php">Anklet</a></h4>
+							<h4><a href="index.php?action=single">Anklet</a></h4>
 							<p>Vel illum qui dolorem.</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 								<p><i>$305</i> <span class="item_price">$280</span><a class="item_add" href="#">add to cart </a></p>
@@ -408,32 +408,32 @@
 						</div>
 						<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 							<div class="new-collections-grid1-image">
-								<a href="single.php" class="product-image"><img src="images/11.jpg" alt=" " class="img-responsive"></a>
+								<a href="index.php?action=single" class="product-image"><img src="templates/images/11.jpg" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.php">Quick View</a>
+									<a href="index.php?action=single">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
 									<div class="rating">
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
 							</div>
-							<h4><a href="single.php">Stone Bangles</a></h4>
+							<h4><a href="index.php?action=single">Stone Bangles</a></h4>
 							<p>Vel illum qui dolorem.</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 								<p><i>$389</i> <span class="item_price">$299</span><a class="item_add" href="#">add to cart </a></p>
@@ -441,32 +441,32 @@
 						</div>
 						<div class="new-collections-grid1 products-right-grid1 animated wow slideInUp" data-wow-delay=".5s">
 							<div class="new-collections-grid1-image">
-								<a href="single.php" class="product-image"><img src="images/34.jpg" alt=" " class="img-responsive"></a>
+								<a href="index.php?action=single" class="product-image"><img src="templates/images/34.jpg" alt=" " class="img-responsive"></a>
 								<div class="new-collections-grid1-image-pos products-right-grids-pos">
-									<a href="single.php">Quick View</a>
+									<a href="index.php?action=single">Quick View</a>
 								</div>
 								<div class="new-collections-grid1-right products-right-grids-pos-right">
 									<div class="rating">
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/2.png" alt=" " class="img-responsive">
+											<img src="templates/images/2.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="rating-left">
-											<img src="images/1.png" alt=" " class="img-responsive">
+											<img src="templates/images/1.png" alt=" " class="img-responsive">
 										</div>
 										<div class="clearfix"> </div>
 									</div>
 								</div>
 							</div>
-							<h4><a href="single.php">Analog Wall Clock</a></h4>
+							<h4><a href="index.php?action=single">Analog Wall Clock</a></h4>
 							<p>Vel illum qui dolorem.</p>
 							<div class="simpleCart_shelfItem products-right-grid1-add-cart">
 								<p><i>$585</i> <span class="item_price">$489</span><a class="item_add" href="#">add to cart </a></p>
@@ -500,4 +500,4 @@
 	</div>
 <!-- //breadcrumbs -->
 <!-- footer -->
-<?php include './include/user_footer.php' ?>
+<?php include 'templates/include/user_footer.php' ?>

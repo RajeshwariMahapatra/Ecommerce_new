@@ -1,9 +1,3 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,13 +10,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
 		function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- //for-mobile-apps -->
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="templates/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="templates/css/style.css" rel="stylesheet" type="text/css" media="all" />
 <!-- js -->
-<script src="js/jquery.min.js"></script>
+<script src="templates/js/jquery.min.js"></script>
 <!-- //js -->
 <!-- cart -->
-<script src="js/simpleCart.min.js"></script>
+<script src="templates/js/simpleCart.min.js"></script>
 <!-- cart -->
 <!-- for bootstrap working -->
 <script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script>
@@ -50,8 +44,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<ul>
 						<li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:info@example.com">@example.com</a></li>
 						<li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>+1234 567 892</li>
-						<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="register.php">Login</a></li>
-						<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="register.php">Register</a></li>
+						<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="index.php?action=register">Login</a></li>
+						<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="index.php?action=register">Register</a></li>
 					</ul>
 				</div>
 				<div class="header-grid-right animated wow slideInRight" data-wow-delay=".5s">
@@ -81,7 +75,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					</div> 
 					<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="index.php" class="act">Home</a></li>	
+							<li class="active"><a href="index.php?action=home" class="act">Home</a></li>	
 							<!-- Mega Menu -->
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Product Category<b class="caret"></b></a>
@@ -90,42 +84,42 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										<div class="col-sm-4">
 											<ul class="multi-column-dropdown">
 												<h6>Men's Wear</h6>
-												<li><a href="products.php">Clothing</a></li>
-												<li><a href="products.php">Wallets</a></li>
-												<li><a href="products.php">Shoes</a></li>
-												<li><a href="products.php">Watches</a></li>
-												<li><a href="products.php">Accessories</a></li>
+												<li><a href="index.php?action=products">Clothing</a></li>
+												<li><a href="index.php?action=products">Wallets</a></li>
+												<li><a href="index.php?action=products">Shoes</a></li>
+												<li><a href="index.php?action=products">Watches</a></li>
+												<li><a href="index.php?action=products">Accessories</a></li>
 											</ul>
 										</div>
 										<div class="col-sm-4">
 											<ul class="multi-column-dropdown">
 												<h6>Women's Wear</h6>
-												<li><a href="products.php">Clothing</a></li>
-												<li><a href="products.php">Wallets,Bags</a></li>
-												<li><a href="products.php">Footwear</a></li>
-												<li><a href="products.php">Watches</a></li>
-												<li><a href="products.php">Accessories</a></li>
-												<li><a href="products.php">Jewellery</a></li>
-												<li><a href="products.php">Beauty & Grooming</a></li>
+												<li><a href="index.php?action=products">Clothing</a></li>
+												<li><a href="index.php?action=products">Wallets,Bags</a></li>
+												<li><a href="index.php?action=products">Footwear</a></li>
+												<li><a href="index.php?action=products">Watches</a></li>
+												<li><a href="index.php?action=products">Accessories</a></li>
+												<li><a href="index.php?action=products">Jewellery</a></li>
+												<li><a href="index.php?action=products">Beauty & Grooming</a></li>
 											</ul>
 										</div>
 										<div class="col-sm-4">
 											<ul class="multi-column-dropdown">
 												<h6>Kid's Wear</h6>
-												<li><a href="products.php">Kids Home Fashion</a></li>
-												<li><a href="products.php">Boy's Clothing</a></li>
-												<li><a href="products.php">Girl's Clothing</a></li>
-												<li><a href="products.php">Shoes</a></li>
-												<li><a href="products.php">Brand Stores</a></li>
+												<li><a href="index.php?action=products">Kids Home Fashion</a></li>
+												<li><a href="index.php?action=products">Boy's Clothing</a></li>
+												<li><a href="index.php?action=products">Girl's Clothing</a></li>
+												<li><a href="index.php?action=products">Shoes</a></li>
+												<li><a href="index.php?action=products">Brand Stores</a></li>
 											</ul>
 										</div>
 										<div class="clearfix"></div>
 									</div>
 								</ul>
 							</li>
-							<li><a href="furniture.php">Product List</a></li>
+							<li><a href="index.php?action=furniture">Product List</a></li>
 					
-							<li><a href="mail.php">Contact Us</a></li>
+							<li><a href="index.php?action=contact">Contact Us</a></li>
 						</ul>
 					</div>
 					</nav>
@@ -141,8 +135,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						</div>
 					</div>
 						<!-- search-scripts -->
-						<script src="js/classie.js"></script>
-						<script src="js/uisearch.js"></script>
+						<script src="templates/js/classie.js"></script>
+						<script src="templates/js/uisearch.js"></script>
 							<script>
 								new UISearch( document.getElementById( 'sb-search' ) );
 							</script>
@@ -150,10 +144,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
 				<div class="header-right">
 					<div class="cart box_1">
-						<a href="checkout.php">
+						<a href="index.php?action=checkout">
 							<h3> <div class="total">
 								<span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span> items)</div>
-								<img src="images/bag.png" alt="" />
+								<img src="templates/images/bag.png" alt="" />
 							</h3>
 						</a>
 						<p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>

@@ -1,10 +1,10 @@
-<?php include './include/user_header.php' ?>
+<?php include 'templates/include/user_header.php' ?>
 <!-- //header -->
 <!-- breadcrumbs -->
 	<div class="breadcrumbs">
 		<div class="container">
 			<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-				<li><a href="home.php"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+				<li><a href="index.php?action=home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
 				<li class="active">Checkout Page</li>
 			</ol>
 		</div>
@@ -29,7 +29,7 @@
 					</thead>
 					<tr class="rem1">
 						<td class="invert">1</td>
-						<td class="invert-image"><a href="single.php"><img src="images/22.jpg" alt=" " class="img-responsive" /></a></td>
+						<td class="invert-image"><a href="index.php?action=single"><img src="templates/images/22.jpg" alt=" " class="img-responsive" /></a></td>
 						<td class="invert">
 							 <div class="quantity"> 
 								<div class="quantity-select">                           
@@ -58,7 +58,7 @@
 					</tr>
 					<tr class="rem2">
 						<td class="invert">2</td>
-						<td class="invert-image"><a href="single.php"><img src="images/30.jpg" alt=" " class="img-responsive" /></a></td>
+						<td class="invert-image"><a href="index.php?action=single"><img src="templates/images/30.jpg" alt=" " class="img-responsive" /></a></td>
 						<td class="invert">
 							 <div class="quantity"> 
 								<div class="quantity-select">                           
@@ -87,7 +87,7 @@
 					</tr>
 					<tr class="rem3">
 						<td class="invert">3</td>
-						<td class="invert-image"><a href="single.php"><img src="images/11.jpg" alt=" " class="img-responsive" /></a></td>
+						<td class="invert-image"><a href="index.php?action=single"><img src="templates/images/11.jpg" alt=" " class="img-responsive" /></a></td>
 						<td class="invert">
 							 <div class="quantity"> 
 								<div class="quantity-select">                           
@@ -141,7 +141,7 @@
 					</ul>
 				</div>
 				<div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
-					<a href="single.php"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Continue Shopping</a>
+					<a href="index.php?action=single"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Continue Shopping</a>
 				</div>
 				<div class="clearfix"> </div>
 			</div>
@@ -149,5 +149,5 @@
 	</div>
 <!-- //checkout -->
 <!-- footer -->
-<?php include './include/user_footer.php' ?>
+<?php include 'templates/include/user_footer.php' ?>
 	

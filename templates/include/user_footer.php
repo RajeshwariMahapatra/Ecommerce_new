@@ -17,40 +17,40 @@
 				<div class="col-md-3 footer-grid animated wow slideInLeft" data-wow-delay=".7s">
 					<h3>Flickr Posts</h3>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/13.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/13.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/14.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/14.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/15.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/15.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/16.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/16.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/13.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/13.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/14.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/14.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/15.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/15.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/16.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/16.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/13.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/13.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/14.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/14.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/15.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/15.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="footer-grid-left">
-						<a href="single.php"><img src="images/16.jpg" alt=" " class="img-responsive" /></a>
+						<a href="index.php?action=single"><img src="templates/images/16.jpg" alt=" " class="img-responsive" /></a>
 					</div>
 					<div class="clearfix"> </div>
 				</div>
@@ -58,20 +58,20 @@
 					<h3>Blog Posts</h3>
 					<div class="footer-grid-sub-grids">
 						<div class="footer-grid-sub-grid-left">
-							<a href="single.php"><img src="images/9.jpg" alt=" " class="img-responsive" /></a>
+							<a href="index.php?action=single"><img src="templates/images/9.jpg" alt=" " class="img-responsive" /></a>
 						</div>
 						<div class="footer-grid-sub-grid-right">
-							<h4><a href="single.php">culpa qui officia deserunt</a></h4>
+							<h4><a href="index.php?action=single">culpa qui officia deserunt</a></h4>
 							<p>Posted On 25/3/2016</p>
 						</div>
 						<div class="clearfix"> </div>
 					</div>
 					<div class="footer-grid-sub-grids">
 						<div class="footer-grid-sub-grid-left">
-							<a href="single.php"><img src="images/10.jpg" alt=" " class="img-responsive" /></a>
+							<a href="index.php?action=single"><img src="templates/images/10.jpg" alt=" " class="img-responsive" /></a>
 						</div>
 						<div class="footer-grid-sub-grid-right">
-							<h4><a href="single.php">Quis autem vel eum iure</a></h4>
+							<h4><a href="index.php?action=single">Quis autem vel eum iure</a></h4>
 							<p>Posted On 25/3/2016</p>
 						</div>
 						<div class="clearfix"> </div>
