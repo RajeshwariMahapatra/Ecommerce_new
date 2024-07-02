@@ -1,5 +1,6 @@
 <?php
-function getCurrentPage() {
+function getCurrentPage()
+{
     if (isset($_GET['action'])) {
         return $_GET['action'];
     }
@@ -79,6 +80,21 @@ $current_page = getCurrentPage();
                 <h6 class="collapse-header">Brands:</h6>
                 <a class="collapse-item <?php echo $current_page == 'addBrand' ? 'active' : ''; ?>" href="admin.php?action=addBrand">Add Brand</a>
                 <a class="collapse-item <?php echo $current_page == 'listBrands' ? 'active' : ''; ?>" href="admin.php?action=listBrands">View Brands</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item <?php echo in_array($current_page, ['addPage', 'listPages']) ? 'active' : ''; ?>">
+        <a class="nav-link <?php echo in_array($current_page, ['addPage', 'listPages']) ? '' : 'collapsed'; ?>" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Pages</span>
+        </a>
+        <div id="collapsePages" class="collapse <?php echo in_array($current_page, ['addPage', 'listPages']) ? 'show' : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Pages:</h6>
+                <a class="collapse-item <?php echo $current_page == 'addPage' ? 'active' : ''; ?>" href="admin.php?action=addPage">Add Page</a>
+                <a class="collapse-item <?php echo $current_page == 'listPage' ? 'active' : ''; ?>" href="admin.php?action=listPage">View Pages</a>
             </div>
         </div>
     </li>

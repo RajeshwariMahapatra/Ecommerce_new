@@ -53,8 +53,22 @@ switch ($action) {
     case 'deleteBrand':
         deleteBrand();
         break;
-
-
+    case 'addPage':
+        addPage();
+        break;
+    case 'editPage':
+        editPage();
+        break;
+    case 'listPage':
+        listPage();
+        break;
+    case 'listPage2':
+        listPage2();
+        break;
+    case 'deletePage':
+        deletePage();
+        break;
+    
     default:
         showDashboard();
 }
@@ -276,6 +290,8 @@ function editProductCategory()
     $results['formAction'] = "editProductCategory";
 
     if (isset($_POST['saveChanges'])) {
+        $_POST['category_identity'] = uniqueRandomString(12, 'ProductCategory', 'category_identity');
+
         // Check if category ID is provided
         if (!isset($_POST['category_id'])) {
             header("Location: admin.php?error=categoryIdMissing");
@@ -357,6 +373,8 @@ function addBrand()
     // Check if the form has been submitted
     if (isset($_POST["saveChanges"])) {
         // Collect the form data
+        $_POST['brand_identity'] = uniqueRandomString(12, 'Brand', 'brand_identity');
+
         $brandData = $_POST;
         $brand = new Brand;
         $brand->storeFormValues($brandData);
@@ -455,7 +473,95 @@ function listBrands()
     require(TEMPLATE_PATH . "/admin/view_brand.php");
 }
 
+function addPage(){
+    $results = array();
+    $results['pageTitle'] = "Add Page";
+    $results['formAction'] = "addPage";
 
+    // Check if the form has been submitted
+    if (isset($_POST["saveChanges"])) {
+        // Collect the form data
+        $pageData = $_POST;
+        $page = new Pages;
+        $page->storeFormValues($pageData);
+
+        // Insert the new brand into the database
+        $page->insert();
+
+        // Redirect to the admin page with a status message
+        header('Location: admin.php?action=listPages&status=pageAdded');
+    } elseif (isset($_POST['cancel'])) {
+        // Redirect to the admin page if the form was cancelled
+        header("Location: admin.php?action=listPages");
+    } else {
+        // Prepare data for displaying the form
+        $results['page'] = new Pages;
+        $results['pageTitle'] = "Add New Page";
+        $results['formAction'] = "addPage";
+        require(TEMPLATE_PATH . "/admin/addPage.php");
+    }
+}
+
+function listPage(){
+    $results = array();
+    $data = Pages::getList();
+    $results['pages'] = $data['results'];
+    $results['totalRows'] = $data['totalRows'];
+    $results['pageTitle'] = "All Pages";
+
+    if (isset($_GET['error'])) {
+        if ($_GET['error'] == "pageNotFound") $results['errorMessage'] = "Error: Page not found.";
+    }
+
+    if (isset($_GET['status'])) {
+        if ($_GET['status'] == "changesSaved") $results['statusMessage'] = "Your changes have been saved.";
+        if ($_GET['status'] == "pageDeleted") $results['statusMessage'] = "Page deleted.";
+    }
+
+    require(TEMPLATE_PATH . "/admin/view_page.php");
+}
+
+function listPage2() {
+    $results = array();
+    if (!isset($_GET['page_id'])) {
+        header("Location: admin.php?error=page]NotFound");
+        return;
+    }
+    $pageId = (int)$_GET['page_id']; // Assuming product_id is passed in GET data
+
+    // Get the product details
+    $page = Pages::getById($pageId);
+    if (!$page) {
+        header("Location: admin.php?error=pageNotFound");
+        return;
+    }
+
+    $results['page'] = $page;
+    require(TEMPLATE_PATH . "/admin/pageDetails.php");
+}
+function editPage() {
+    $results = array();
+    $results['pageTitle'] = "Edit Page";
+    $results['formAction'] = "editPage";
+
+    if (isset($_POST['saveChanges'])) {
+        if (!$page = Pages::getById((int)$_POST['page_id'])) {
+            header("Location: admin.php?error=pageNotFound");
+            return;
+        }
+        $pagedata = $_POST;
+        $page->storeFormValues($pagedata);
+
+        $page->update();
+
+        header("Location: admin.php?action=listPage&status=changesSaved");
+    } elseif (isset($_POST['cancel'])) {
+        header("Location: admin.php?action=listPage");
+    } else {
+        $results['page'] = Pages::getById((int)$_GET['page_id']);
+        require(TEMPLATE_PATH . "/admin/addPage.php");
+    }
+}
 
 function showDashboard()
 {
