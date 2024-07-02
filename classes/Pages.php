@@ -56,7 +56,7 @@ class Pages
     if ( isset( $data['page_id'] ) ) $this->page_id = (int) $data['page_id'];
     if ( isset( $data['page_heading'] ) ) $this->page_heading = preg_replace ( "/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['page_heading'] );
     if ( isset( $data['page_subheading'] ) ) $this->page_subheading = preg_replace ( "/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['page_subheading'] );
-    if ( isset( $data['page_coverimage'] ) ) $this->page_coverimage = preg_replace ( "/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['page_coverimage'] );
+    if ( isset( $data['page_coverimage'] ) ) $this->page_coverimage = $data['page_coverimage'];
     if ( isset( $data['page_content'] ) ) $this->page_content =  $data['page_content'] ;
     if ( isset( $data['page_preference'] ) ) $this->page_preference = (int) $data['page_preference'];
     if ( isset( $data['page_on_navbar'] ) ) $this->page_on_navbar = (int) $data['page_on_navbar'];
@@ -142,6 +142,52 @@ class Pages
     $this->page_id = $conn->lastInsertId();
     $conn = null;
   }
+
+
+  public function storeUploadedCoverImage($image)
+{
+    $this->deleteCoverImage();
+
+    if (isset($image['page_coverimage']) && $image['page_coverimage']['error'] == UPLOAD_ERR_OK) {
+        // Generate a unique name for the image file
+        $uniqueName = uniqid() . strtolower(strrchr($image['page_coverimage']['name'], '.'));
+
+        // Define the image path and URL
+        $imagePath = COVER_IMAGE_PATH . $uniqueName;
+        $imageURL = COVER_IMAGE_URL . $uniqueName;
+
+        // Store the image
+        $tempFilename = trim($image['page_coverimage']['tmp_name']);
+
+        if (is_uploaded_file($tempFilename)) {
+            if (!(move_uploaded_file($tempFilename, $imagePath))) {
+                trigger_error("Page::storeUploadedCoverImage(): Couldn't move uploaded file.", E_USER_ERROR);
+            }
+            if (!(chmod($imagePath, 0666))) {
+                trigger_error("Page::storeUploadedCoverImage(): Couldn't set permissions on uploaded file.", E_USER_ERROR);
+            }
+        }
+
+        // Save the image URL to the property
+        $this->page_coverimage = $imageURL;
+
+        // Update the database
+        $this->update();
+    }
+}
+
+
+public function deleteCoverImage()
+{
+    // Function to delete the existing cover image if needed
+    if ($this->page_coverimage) {
+        $imagePath = COVER_IMAGE_PATH . basename($this->page_coverimage);
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+        $this->page_coverimage = null;
+    }
+}
 
   /**
   * Updates the current Pages object in the database.

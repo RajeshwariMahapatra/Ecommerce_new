@@ -11,6 +11,8 @@ define( "ADMIN_USERNAME", "admin" );
 define( "ADMIN_PASSWORD", "mypass" );
 define( "PRODUCT_IMAGE_PATH", "images/products/" );
 define( "PRODUCT_IMAGE_URL", "images/products/" );
+define( "COVER_IMAGE_PATH", "images/coverimage/" );
+define( "COVER_IMAGE_URL", "images/coverimage/" );
 require( CLASS_PATH . "/Pages.php" );
 require( CLASS_PATH . "/ProductCategory.php" );
 require( CLASS_PATH . "/Product.php" );

@@ -90,7 +90,7 @@ $current_page = getCurrentPage();
             <i class="fas fa-fw fa-cog"></i>
             <span>Pages</span>
         </a>
-        <div id="collapsePages" class="collapse <?php echo in_array($current_page, ['addPage', 'listPages']) ? 'show' : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapsePages" class="collapse <?php echo in_array($current_page, ['addPage', 'listPage']) ? 'show' : ''; ?>" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Pages:</h6>
                 <a class="collapse-item <?php echo $current_page == 'addPage' ? 'active' : ''; ?>" href="admin.php?action=addPage">Add Page</a>

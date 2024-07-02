@@ -242,7 +242,7 @@ function deleteProduct()
 {
 
     if (!$product = Product::getById((int)$_GET['product_id'])) {
-        header("Location: admin.php?error=productNotFound");
+        header("Location: admin.php?action=listProducts&error=productNotFound");
         return;
     }
 
@@ -485,14 +485,20 @@ function addPage(){
         $page = new Pages;
         $page->storeFormValues($pageData);
 
+        // Handle the cover image upload
+        if (isset($_FILES['page_coverimage']) && $_FILES['page_coverimage']['error'] == UPLOAD_ERR_OK) {
+            $page->storeUploadedCoverImage($_FILES['page_coverimage']);
+        }
+
+
         // Insert the new brand into the database
         $page->insert();
 
         // Redirect to the admin page with a status message
-        header('Location: admin.php?action=listPages&status=pageAdded');
+        header('Location: admin.php?action=listPage&status=pageAdded');
     } elseif (isset($_POST['cancel'])) {
         // Redirect to the admin page if the form was cancelled
-        header("Location: admin.php?action=listPages");
+        header("Location: admin.php?action=listPage");
     } else {
         // Prepare data for displaying the form
         $results['page'] = new Pages;
@@ -552,6 +558,10 @@ function editPage() {
         $pagedata = $_POST;
         $page->storeFormValues($pagedata);
 
+        if (isset($_FILES)) {
+            $page->storeUploadedCoverImage($_FILES);
+        }
+
         $page->update();
 
         header("Location: admin.php?action=listPage&status=changesSaved");
@@ -561,6 +571,20 @@ function editPage() {
         $results['page'] = Pages::getById((int)$_GET['page_id']);
         require(TEMPLATE_PATH . "/admin/addPage.php");
     }
+}
+
+function deletePage() {
+    // Retrieve the page from the database
+    if (!$page = Pages::getById((int)$_GET['page_id'])) {
+        header("Location: admin.php?error=pageNotFound");
+        return;
+    }
+
+    // Delete the page from the database
+    $page->delete();
+
+    // Redirect to the listpage page with a status message
+    header("Location: admin.php?action=listPage&status=pageDeleted");
 }
 
 function showDashboard()
