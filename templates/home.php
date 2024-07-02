@@ -122,7 +122,7 @@
                         <h4><a href="index.php?action=single"><?php echo $product->product_name; ?></a></h4>
                         <p><?php echo $product->product_small_desc; ?></p>
                         <div class="new-collections-grid1-left simpleCart_shelfItem">
-                            <p><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?><a class="item_add" href="index.php?action=register">add to cart </a></span></p>
+                            <p><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?><button class="item_add" href="index.php?action=register">add to cart </button></span></p>
                         </div>
                     </div>
                 </div>

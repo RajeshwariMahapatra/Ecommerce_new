@@ -97,6 +97,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<li><a href="index.php?action=furniture">Product List</a></li>
 					
 							<li><a href="index.php?action=contact">Contact Us</a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages List<b class="caret"></b></a>
+								<ul class="dropdown-menu multi-column columns-3">
+									<div class="row">
+										<div class="col-sm-3">
+											<ul class="multi-column-dropdown">
+												
+												<li><a href="index.php?action=pages"><?php foreach ( $results['pages'] as $page ) { ?>
+													<li><a href="index.php?action=pages"><?php echo $page->page_heading; ?></a> <span></span></li>
+													<?php } ?>
+												</a></li>
+											</ul>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</ul>
+							</li>
 						</ul>
 					</div>
 					</nav>

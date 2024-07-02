@@ -30,6 +30,11 @@ switch ( $action ) {
 
 function checkout() {
     $results = array();
+
+    $pageData = Pages::getList();
+    $results['pages'] = $pageData['results'];
+    $results['totalPagesRows'] = $pageData['totalRows'];
+    
     $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
@@ -40,6 +45,11 @@ function checkout() {
   function furniture() {
     
     $results = array();
+
+    $pageData = Pages::getList();
+    $results['pages'] = $pageData['results'];
+    $results['totalPagesRows'] = $pageData['totalRows'];
+    
     $data = Product::getList(); // Assuming Product::getList() returns an array with 'results' and 'totalRows'
     $results['products'] = $data['results'];
     $results['totalRows'] = $data['totalRows'];
@@ -63,6 +73,11 @@ function checkout() {
   
   function contact() {
     $results = array();
+
+    $pageData = Pages::getList();
+    $results['pages'] = $pageData['results'];
+    $results['totalPagesRows'] = $pageData['totalRows'];
+    
     $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
@@ -72,6 +87,11 @@ function checkout() {
   
   function products() {
     $results = array();
+
+    $pageData = Pages::getList();
+    $results['pages'] = $pageData['results'];
+    $results['totalPagesRows'] = $pageData['totalRows'];
+    
     $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
@@ -84,6 +104,9 @@ function checkout() {
   
   function register() {
     $results = array();
+
+    
+    
     $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
@@ -93,6 +116,11 @@ function checkout() {
   
   function single() {
     $results = array();
+
+    $pageData = Pages::getList();
+    $results['pages'] = $pageData['results'];
+    $results['totalPagesRows'] = $pageData['totalRows'];
+
     $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
@@ -106,9 +134,15 @@ function checkout() {
 
   function home() {
     $results = array();
+
+    $pageData = Pages::getList();
+    $results['pages'] = $pageData['results'];
+    $results['totalPagesRows'] = $pageData['totalRows'];
+
     $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
+
     $data = Product::getList();
      // Assuming Product::getList() returns an array with 'results' and 'totalRows'
     $results['articles'] = $data['results'];
