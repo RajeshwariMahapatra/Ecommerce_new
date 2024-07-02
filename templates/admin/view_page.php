@@ -23,15 +23,21 @@
             <ul class="list-group">
                 <?php foreach ($results['pages'] as $page) : ?>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <a href="admin.php?action=listPage2&page_id=<?php echo $page->page_id; ?>">
-                            <strong>ID:</strong> <?php echo htmlspecialchars($page->page_id); ?>
-                            <br>
-                            <?php echo htmlspecialchars($page->page_heading); ?>
-                        </a>
-                        <a href="admin.php?action=editPage&page_id=<?php echo $page->page_id; ?>" class="btn btn-primary btn-sm">Update</a>
+                        <div>
+                            <a href="admin.php?action=listPage2&page_id=<?php echo $page->page_id; ?>" class="text-decoration-none">
+                                <strong>ID:</strong> <?php echo htmlspecialchars($page->page_id); ?>
+                                <br>
+                                <?php echo htmlspecialchars($page->page_heading); ?>
+                            </a>
+                        </div>
+                        <div class="btn-group" role="group" aria-label="Page Actions">
+                            <a href="admin.php?action=editPage&page_id=<?php echo $page->page_id; ?>" class="btn btn-primary btn-sm">Update</a>
+                            <a href="admin.php?action=deletePage&page_id=<?php echo $page->page_id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
                     </li>
                 <?php endforeach; ?>
             </ul>
+
 
             <p class="mt-3">Total Pages: <?php echo $results['totalRows']; ?></p>
         </div>

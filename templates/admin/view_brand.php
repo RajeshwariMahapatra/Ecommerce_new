@@ -8,8 +8,6 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Brands</h1>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -34,7 +32,7 @@
                                 <td>
                                     <!-- Add/Edit/Delete buttons here -->
                                     <a href="admin.php?action=editBrand&brand_id=<?php echo $brand->brand_id; ?>" class="btn btn-primary btn-sm">Edit</a>
-                                    <a href="admin.php?action=deleteBrand&brand_id=<?php echo $brand->brand_id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                                        <a href="admin.php?action=deleteBrand&brand_id=<?php echo $brand->brand_id; ?>" class="btn btn-danger btn-sm">Delete</a>
                                 </td>
                             </tr>
 
