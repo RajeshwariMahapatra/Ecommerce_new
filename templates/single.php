@@ -71,8 +71,11 @@
                 <!-- flixslider -->
             </div>
             <div class="col-md-7 single-right-left simpleCart_shelfItem animated wow slideInRight" data-wow-delay=".5s">
-                <h3>Men's Solid Casual Shirt</h3>
-                <h4><span class="item_price">$550</span> - $900</h4>
+            <?php foreach ( $results['articles'] as $product )?>
+                <h3><?php echo $product->product_name; ?></h3>
+                
+                <h4><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?></span></h4>
+                
                 <div class="rating1">
                     <span class="starRating">
                         <input id="rating5" type="radio" name="rating" value="5">
@@ -89,9 +92,9 @@
                 </div>
                 <div class="description">
                     <h5><i>Description</i></h5>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore 
-                        eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
+                    <p><?php echo $product->product_small_desc; ?></p>
                 </div>
+                
                 <div class="occasional">
                     <h5>Features :</h5>
                     <div class="colr ert">
@@ -143,8 +146,7 @@
                     <div id="myTabContent" class="tab-content">
                         <div role="tabpanel" class="tab-pane fade in active bootstrap-tab-text" id="home" aria-labelledby="home-tab">
                             <h5>Product Brief Description</h5>
-                            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
-                                <span>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span></p>
+                            <p><?php echo $product->product_desc; ?></p>
                         </div>
                         <div role="tabpanel" class="tab-pane fade bootstrap-tab-text" id="profile" aria-labelledby="profile-tab">
                             <div class="bootstrap-tab-text-grids">
@@ -191,14 +193,16 @@
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade bootstrap-tab-text" id="dropdown1" aria-labelledby="dropdown1-tab">
-                            <p>Height: 30 cm<br>Weight: 500 g<br>Volume: 2 L</p>
+                            <p>Height: <p><?php echo $product->product_height; ?></p> cm<br>Breadth: <p><?php echo $product->product_breadth; ?></p> cm<br>Weight: <p><?php echo $product->product_weight; ?></p> g<br>Volume: <p><?php echo $product->product_volume; ?></p> L</p>
                         </div>
                         <div role="tabpanel" class="tab-pane fade bootstrap-tab-text" id="dropdown2" aria-labelledby="dropdown2-tab">
-                            <p>All products come with a one-year guarantee. If you encounter any issues within this period, we will replace or repair the item free of charge. Terms and conditions apply.</p>
+                        <p><?php echo $product->product_warranty; ?></p>
+                            <?php  ?>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php   ?></div>
+            
         </div>
         <div class="clearfix"> </div>
     </div>
@@ -207,6 +211,7 @@
 <!-- //single -->
 <!-- single-related-products -->
 	<div class="single-related-products">
+        
 		<div class="container">
 			<h3 class="animated wow slideInUp" data-wow-delay=".5s">Related Products</h3>
 			<p class="est animated wow slideInUp" data-wow-delay=".5s">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 

@@ -99,7 +99,7 @@
         <h3 class="animated wow zoomIn" data-wow-delay=".5s">New Collections</h3>
         <p class="est animated wow zoomIn" data-wow-delay=".5s">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         <div class="new-collections-grids">
-		<?php foreach ( $results['articles'] as $product )?>
+		<?php foreach ( $results['articles'] as $product ) { ?>
 
                 <div class="col-md-3 new-collections-grid">
                     <div class="new-collections-grid1 animated wow slideInUp" data-wow-delay=".5s">
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-				<?php  ?>
+				<?php } ?>
         </div>
     </div>
 </div>

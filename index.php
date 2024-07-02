@@ -69,6 +69,10 @@ function checkout() {
   
   function single() {
     $results = array();
+    $data = Product::getList();
+     // Assuming Product::getList() returns an array with 'results' and 'totalRows'
+    $results['articles'] = $data['results'];
+    $results['totalRows'] = $data['totalRows'];
     $results['pageTitle'] = "Single | Ecommerce";
     require(TEMPLATE_PATH . "/single.php");
   }
