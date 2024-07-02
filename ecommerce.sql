@@ -8,6 +8,7 @@ CREATE TABLE `brand` (
 
 CREATE TABLE `pages` (
   `page_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `page_identity` VARCHAR(12) DEFAULT NULL,
   `page_heading` VARCHAR(255) DEFAULT NULL,
   `page_subheading` VARCHAR(255) DEFAULT NULL,
   `page_coverimage` VARCHAR(255) DEFAULT NULL,
@@ -52,8 +53,8 @@ CREATE TABLE `product` (
   `product_barcode` VARCHAR(20) DEFAULT NULL,
   `product_sku` VARCHAR(50) DEFAULT NULL,
   `product_code` VARCHAR(50) DEFAULT NULL,
-  `product_warranty` VARCHAR(50) DEFAULT NULL,
-  `product_guarantee` VARCHAR(50) DEFAULT NULL,
+  `product_warranty` TEXT DEFAULT NULL,
+  `product_guarantee` TEXT DEFAULT NULL,
   `product_offer_code` VARCHAR(12) DEFAULT NULL,
   `product_features` TEXT DEFAULT NULL,
   `product_created_on` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
