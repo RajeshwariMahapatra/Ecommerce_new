@@ -83,34 +83,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									<div class="row">
 										<div class="col-sm-4">
 											<ul class="multi-column-dropdown">
-												<h6>Men's Wear</h6>
-												<li><a href="index.php?action=products">Clothing</a></li>
-												<li><a href="index.php?action=products">Wallets</a></li>
-												<li><a href="index.php?action=products">Shoes</a></li>
-												<li><a href="index.php?action=products">Watches</a></li>
-												<li><a href="index.php?action=products">Accessories</a></li>
-											</ul>
-										</div>
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Women's Wear</h6>
-												<li><a href="index.php?action=products">Clothing</a></li>
-												<li><a href="index.php?action=products">Wallets,Bags</a></li>
-												<li><a href="index.php?action=products">Footwear</a></li>
-												<li><a href="index.php?action=products">Watches</a></li>
-												<li><a href="index.php?action=products">Accessories</a></li>
-												<li><a href="index.php?action=products">Jewellery</a></li>
-												<li><a href="index.php?action=products">Beauty & Grooming</a></li>
-											</ul>
-										</div>
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Kid's Wear</h6>
-												<li><a href="index.php?action=products">Kids Home Fashion</a></li>
-												<li><a href="index.php?action=products">Boy's Clothing</a></li>
-												<li><a href="index.php?action=products">Girl's Clothing</a></li>
-												<li><a href="index.php?action=products">Shoes</a></li>
-												<li><a href="index.php?action=products">Brand Stores</a></li>
+												
+												<li><a href="index.php?action=products"><?php foreach ( $results['categories'] as $category ) { ?>
+													<li><a href="index.php?action=products"><?php echo $category->category_name; ?></a> <span></span></li>
+													<?php } ?>
+												</a></li>
 											</ul>
 										</div>
 										<div class="clearfix"></div>
