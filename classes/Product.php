@@ -231,6 +231,17 @@ class Product
         if ($row) return new Product($row);
     }
 
+    public static function getByCategoryId($categoryId) {
+        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $sql = "SELECT * FROM product WHERE product_category_id = :categoryId";
+        $st = $conn->prepare($sql);
+        $st->bindValue(":categoryId", $categoryId, PDO::PARAM_INT);
+        $st->execute();
+        $products = $st->fetchAll();
+        $conn = null;
+        return $products;
+    }
+
     /**
      * Returns all (or a range of) Product objects in the DB
      *

@@ -104,7 +104,7 @@
                 <div class="col-md-3 new-collections-grid">
                     <div class="new-collections-grid1 animated wow slideInUp" data-wow-delay=".5s">
                         <div class="new-collections-grid1-image">
-                            <a href="index.php?action=single" class="product-image"><img src="<?php echo $product->product_product_image_1; ?>" alt="<?php echo $product->product_name; ?>" class="img-responsive" /></a>
+                            <a href="index.php?action=single&product_id="<?php echo $product->product_id; ?> class="product-image"><img src="<?php echo $product->product_product_image_1; ?>" alt="<?php echo $product->product_name; ?>" class="img-responsive" /></a>
                             <div class="new-collections-grid1-image-pos">
                                 <a href="index.php?action=single">Quick View</a>
                             </div>
@@ -122,7 +122,7 @@
                         <h4><a href="index.php?action=single"><?php echo $product->product_name; ?></a></h4>
                         <p><?php echo $product->product_small_desc; ?></p>
                         <div class="new-collections-grid1-left simpleCart_shelfItem">
-                            <p><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?></span><a class="item_add" href="index.php?action=register">add to cart </a></p>
+                            <p><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?><a class="item_add" href="index.php?action=register">add to cart </a></span></p>
                         </div>
                     </div>
                 </div>

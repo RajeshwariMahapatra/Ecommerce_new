@@ -30,30 +30,51 @@ switch ( $action ) {
 
 function checkout() {
     $results = array();
+    $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
+    $results['categories'] = $categoryData['results'];
+    $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "Checkout | Ecommerce";
     require(TEMPLATE_PATH . "/checkout.php");
   }
   
   function furniture() {
+    
     $results = array();
+    $data = Product::getList(); // Assuming Product::getList() returns an array with 'results' and 'totalRows'
+    $results['products'] = $data['results'];
+    $results['totalRows'] = $data['totalRows'];
+    $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
+    $results['categories'] = $categoryData['results'];
+    $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "Furniture | Ecommerce";
     require(TEMPLATE_PATH . "/furniture.php");
-  }
+    
+}
+
   
   function login() {
     $results = array();
+    $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
+    $results['categories'] = $categoryData['results'];
+    $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "Login | Ecommerce";
     require(TEMPLATE_PATH . "/login.php");
   }
   
   function contact() {
     $results = array();
+    $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
+    $results['categories'] = $categoryData['results'];
+    $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "Contact | Ecommerce";
     require(TEMPLATE_PATH . "/contact.php");
   }
   
   function products() {
     $results = array();
+    $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
+    $results['categories'] = $categoryData['results'];
+    $results['totalCategoryRows'] = $categoryData['totalRows'];
     $data = Product::getList(); // Assuming Product::getList() returns an array with 'results' and 'totalRows'
     $results['products'] = $data['results'];
     $results['totalRows'] = $data['totalRows'];
@@ -63,12 +84,18 @@ function checkout() {
   
   function register() {
     $results = array();
+    $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
+    $results['categories'] = $categoryData['results'];
+    $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "Register | Ecommerce";
     require(TEMPLATE_PATH . "/register.php");
   }
   
   function single() {
     $results = array();
+    $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
+    $results['categories'] = $categoryData['results'];
+    $results['totalCategoryRows'] = $categoryData['totalRows'];
     $data = Product::getList();
      // Assuming Product::getList() returns an array with 'results' and 'totalRows'
     $results['articles'] = $data['results'];
@@ -79,6 +106,9 @@ function checkout() {
 
   function home() {
     $results = array();
+    $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
+    $results['categories'] = $categoryData['results'];
+    $results['totalCategoryRows'] = $categoryData['totalRows'];
     $data = Product::getList();
      // Assuming Product::getList() returns an array with 'results' and 'totalRows'
     $results['articles'] = $data['results'];
