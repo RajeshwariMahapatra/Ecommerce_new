@@ -35,7 +35,7 @@
                             <a href="admin.php?action=deletePage&page_id=<?php echo $page->page_id; ?>" class="btn btn-danger btn-sm">Delete</a>
                         </div>
                     </li>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
             </ul>
 
 
