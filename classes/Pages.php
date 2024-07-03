@@ -11,6 +11,10 @@ class Pages
    * @var int The page ID from the database
    */
   public $page_id = null;
+  /**
+   * @var int The page ID from the database
+   */
+  public $page_identity = null;
 
   /**
    * @var string The heading of the page
@@ -56,6 +60,7 @@ class Pages
   public function __construct($data = array())
   {
     if (isset($data['page_id'])) $this->page_id = (int) $data['page_id'];
+    if (isset($data['page_identity'])) $this->page_identity = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['page_identity']);
     if (isset($data['page_heading'])) $this->page_heading = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['page_heading']);
     if (isset($data['page_subheading'])) $this->page_subheading = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['page_subheading']);
     if (isset($data['page_coverimage'])) $this->page_coverimage = $data['page_coverimage'];
@@ -135,8 +140,9 @@ class Pages
 
     // Insert the Pages
     $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-    $sql = "INSERT INTO Pages (page_heading, page_subheading, page_coverimage, page_content, page_preference, page_on_navbar, page_created_at) VALUES (:page_heading, :page_subheading, :page_coverimage, :page_content, :page_preference, :page_on_navbar, :page_created_at)";
+    $sql = "INSERT INTO Pages (page_identity, page_heading, page_subheading, page_coverimage, page_content, page_preference, page_on_navbar, page_created_at) VALUES (:page_identity,:page_heading, :page_subheading, :page_coverimage, :page_content, :page_preference, :page_on_navbar, :page_created_at)";
     $st = $conn->prepare($sql);
+    $st->bindValue(":page_identity", $this->page_identity, PDO::PARAM_STR);
     $st->bindValue(":page_heading", $this->page_heading, PDO::PARAM_STR);
     $st->bindValue(":page_subheading", $this->page_subheading, PDO::PARAM_STR);
     $st->bindValue(":page_coverimage", $this->page_coverimage, PDO::PARAM_STR);
@@ -210,8 +216,9 @@ class Pages
 
     // Update the Pages
     $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-    $sql = "UPDATE Pages SET page_heading=:page_heading, page_subheading=:page_subheading, page_coverimage=:page_coverimage, page_content=:page_content, page_preference=:page_preference, page_on_navbar=:page_on_navbar, page_created_at=:page_created_at WHERE page_id = :page_id";
+    $sql = "UPDATE Pages SET page_identity=:page_identity,page_heading=:page_heading, page_subheading=:page_subheading, page_coverimage=:page_coverimage, page_content=:page_content, page_preference=:page_preference, page_on_navbar=:page_on_navbar, page_created_at=:page_created_at WHERE page_id = :page_id";
     $st = $conn->prepare($sql);
+    $st->bindValue(":page_identity", $this->page_identity, PDO::PARAM_STR);
     $st->bindValue(":page_heading", $this->page_heading, PDO::PARAM_STR);
     $st->bindValue(":page_subheading", $this->page_subheading, PDO::PARAM_STR);
     $st->bindValue(":page_coverimage", $this->page_coverimage, PDO::PARAM_STR);
