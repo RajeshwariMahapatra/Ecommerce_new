@@ -1,6 +1,7 @@
 <?php
 // require("config.php");
 require("functions.php");
+require('validations.php');
 session_start();
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
@@ -68,7 +69,7 @@ switch ($action) {
     case 'deletePage':
         deletePage();
         break;
-    
+
     default:
         showDashboard();
 }
@@ -111,6 +112,19 @@ function addProduct()
 
     // Check if the form has been submitted
     if (isset($_POST["saveChanges"])) {
+        // Validate the form data
+        $errors = validateProduct($_POST);
+
+        if (!empty($errors)) {
+            // If there are validation errors, show the form again with errors
+            $results['errors'] = $errors;
+            $results['product'] = new Product($_POST); // Pass the submitted data back to the form
+            $results['categories'] = ProductCategory::getList()['results'];
+            $results['brands'] = Brand::getList()['results'];
+            require(TEMPLATE_PATH . "/admin/addProduct.php");
+            return;
+        }
+
         // Collect the form data
         $_POST['product_identity'] = uniqueRandomString(12, 'Product', 'product_identity');
         $productdata = $_POST;
@@ -248,7 +262,7 @@ function deleteProduct()
 
     $product->deleteImages();
     $product->delete();
-    header("Location: admin.php?status=productDeleted");
+    header("Location: admin.php?action=listProducts&status=productDeleted");
 }
 
 function addProductCategory()
@@ -469,11 +483,12 @@ function listBrands()
         if ($_GET['status'] == "brandDeleted") $results['statusMessage'] = "Brand deleted.";
     }
 
-    
+
     require(TEMPLATE_PATH . "/admin/view_brand.php");
 }
 
-function addPage(){
+function addPage()
+{
     $results = array();
     $results['pageTitle'] = "Add Page";
     $results['formAction'] = "addPage";
@@ -492,7 +507,7 @@ function addPage(){
             $page->storeUploadedCoverImage($_FILES['page_coverimage']);
         }
 
-        
+
         // Insert the new brand into the database
         $page->insert();
 
@@ -510,7 +525,8 @@ function addPage(){
     }
 }
 
-function listPage(){
+function listPage()
+{
     $results = array();
     $data = Pages::getList();
     $results['pages'] = $data['results'];
@@ -529,7 +545,8 @@ function listPage(){
     require(TEMPLATE_PATH . "/admin/view_page.php");
 }
 
-function listPage2() {
+function listPage2()
+{
     $results = array();
     if (!isset($_GET['page_id'])) {
         header("Location: admin.php?error=page]NotFound");
@@ -547,7 +564,8 @@ function listPage2() {
     $results['page'] = $page;
     require(TEMPLATE_PATH . "/admin/pageDetails.php");
 }
-function editPage() {
+function editPage()
+{
     $results = array();
     $results['pageTitle'] = "Edit Page";
     $results['formAction'] = "editPage";
@@ -563,7 +581,7 @@ function editPage() {
         if (isset($_FILES['page_coverimage']) && $_FILES['page_coverimage']['error'] == UPLOAD_ERR_OK) {
             $page->storeUploadedCoverImage($_FILES['page_coverimage']);
         }
-        
+
 
         $page->update();
 
@@ -576,7 +594,8 @@ function editPage() {
     }
 }
 
-function deletePage() {
+function deletePage()
+{
     // Retrieve the page from the database
     if (!$page = Pages::getById((int)$_GET['page_id'])) {
         header("Location: admin.php?error=pageNotFound");

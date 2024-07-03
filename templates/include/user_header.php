@@ -85,7 +85,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<ul class="nav navbar-nav">
 								<li class="active"><a href="index.php?action=home" class="act">Home</a></li>
 								<!-- Mega Menu -->
-								<li class="active"><a href="index.php?action=list_categories"z>Product Category</a></li>
+								<li><a href="index.php?action=list_categories">Product Category</a></li>
 								<li><a href="index.php?action=furniture">Product List</a></li>
 								<li><a href="index.php?action=contact">Contact Us</a></li>
 								<li><a href="index.php?action=list_pages">Pages</a></li>

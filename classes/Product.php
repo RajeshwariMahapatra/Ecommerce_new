@@ -173,8 +173,8 @@ class Product
         if (isset($data['product_identity'])) $this->product_identity = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['product_identity']);
         if (isset($data['product_category_id'])) $this->product_category_id = (int)$data['product_category_id'];
         if (isset($data['product_brand_id'])) $this->product_brand_id = (int)$data['product_brand_id'];
-        if (isset($data['product_mrp'])) $this->product_mrp = $data['product_mrp'];
-        if (isset($data['product_selling_price'])) $this->product_selling_price = $data['product_selling_price'];
+        if (isset($data['product_mrp'])) $this->product_mrp = (int)$data['product_mrp'];
+        if (isset($data['product_selling_price'])) $this->product_selling_price = (int)$data['product_selling_price'];
         if (isset($data['product_name'])) $this->product_name = $data['product_name'];
         if (isset($data['product_desc'])) $this->product_desc = $data['product_desc'];
         if (isset($data['product_small_desc'])) $this->product_small_desc = $data['product_small_desc'];
@@ -182,11 +182,11 @@ class Product
         if (isset($data['product_product_image_1'])) $this->product_product_image_1 = $data['product_product_image_1'];
         if (isset($data['product_product_image_2'])) $this->product_product_image_2 = $data['product_product_image_2'];
         if (isset($data['product_product_image_3'])) $this->product_product_image_3 = $data['product_product_image_3'];
-        if (isset($data['product_shipping_time_est'])) $this->product_shipping_time_est = $data['product_shipping_time_est'];
-        if (isset($data['product_breadth'])) $this->product_breadth = $data['product_breadth'];
-        if (isset($data['product_volume'])) $this->product_volume = $data['product_volume'];
-        if (isset($data['product_height'])) $this->product_height = $data['product_height'];
-        if (isset($data['product_weight'])) $this->product_weight = $data['product_weight'];
+        if (isset($data['product_shipping_time_est'])) $this->product_shipping_time_est = (int)$data['product_shipping_time_est'];
+        if (isset($data['product_breadth'])) $this->product_breadth = (float)$data['product_breadth'];
+        if (isset($data['product_volume'])) $this->product_volume = (float)$data['product_volume'];
+        if (isset($data['product_height'])) $this->product_height = (float)$data['product_height'];
+        if (isset($data['product_weight'])) $this->product_weight = (float)$data['product_weight'];
         if (isset($data['product_tags'])) $this->product_tags = $data['product_tags'];
         if (isset($data['product_tax'])) $this->product_tax = (int)$data['product_tax'];
         if (isset($data['product_hsn_code'])) $this->product_hsn_code = $data['product_hsn_code'];
