@@ -1,7 +1,6 @@
 <?php
 require("config.php");
 $action = isset($_GET['action']) ? $_GET['action'] : "";
-
 switch ($action) {
   case 'checkout':
     checkout();
@@ -24,8 +23,14 @@ switch ($action) {
   case 'single':
     single();
     break;
-  case 'pages':
-    pages();
+  case 'temporary':
+    temporary();
+    break;
+  case 'list_pages':
+    list_pages();
+    break;
+  case 'list_categories':
+    list_categories();
     break;
   default:
     home();
@@ -99,15 +104,17 @@ function products()
   $results['pages'] = $pageData['results'];
   $results['totalPagesRows'] = $pageData['totalRows'];
 
+  // Fetch category data
   $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
   $results['categories'] = $categoryData['results'];
   $results['totalCategoryRows'] = $categoryData['totalRows'];
-  $data = Product::getList(); // Assuming Product::getList() returns an array with 'results' and 'totalRows'
-  $results['products'] = $data['results'];
-  $results['totalRows'] = $data['totalRows'];
+
+ 
   $results['pageTitle'] = "Products | Ecommerce";
   require(TEMPLATE_PATH . "/products.php");
 }
+
+
 
 function register()
 {
@@ -141,6 +148,53 @@ function single()
   require(TEMPLATE_PATH . "/single.php");
 }
 
+
+
+function temporary()
+{
+
+  $results = array();
+
+  $pageData = Pages::getList();
+  $results['pages'] = $pageData['results'];
+  $results['totalPagesRows'] = $pageData['totalRows'];
+
+
+  if (isset($_GET['page_id'])) {
+    $page_id = $_GET['page_id'];
+    $page = Pages::getById($page_id);
+    if ($page) {
+      $results['page'] = $page;
+      require(TEMPLATE_PATH . "/temporary.php");
+    } else {
+      // Handle page not found
+    }
+  } else {
+    // Handle default or home page
+    require(TEMPLATE_PATH . "/home.php");
+  }
+}
+
+function list_pages()
+{
+  $results = array();
+  $pageData = Pages::getList();
+  $results['pages'] = $pageData['results'];
+  $results['totalPagesRows'] = $pageData['totalRows'];
+  $results['pageTitle'] = "List Pages | Ecommerce";
+  require(TEMPLATE_PATH . "/list_pages.php");
+}
+
+function list_categories()
+{
+  $results = array();
+  $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
+  $results['categories'] = $categoryData['results'];
+  $results['totalCategoryRows'] = $categoryData['totalRows'];
+  $results['pageTitle'] = "List Categories | Ecommerce";
+  require(TEMPLATE_PATH . "/list_categories.php");
+}
+
 function home()
 {
   $results = array();
@@ -160,33 +214,4 @@ function home()
   // var_dump($data);
   $results['pageTitle'] = "Ecommerce";
   require(TEMPLATE_PATH . "/home.php");
-}
-
-function pages()
-{
-
-  $results = array();
-
-  $pageData = Pages::getList();
-  $results['pages'] = $pageData['results'];
-  $results['totalPagesRows'] = $pageData['totalRows'];
-
-  $categoryData = ProductCategory::getList(); // Assuming Category::getList() returns an array with 'results' and 'totalRows'
-  $results['categories'] = $categoryData['results'];
-  $results['totalCategoryRows'] = $categoryData['totalRows'];
-
-
-  if (isset($_GET['page_id'])) {
-    $page_id = $_GET['page_id'];
-    $page = Pages::getById($page_id);
-    if ($page) {
-      $results['page'] = $page;
-      require(TEMPLATE_PATH . "/temporary.php");
-    } else {
-      // Handle page not found
-    }
-  } else {
-    // Handle default or home page
-    require(TEMPLATE_PATH . "/home.php");
-  }
 }

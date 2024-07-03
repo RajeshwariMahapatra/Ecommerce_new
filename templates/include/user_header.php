@@ -85,48 +85,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<ul class="nav navbar-nav">
 								<li class="active"><a href="index.php?action=home" class="act">Home</a></li>
 								<!-- Mega Menu -->
-								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown">Product Category<b class="caret"></b></a>
-									<ul class="dropdown-menu multi-column columns-3">
-										<div class="row">
-											<div class="col-sm-4">
-												<ul class="multi-column-dropdown">
-
-													<li><a href="index.php?action=products"><?php foreach ($results['categories'] as $category) { ?>
-													<li><a href="index.php?action=products"><?php echo $category->category_name; ?></a> <span></span></li>
-												<?php } ?>
-												</a>
-								</li>
+								<li class="active"><a href="index.php?action=list_categories"z>Product Category</a></li>
+								<li><a href="index.php?action=furniture">Product List</a></li>
+								<li><a href="index.php?action=contact">Contact Us</a></li>
+								<li><a href="index.php?action=list_pages">Pages</a></li>
 							</ul>
 						</div>
 						<div class="clearfix"></div>
 				</div>
-				</ul>
-				</li>
-				<li><a href="index.php?action=furniture">Product List</a></li>
-
-				<li><a href="index.php?action=contact">Contact Us</a></li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Pages List<b class="caret"></b></a>
-					<ul class="dropdown-menu multi-column columns-3">
-						<div class="row">
-							<div class="col-sm-3">
-								<ul class="multi-column-dropdown">
-
-									<?php foreach ($results['pages'] as $page) : ?>
-										<li class="list-group-item d-flex justify-content-between align-items-center">
-											<a href="index.php?action=pages&page_id=<?php echo $page->page_id; ?>">
-												<?php echo htmlspecialchars($page->page_heading); ?>
-											</a>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-							<div class="clearfix"></div>
-						</div>
-					</ul>
-				</li>
-				</ul>
+				
 			</div>
 			</nav>
 		</div>
