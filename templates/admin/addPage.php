@@ -19,16 +19,15 @@
         <div class="form-group">
             <label for="page_coverimage">Cover Image</label>
             <?php if ($results['page'] && $imagePath = $results['page']->{"page_coverimage"}) : ?>
-            <div>
-                <img id="page_coverimage" src="<?php echo htmlspecialchars($imagePath); ?>" alt="Cover Image" style="max-width: 200px; max-height: 200px;" />
-            </div>
+                <div>
+                    <img id="page_coverimage" src="<?php echo htmlspecialchars($imagePath); ?>" alt="Cover Image" style="max-width: 200px; max-height: 200px;" />
+                </div>
             <?php endif; ?>
-
             <input type="file" name="page_coverimage" id="page_coverimage" class="form-control">
         </div>
         <div class="form-group">
             <label for="page_content">Content</label>
-            <textarea id="page_content" name="page_content" class="form-control mySummernote" required><?php echo htmlspecialchars($results['page']->page_content) ?></textarea>
+            <textarea id="page_content" name="page_content" class="form-control mySummernote" required><?php echo html_entity_decode($results['page']->page_content) ?></textarea>
         </div>
         <div class="form-group">
             <label for="page_preference">Page Preference</label>

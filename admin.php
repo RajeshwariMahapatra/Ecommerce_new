@@ -480,17 +480,19 @@ function addPage(){
 
     // Check if the form has been submitted
     if (isset($_POST["saveChanges"])) {
+        $_POST['page_identity'] = uniqueRandomString(12, 'Pages', 'page_identity');
+
         // Collect the form data
         $pageData = $_POST;
         $page = new Pages;
         $page->storeFormValues($pageData);
 
         // Handle the cover image upload
-        if (isset($_FILES['page_coverimage']) && $_FILES['page_coverimage']['error'] == UPLOAD_ERR_OK) {
+        if (isset($_FILES['page_coverimage']) && $_FILES['page_coverimage']['error'] === UPLOAD_ERR_OK) {
             $page->storeUploadedCoverImage($_FILES['page_coverimage']);
         }
 
-
+        
         // Insert the new brand into the database
         $page->insert();
 
@@ -558,9 +560,10 @@ function editPage() {
         $pagedata = $_POST;
         $page->storeFormValues($pagedata);
 
-        if (isset($_FILES)) {
-            $page->storeUploadedCoverImage($_FILES);
+        if (isset($_FILES['page_coverimage']) && $_FILES['page_coverimage']['error'] == UPLOAD_ERR_OK) {
+            $page->storeUploadedCoverImage($_FILES['page_coverimage']);
         }
+        
 
         $page->update();
 

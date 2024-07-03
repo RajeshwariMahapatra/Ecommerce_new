@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group">
                     <label for="page_content" style="font-weight: bold;">Page Content</label>
-                    <p id="page_content" style="font-size: 0.9em; color: #555;"><?php echo htmlspecialchars($results['page']->page_content); ?></p>
+                    <p id="page_content" style="font-size: 0.9em; color: #555;"><?php echo html_entity_decode($results['page']->page_content); ?></p>
                 </div>
                 <div class="form-group">
                     <label for="page_preference" style="font-weight: bold;">Page Preference</label>
