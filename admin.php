@@ -27,8 +27,8 @@ switch ($action) {
     case 'deleteState':
         deleteState();
         break;
-    case 'listState':
-        listState();
+    case 'listStates':
+        listStates();
         break;
     case 'addCountry':
         addCountry();
@@ -39,8 +39,8 @@ switch ($action) {
     case 'deleteCountry':
         deleteCountry();
         break;
-    case 'listCountry':
-        listCountry();
+    case 'listCountries':
+        listCountries();
         break;
     case 'addUsers':
         addUsers();
@@ -263,19 +263,19 @@ function deleteUser(){
 
 function addState(){
     
-    $result = array();
-    $result['pageTitle'] = 'New State';
-    $result['formAction'] = 'newState';
+    $results = array();
+    $results['pageTitle'] = 'New State';
+    $results['formAction'] = 'addState';
     
     
     if (isset($_POST['saveChanges'])) {
         
-        $_POST['$state_identity'] = uniqueRandomString(12, 'State', 'state_identity');
+        $_POST['state_identity'] = uniqueRandomString(12, 'State', 'state_identity');
         $state = new State;
         $state->storeFormValues($_POST);
         $state->insert();
 
-        header("Location: admin.php?status=changesSaved");
+        header("Location: admin.php?action=listStates&status=changesSaved");
     } elseif (isset($_POST["cancel"])) {
         header("Location: admin.php?action=listStates");
     } else {
@@ -284,7 +284,163 @@ function addState(){
     }
 }
 
+function editState(){
+    
+    $results = array();
+    $results['pageTitle'] = 'Edit State';
+    $results['formAction'] = 'editState';
 
+    if (isset($_POST['saveChanges'])) {
+
+        if (!$state = State::getById((int)$_POST['state_id'])) {
+            header("Location: admin.php?error=stateNotFound");
+            return;
+        }
+
+        $state->storeFormValues($_POST);
+        $state->update();
+
+        // echo "<pre>";
+        // var_dump($state);
+        header("Location: admin.php?action=listStates&status=changesSaved");
+
+    } elseif (isset($_POST["cancel"])) {
+        header("Location: admin.php?action=listStates");
+    } else {
+        $results['state'] = State::getById((int)($_GET['state_id']));
+        require(TEMPLATE_PATH . "/admin/addState.php");
+    }
+}
+
+function listStates(){
+
+    $results = array();
+    $results['pageTitle'] = "View States";
+    // Fetch categories from database (assuming ProductCategory is your model)
+    $data = State::getList();
+    $results['states'] = $data['results'];
+    $results['totalRows'] = $data['totalRows'];
+
+
+
+    if (isset($_GET['error'])) {
+        if ($_GET['error'] == "statesNotFound") $results['errorMessage'] = "Error: states not found.";
+    }
+
+    if (isset($_GET['status'])) {
+        if ($_GET['status'] == "changesSaved") $results['statusMessage'] = "Your changes have been saved.";
+        if ($_GET['status'] == "statesDeleted") $results['statusMessage'] = "states deleted.";
+    }
+    // Pass categories to the template
+    $results['states'] = $data['results'];
+
+    // Load the template
+    require(TEMPLATE_PATH . "/admin/view_states.php");
+}
+
+function deleteState(){
+    // Retrieve the category from the database
+    if (!$state = State::getById((int)$_GET['state_id'])) {
+        header("Location: admin.php?error=stateNotFound");
+        return;
+    }
+
+    // Delete the category from the database
+    $state->delete();
+
+    // Redirect to the admin page with a status message
+    header("Location: admin.php?action=listStates&status=stateDeleted");
+}
+function addCountry(){
+    
+    $results = array();
+    $results['pageTitle'] = 'New Country';
+    $results['formAction'] = 'addCountry';
+    
+    
+    if (isset($_POST['saveChanges'])) {
+        
+        $_POST['country_identity'] = uniqueRandomString(12, 'Country', 'country_identity');
+        $country = new Country;
+        $country->storeFormValues($_POST);
+        $country->insert();
+
+        header("Location: admin.php?action=listCountries&status=changesSaved");
+    } elseif (isset($_POST["cancel"])) {
+        header("Location: admin.php?action=listCountries");
+    } else {
+        $results['country'] = new Country;
+        require(TEMPLATE_PATH . "/admin/addCountry.php");
+    }
+}
+
+function editCountry(){
+    
+    $results = array();
+    $results['pageTitle'] = 'Edit Country';
+    $results['formAction'] = 'editCountry';
+
+    if (isset($_POST['saveChanges'])) {
+
+        if (!$country = Country::getById((int)$_POST['country_id'])) {
+            header("Location: admin.php?error=countryNotFound");
+            return;
+        }
+
+        $country->storeFormValues($_POST);
+        $country->update();
+
+        // echo "<pre>";
+        // var_dump($state);
+        header("Location: admin.php?action=listCountries&status=changesSaved");
+
+    } elseif (isset($_POST["cancel"])) {
+        header("Location: admin.php?action=listCountries");
+    } else {
+        $results['country'] = Country::getById((int)($_GET['country_id']));
+        require(TEMPLATE_PATH . "/admin/addCountry.php");
+    }
+}
+
+function listCountries(){
+
+    $results = array();
+    $results['pageTitle'] = "View Countries";
+    // Fetch categories from database (assuming ProductCategory is your model)
+    $data = Country::getList();
+    $results['countries'] = $data['results'];
+    $results['totalRows'] = $data['totalRows'];
+
+
+
+    if (isset($_GET['error'])) {
+        if ($_GET['error'] == "countriesNotFound") $results['errorMessage'] = "Error: Countries not found.";
+    }
+
+    if (isset($_GET['status'])) {
+        if ($_GET['status'] == "changesSaved") $results['statusMessage'] = "Your changes have been saved.";
+        if ($_GET['status'] == "countriesDeleted") $results['statusMessage'] = "Countries deleted.";
+    }
+    // Pass categories to the template
+    $results['countries'] = $data['results'];
+
+    // Load the template
+    require(TEMPLATE_PATH . "/admin/view_countries.php");
+}
+
+function deleteCountry(){
+    // Retrieve the category from the database
+    if (!$country = Country::getById((int)$_GET['country_id'])) {
+        header("Location: admin.php?error=countryNotFound");
+        return;
+    }
+
+    // Delete the category from the database
+    $country->delete();
+
+    // Redirect to the admin page with a status message
+    header("Location: admin.php?action=listCountries&status=countryDeleted");
+}
 
 function addProduct()
 {
@@ -556,7 +712,7 @@ function listCategories()
     $results['pageTitle'] = "View Categories";
     // Fetch categories from database (assuming ProductCategory is your model)
     $data = ProductCategory::getList();
-    $results['brands'] = $data['results'];
+    $results['categories'] = $data['results'];
     $results['totalRows'] = $data['totalRows'];
 
 
