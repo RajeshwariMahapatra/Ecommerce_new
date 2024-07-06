@@ -6,6 +6,7 @@ define("DB_USERNAME", "root");
 define("DB_PASSWORD", ""); // Change this to your actual database password if set
 define("CLASS_PATH", "classes");
 define("TEMPLATE_PATH", "templates");
+define("TEMPLATE_PATH_web", "templates/web");
 define("ADMIN_USERNAME", "admin");
 define("ADMIN_PASSWORD", "mypass");
 define("PRODUCT_IMAGE_PATH", "images/products/");
@@ -17,6 +18,9 @@ require(CLASS_PATH . "/Pages.php");
 require(CLASS_PATH . "/ProductCategory.php");
 require(CLASS_PATH . "/Product.php");
 require(CLASS_PATH . "/Brand.php");
+require(CLASS_PATH . "/Users.php");
+require(CLASS_PATH . "/State.php");
+require(CLASS_PATH . "/Country.php");
 
 function handleException($exception)
 {
