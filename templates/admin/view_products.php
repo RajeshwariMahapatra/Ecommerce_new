@@ -28,7 +28,10 @@
                             <br>
                             <?php echo htmlspecialchars($product->product_name); ?>
                         </a>
+                        <div class="btn-group" role="group" aria-label="Page Actions">
                         <a href="admin.php?action=editProduct&product_id=<?php echo $product->product_id; ?>" class="btn btn-primary btn-sm">Update</a>
+                        <a href="admin.php?action=deleteProduct&product_id=<?php echo $product->product_id; ?>" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
                     </li>
                 <?php endforeach; ?>
             </ul>

@@ -13,6 +13,17 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Categories</h6>
         </div>
+        <?php if (!empty($results['errorMessage'])) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?php echo $results['errorMessage']; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($results['statusMessage'])) : ?>
+                <div class="alert alert-success" role="alert">
+                    <?php echo $results['statusMessage']; ?>
+                </div>
+            <?php endif; ?>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -39,6 +50,7 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <p class="mt-3">Total Categories: <?php echo $results['totalRows']; ?></p>
             </div>
         </div>
     </div>

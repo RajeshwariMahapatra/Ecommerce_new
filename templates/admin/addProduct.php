@@ -6,18 +6,18 @@
 <div class="container mt-4">
     <div class="card shadow mb-4">
         <!-- Card Header - Form Title -->
-        <?php if (!empty($results['errors'])) : ?>
-            <div class="alert alert-danger">
-                <ul>
-                    <?php foreach ($results['errors'] as $error) : ?>
-                        <p><?php echo htmlspecialchars($error); ?></p>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-        <?php endif; ?>
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Product Details</h6>
         </div>
+
+        <!-- Display Error Message -->
+        <?php if (isset($errorcode) && $errorcode != 200) : ?>
+            <div class="alert alert-danger">
+                <ul>
+                    <li><?php echo $errorstatus; ?></li>
+                </ul>
+            </div>
+        <?php endif; ?>
         <!-- Card Body - Form Content -->
         <div class="card-body">
             <form action="admin.php?action=<?php echo $results['formAction'] ?>" method="post" enctype="multipart/form-data" validate="validate">
@@ -139,22 +139,22 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="product_breadth">Breadth (cm):</label>
-                                    <input type="text" class="form-control" id="product_breadth" name="product_breadth" value="<?php echo htmlspecialchars($results['product']->product_breadth) ?>" >
+                                    <input type="text" class="form-control" id="product_breadth" name="product_breadth" value="<?php echo htmlspecialchars($results['product']->product_breadth) ?>">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="product_volume">Volume (cm³):</label>
-                                    <input type="text" class="form-control" id="product_volume" name="product_volume" value="<?php echo htmlspecialchars($results['product']->product_volume) ?>" >
+                                    <input type="text" class="form-control" id="product_volume" name="product_volume" value="<?php echo htmlspecialchars($results['product']->product_volume) ?>">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="product_height">Height (cm):</label>
-                                    <input type="text" class="form-control" id="product_height" name="product_height" value="<?php echo htmlspecialchars($results['product']->product_height) ?>" >
+                                    <input type="text" class="form-control" id="product_height" name="product_height" value="<?php echo htmlspecialchars($results['product']->product_height) ?>">
                                 </div>
                             </div>
 
                             <!-- Product Weight -->
                             <div class="form-group">
                                 <label for="product_weight">Weight (kg):</label>
-                                <input type="text" class="form-control" id="product_weight" name="product_weight" value="<?php echo htmlspecialchars($results['product']->product_weight) ?>" >
+                                <input type="text" class="form-control" id="product_weight" name="product_weight" value="<?php echo htmlspecialchars($results['product']->product_weight) ?>">
                             </div>
                         </div>
                     </div>
@@ -194,7 +194,7 @@
                             <!-- Certification -->
                             <div class="form-group">
                                 <label for="product_certification">Certification:</label>
-                                <textarea class="form-control" id="product_certification" name="product_certification" rows="2" ><?php echo htmlspecialchars($results['product']->product_certification) ?></textarea>
+                                <textarea class="form-control" id="product_certification" name="product_certification" rows="2"><?php echo htmlspecialchars($results['product']->product_certification) ?></textarea>
                             </div>
 
                             <!-- Barcode -->
@@ -206,31 +206,31 @@
                             <!-- SKU -->
                             <div class="form-group">
                                 <label for="product_sku">SKU:</label>
-                                <input type="text" class="form-control" id="product_sku" name="product_sku" value="<?php echo htmlspecialchars($results['product']->product_sku) ?>" >
+                                <input type="text" class="form-control" id="product_sku" name="product_sku" value="<?php echo htmlspecialchars($results['product']->product_sku) ?>">
                             </div>
 
                             <!-- Product Code -->
                             <div class="form-group">
                                 <label for="product_code">Product Code:</label>
-                                <input type="text" class="form-control" id="product_code" name="product_code" value="<?php echo htmlspecialchars($results['product']->product_code) ?>" >
+                                <input type="text" class="form-control" id="product_code" name="product_code" value="<?php echo htmlspecialchars($results['product']->product_code) ?>">
                             </div>
 
                             <!-- Warranty -->
                             <div class="form-group">
                                 <label for="product_warranty">Warranty:</label>
-                                <textarea class="form-control" id="product_warranty" name="product_warranty" rows="2" ><?php echo htmlspecialchars($results['product']->product_warranty) ?></textarea>
+                                <textarea class="form-control" id="product_warranty" name="product_warranty" rows="2"><?php echo htmlspecialchars($results['product']->product_warranty) ?></textarea>
                             </div>
 
                             <!-- Guarantee -->
                             <div class="form-group">
                                 <label for="product_guarantee">Guarantee:</label>
-                                <textarea class="form-control" id="product_guarantee" name="product_guarantee" rows="2" ><?php echo htmlspecialchars($results['product']->product_guarantee) ?></textarea>
+                                <textarea class="form-control" id="product_guarantee" name="product_guarantee" rows="2"><?php echo htmlspecialchars($results['product']->product_guarantee) ?></textarea>
                             </div>
 
                             <!-- Offer Code -->
                             <div class="form-group">
                                 <label for="product_offer_code">Offer Code:</label>
-                                <input type="text" class="form-control" id="product_offer_code" name="product_offer_code" value="<?php echo htmlspecialchars($results['product']->product_offer_code) ?>" >
+                                <input type="text" class="form-control" id="product_offer_code" name="product_offer_code" value="<?php echo htmlspecialchars($results['product']->product_offer_code) ?>">
                             </div>
 
                             <!-- Features -->

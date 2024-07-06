@@ -54,6 +54,21 @@ $current_page = getCurrentPage();
         </div>
     </li>
 
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item <?php echo in_array($current_page, ['addUsers', 'listUsers']) ? 'active' : ''; ?>">
+        <a class="nav-link <?php echo in_array($current_page, ['addUsers', 'listUsers']) ? '' : 'collapsed'; ?>" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true" aria-controls="collapseUsers">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Users</span>
+        </a>
+        <div id="collapseUsers" class="collapse <?php echo in_array($current_page, ['addUsers', 'listUsers']) ? 'show' : ''; ?>" aria-labelledby="headingUsers" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Users:</h6>
+                <a class="collapse-item <?php echo $current_page == 'addUsers' ? 'active' : ''; ?>" href="admin.php?action=addUsers">Add User</a>
+                <a class="collapse-item <?php echo $current_page == 'listUsers' ? 'active' : ''; ?>" href="admin.php?action=listUsers">View Users</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Nav Item - Categories Collapse Menu -->
     <li class="nav-item <?php echo in_array($current_page, ['addProductCategory', 'listCategories']) ? 'active' : ''; ?>">
         <a class="nav-link <?php echo in_array($current_page, ['addProductCategory', 'listCategories']) ? '' : 'collapsed'; ?>" href="#" data-toggle="collapse" data-target="#collapseCategories" aria-expanded="true" aria-controls="collapseCategories">
@@ -95,6 +110,36 @@ $current_page = getCurrentPage();
                 <h6 class="collapse-header">Pages:</h6>
                 <a class="collapse-item <?php echo $current_page == 'addPage' ? 'active' : ''; ?>" href="admin.php?action=addPage">Add Page</a>
                 <a class="collapse-item <?php echo $current_page == 'listPage' ? 'active' : ''; ?>" href="admin.php?action=listPage">View Pages</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - States Collapse Menu -->
+    <li class="nav-item <?php echo in_array($current_page, ['addState', 'listStates']) ? 'active' : ''; ?>">
+        <a class="nav-link <?php echo in_array($current_page, ['addState', 'listStates']) ? '' : 'collapsed'; ?>" href="#" data-toggle="collapse" data-target="#collapseStates" aria-expanded="true" aria-controls="collapseStates">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>States</span>
+        </a>
+        <div id="collapseStates" class="collapse <?php echo in_array($current_page, ['addState', 'listStates']) ? 'show' : ''; ?>" aria-labelledby="headingStates" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">States:</h6>
+                <a class="collapse-item <?php echo $current_page == 'addState' ? 'active' : ''; ?>" href="admin.php?action=addState">Add State</a>
+                <a class="collapse-item <?php echo $current_page == 'listStates' ? 'active' : ''; ?>" href="admin.php?action=listStates">View States</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Countries Collapse Menu -->
+    <li class="nav-item <?php echo in_array($current_page, ['addCountry', 'listCountries']) ? 'active' : ''; ?>">
+        <a class="nav-link <?php echo in_array($current_page, ['addCountry', 'listCountries']) ? '' : 'collapsed'; ?>" href="#" data-toggle="collapse" data-target="#collapseCountries" aria-expanded="true" aria-controls="collapseCountries">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Countries</span>
+        </a>
+        <div id="collapseCountries" class="collapse <?php echo in_array($current_page, ['addCountry', 'listCountries']) ? 'show' : ''; ?>" aria-labelledby="headingCountries" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Countries:</h6>
+                <a class="collapse-item <?php echo $current_page == 'addCountry' ? 'active' : ''; ?>" href="admin.php?action=addCountry">Add Country</a>
+                <a class="collapse-item <?php echo $current_page == 'listCountries' ? 'active' : ''; ?>" href="admin.php?action=listCountries">View Countries</a>
             </div>
         </div>
     </li>

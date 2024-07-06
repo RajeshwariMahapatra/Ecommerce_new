@@ -2,6 +2,7 @@
 // require("config.php");
 require("functions.php");
 require('validations.php');
+require('errors.php');
 session_start();
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
@@ -16,6 +17,45 @@ switch ($action) {
         break;
     case 'logout':
         logout();
+        break;
+    case 'addState':
+        addState();
+        break;
+    case 'editState':
+        editState();
+        break;
+    case 'deleteState':
+        deleteState();
+        break;
+    case 'listState':
+        listState();
+        break;
+    case 'addCountry':
+        addCountry();
+        break;
+    case 'editCountry':
+        editCountry();
+        break;
+    case 'deleteCountry':
+        deleteCountry();
+        break;
+    case 'listCountry':
+        listCountry();
+        break;
+    case 'addUsers':
+        addUsers();
+        break;
+    case 'editUsers':
+        editUsers();
+        break;
+    case 'deleteUser':
+        deleteUser();
+        break;
+    case 'listUsers':
+        listUsers();
+        break;
+    case 'listUsers2':
+        listUsers2();
         break;
     case 'addProduct':
         addProduct();
@@ -103,9 +143,154 @@ function logout()
     header("Location: admin.php");
 }
 
+function addUsers()
+{
+
+    $results = array();
+    $results['pageTitle'] = "Add Users";
+    $results['formAction'] = "addUsers";
+
+    if (isset($_POST["saveChanges"])) {
+
+        $_POST['user_identity'] = uniqueRandomString(12, 'Users', 'user_identity');
+
+        $user = new Users;
+        $user->storeFormValues($_POST);
+        $user->insert();
+        header("Location: admin.php?action=listUsers&status=changesSaved");
+    } elseif (isset($_POST['cancel'])) {
+
+        header("Location: admin.php?action=listUsers");
+    } else {
+        $results['user'] = new Users;
+        $results['states'] = State::getList()['results'];
+        $results['countries'] = Country::getList()['results'];
+        require(TEMPLATE_PATH . "/admin/addUsers.php");
+    }
+}
+
+function editUsers(){
+    $results = array();
+    $results['pageTitle'] = "Edit Users";
+    $results["formAction"] = "editUsers";
+
+    if (isset($_POST["saveChanges"])) {
+        $_POST['user_identity'] = uniqueRandomString(12, 'Users', 'user_identity');
+
+        // Check if category ID is provided
+        if (!isset($_POST['user_id'])) {
+            header("Location: admin.php?error=userIdMissing");
+            return;
+        }
+
+        // Retrieve the category from the database
+        if (!$user = Users::getById((int)$_POST['user_id'])) {
+            header("Location: admin.php?error=userNotFound");
+            return;
+        }
+
+        // Collect the form data
+        $userData = $_POST;
+        $user->storeFormValues($userData);
+
+        // Update the category in the database
+        $user->update();
+
+        // Redirect to the admin page with a status message
+        header("Location: admin.php?action=listUsers&status=changesSaved");
+    } elseif (isset($_POST['cancel'])) {
+        // Redirect to the admin page if the edit was cancelled
+        header("Location: admin.php?action=listUsers");
+    } else {
+        // Retrieve the category details for editing
+        $results['user'] = Users::getById((int)$_GET['user_id']);
+        $results['states'] = State::getList()['results'];
+        $results['countries'] = Country::getList()['results'];
+        require(TEMPLATE_PATH . "/admin/addUsers.php");
+    }
+}
+function listUsers()
+{
+
+    $results = array();
+    $data = Users::getList();
+    $results['users'] = $data['results'];
+    $results['totalRows'] = $data['totalRows'];
+    $results['pageTitle'] = "All Users";
+
+    if (isset($_GET['error'])) {
+        if ($_GET['error'] == "userNotFound") $results['errorMessage'] = "Error: User not found.";
+    }
+
+    if (isset($_GET['status'])) {
+        if ($_GET['status'] == "changesSaved") $results['statusMessage'] = "Your changes have been saved.";
+        if ($_GET['status'] == "userDeleted") $results['statusMessage'] = "User deleted.";
+    }
+
+    require(TEMPLATE_PATH . "/admin/view_users.php");
+}
+
+function listUsers2()
+{
+    $results = array();
+    if (!$user = Users::getById((int)$_GET['user_id'])) {
+        header("Location: admin.php?error=userNotFound");
+        return;
+    }
+
+    $results['user'] = $user;
+
+    // Fetch state name
+    $state = Users::getStateById($user->user_address_state_id);
+    $results['user_state'] = $state ? $state->state_name : 'Unknown';
+
+    // Fetch country name
+    $country = Users::getCountryById($user->user_address_country_id);
+    $results['user_country'] = $country ? $country->country_name : 'Unknown';
+
+    require(TEMPLATE_PATH . "/admin/userDetails.php");
+}
+
+function deleteUser(){
+
+    if (!$user = Users::getById((int)$_GET['user_id'])) {
+        header("Location: admin.php?action=listUserss&error=usertNotFound");
+        return;
+    }
+    $user->delete();
+    header("Location: admin.php?action=listUsers&status=userDeleted");
+}
+
+function addState(){
+    
+    $result = array();
+    $result['pageTitle'] = 'New State';
+    $result['formAction'] = 'newState';
+    
+    
+    if (isset($_POST['saveChanges'])) {
+        
+        $_POST['$state_identity'] = uniqueRandomString(12, 'State', 'state_identity');
+        $state = new State;
+        $state->storeFormValues($_POST);
+        $state->insert();
+
+        header("Location: admin.php?status=changesSaved");
+    } elseif (isset($_POST["cancel"])) {
+        header("Location: admin.php?action=listStates");
+    } else {
+        $results['state'] = new State;
+        require(TEMPLATE_PATH . "/admin/addState.php");
+    }
+}
+
+
+
 function addProduct()
 {
-    // Initialize results array
+    // Initialize results array'i
+
+
     $results = array();
     $results['pageTitle'] = "Add Product";
     $results['formAction'] = "addProduct";
@@ -114,23 +299,35 @@ function addProduct()
     if (isset($_POST["saveChanges"])) {
         // Validate the form data
         $errors = validateProduct($_POST);
-
-        if (!empty($errors)) {
-            // If there are validation errors, show the form again with errors
-            $results['errors'] = $errors;
+        $errorcode = validateProduct($_POST);
+        if ($errorcode != 200) {
+            $errorstatus = checkerror($errorcode);
             $results['product'] = new Product($_POST); // Pass the submitted data back to the form
             $results['categories'] = ProductCategory::getList()['results'];
             $results['brands'] = Brand::getList()['results'];
             require(TEMPLATE_PATH . "/admin/addProduct.php");
-            return;
+            exit();
+        } else {
+            $results['product'] = new Product($_POST); // Pass the submitted data back to the form
+            $results['categories'] = ProductCategory::getList()['results'];
+            $results['brands'] = Brand::getList()['results'];
         }
+
+        // if (!empty($errors)) {
+        //     // If there are validation errors, show the form again with errors
+        //     $results['errors'] = $errors;
+
+        //     require(TEMPLATE_PATH . "/admin/addProduct.php");
+        //     return;
+        // }
 
         // Collect the form data
         $_POST['product_identity'] = uniqueRandomString(12, 'Product', 'product_identity');
         $productdata = $_POST;
         $product = new Product();
         $product->storeFormValues($productdata);
-
+        // var_dump($product);
+        // die();
         // Insert the new product into the database
         $product->insert();
 
@@ -357,9 +554,12 @@ function listCategories()
     // Initialize results array
     $results = array();
     $results['pageTitle'] = "View Categories";
-
     // Fetch categories from database (assuming ProductCategory is your model)
     $data = ProductCategory::getList();
+    $results['brands'] = $data['results'];
+    $results['totalRows'] = $data['totalRows'];
+
+
 
     if (isset($_GET['error'])) {
         if ($_GET['error'] == "categoryNotFound") $results['errorMessage'] = "Error: category not found.";
@@ -400,7 +600,7 @@ function addBrand()
         header('Location: admin.php?status=brandAdded');
     } elseif (isset($_POST['cancel'])) {
         // Redirect to the admin page if the form was cancelled
-        header("Location: admin.php");
+        header("Location: admin.php?action=listBrands");
     } else {
         // Prepare data for displaying the form
         $results['brand'] = new Brand;
@@ -439,7 +639,7 @@ function editBrand()
         $brand->update();
 
         // Redirect to the admin page with a status message
-        header("Location: admin.php?action=listBrands&status=brandUpdated");
+        header("Location: admin.php?action=listBrands&status=changesSaved");
     } elseif (isset($_POST['cancel'])) {
         // Redirect to the admin page if the edit was cancelled
         header("Location: admin.php?action=listBrands");
@@ -463,7 +663,7 @@ function deleteBrand()
     $brand->delete();
 
     // Redirect to the admin page with a status message
-    header("Location: admin.php?status=brandDeleted");
+    header("Location: admin.php?action=listBrands&status=brandDeleted");
 }
 
 function listBrands()
