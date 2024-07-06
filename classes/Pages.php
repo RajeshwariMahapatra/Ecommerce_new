@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class to handle pages
  */

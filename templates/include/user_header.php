@@ -52,7 +52,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<ul>
 						<li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:info@example.com">@example.com</a></li>
 						<li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>+1234 567 892</li>
-						<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="index.php?action=register">Login</a></li>
+						<li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="index.php?action=login">Login</a></li>
 						<li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="index.php?action=register">Register</a></li>
 					</ul>
 				</div>
@@ -98,21 +98,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</nav>
 		</div>
 		<div class="logo-nav-right">
-			<div class="search-box">
-				<div id="sb-search" class="sb-search">
-					<form>
-						<input class="sb-search-input" placeholder="Enter your search term..." type="search" id="search">
-						<input class="sb-search-submit" type="submit" value="">
-						<span class="sb-icon-search"> </span>
-					</form>
-				</div>
-			</div>
+		<div class="search-box">
+    <div id="sb-search" class="sb-search">
+        <form method="GET" action="index.php">
+            <input class="sb-search-input" placeholder="Enter your search term..." type="search" id="search" name="search">
+            <input type="hidden" name="action" value="furniture"> <!-- Include action as a hidden input -->
+            <input class="sb-search-submit" type="submit" value="">
+            <span class="sb-icon-search"> </span>
+        </form>
+    </div>
+</div>
+
 			<!-- search-scripts -->
-			<script src="templates/js/classie.js"></script>
-			<script src="templates/js/uisearch.js"></script>
-			<script>
-				new UISearch(document.getElementById('sb-search'));
-			</script>
+
+<script src="templates/js/classie.js"></script>
+<script src="templates/js/uisearch.js"></script>
+<script>
+    new UISearch(document.getElementById('sb-search'));
+
+    // You may add additional JavaScript logic here if needed
+</script>
+
+
 			<!-- //search-scripts -->
 		</div>
 		<div class="header-right">

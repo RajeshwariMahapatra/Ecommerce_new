@@ -106,7 +106,7 @@
 						<div class="new-collections-grid1-image">
 							<a href="index.php?action=single&product_id=" <?php echo $product->product_id; ?> class="product-image"><img src="<?php echo $product->product_product_image_1; ?>" alt="<?php echo $product->product_name; ?>" class="img-responsive" /></a>
 							<div class="new-collections-grid1-image-pos">
-								<a href="index.php?action=single">Quick View</a>
+								<a href="index.php?action=single&product_id=<?php echo $product->product_id; ?>">Quick View</a>
 							</div>
 							<div class="new-collections-grid1-right">
 								<div class="rating">

@@ -173,8 +173,8 @@ class Product
         if (isset($data['product_identity'])) $this->product_identity = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['product_identity']);
         if (isset($data['product_category_id'])) $this->product_category_id = (int)$data['product_category_id'];
         if (isset($data['product_brand_id'])) $this->product_brand_id = (int)$data['product_brand_id'];
-        if (isset($data['product_mrp'])) $this->product_mrp = (int)$data['product_mrp'];
-        if (isset($data['product_selling_price'])) $this->product_selling_price = (int)$data['product_selling_price'];
+        if (isset($data['product_mrp'])) $this->product_mrp = $data['product_mrp'];
+        if (isset($data['product_selling_price'])) $this->product_selling_price = $data['product_selling_price'];
         if (isset($data['product_name'])) $this->product_name = $data['product_name'];
         if (isset($data['product_desc'])) $this->product_desc = $data['product_desc'];
         if (isset($data['product_small_desc'])) $this->product_small_desc = $data['product_small_desc'];
@@ -182,11 +182,11 @@ class Product
         if (isset($data['product_product_image_1'])) $this->product_product_image_1 = $data['product_product_image_1'];
         if (isset($data['product_product_image_2'])) $this->product_product_image_2 = $data['product_product_image_2'];
         if (isset($data['product_product_image_3'])) $this->product_product_image_3 = $data['product_product_image_3'];
-        if (isset($data['product_shipping_time_est'])) $this->product_shipping_time_est = (int)$data['product_shipping_time_est'];
-        if (isset($data['product_breadth'])) $this->product_breadth = (float)$data['product_breadth'];
-        if (isset($data['product_volume'])) $this->product_volume = (float)$data['product_volume'];
-        if (isset($data['product_height'])) $this->product_height = (float)$data['product_height'];
-        if (isset($data['product_weight'])) $this->product_weight = (float)$data['product_weight'];
+        if (isset($data['product_shipping_time_est'])) $this->product_shipping_time_est = $data['product_shipping_time_est'];
+        if (isset($data['product_breadth'])) $this->product_breadth = $data['product_breadth'];
+        if (isset($data['product_volume'])) $this->product_volume = $data['product_volume'];
+        if (isset($data['product_height'])) $this->product_height = $data['product_height'];
+        if (isset($data['product_weight'])) $this->product_weight = $data['product_weight'];
         if (isset($data['product_tags'])) $this->product_tags = $data['product_tags'];
         if (isset($data['product_tax'])) $this->product_tax = (int)$data['product_tax'];
         if (isset($data['product_hsn_code'])) $this->product_hsn_code = $data['product_hsn_code'];
@@ -231,16 +231,54 @@ class Product
         if ($row) return new Product($row);
     }
 
-    public static function getByCategoryId($categoryId) {
-        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-        $sql = "SELECT * FROM product WHERE product_category_id = :categoryId";
-        $st = $conn->prepare($sql);
-        $st->bindValue(":categoryId", $categoryId, PDO::PARAM_INT);
-        $st->execute();
-        $products = $st->fetchAll();
-        $conn = null;
+    public function getProductsByCategory($category_id, $pdo)
+    {
+
+        $query = "SELECT * FROM product WHERE product_category_id = :category_id";
+        $stmt = $pdo->prepare($query);
+        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Fetch all products and return as an array of Product objects
+        $products = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $product = new Product($row); // Ensure Product constructor is defined appropriately
+            $products[] = $product;
+        }
+
         return $products;
     }
+
+
+    public static function getList($numRows = 1000000, $sort = 'product_id', $order = 'ASC')
+{
+    $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+    
+    // Base SQL query with sorting
+    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM Product ORDER BY $sort $order LIMIT :numRows";
+    
+    // Prepare the SQL statement
+    $st = $conn->prepare($sql);
+    $st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
+    
+    // Execute the query
+    $st->execute();
+    
+    // Fetch results
+    $list = array();
+    while ($row = $st->fetch()) {
+        $product = new Product($row);
+        $list[] = $product;
+    }
+    
+    // Get the total number of products
+    $sql = "SELECT FOUND_ROWS() AS totalRows";
+    $totalRows = $conn->query($sql)->fetch();
+    $conn = null;
+    
+    return array("results" => $list, "totalRows" => $totalRows[0]);
+}
+
 
     /**
      * Returns all (or a range of) Product objects in the DB
@@ -248,27 +286,194 @@ class Product
      * @param int $numRows Optional The number of rows to return (default=all)
      * @return array|false A two-element array : results => array, a list of Product objects; totalRows => Total number of products
      */
-    public static function getList($numRows = 1000000)
+    public static function getListSearchSort($numRows = 1000000, $search = '', $sort = 'default')
     {
         $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM Product ORDER BY product_id DESC LIMIT :numRows";
-
+        
+        // Base SQL query with search condition
+        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM Product WHERE product_name LIKE :product_name";
+        
+        // Sorting logic
+        switch ($sort) {
+            case "price_asc":
+                $order = "product_mrp ASC";
+                break;
+            case "price_desc":
+                $order = "product_mrp DESC";
+                break;
+            case "newest":
+                $order = "product_created_on DESC"; 
+                break;
+            case "oldest":
+                $order = "product_created_on ASC"; 
+                break;
+            case "name_asc":
+                $order = "product_name ASC";
+                break;
+            case "name_desc":
+                $order = "product_name DESC";
+                break;
+            default:
+                $order = "product_id ASC"; // Default sorting
+        }
+        
+        // Add the ORDER BY clause and limit clause
+        $sql .= " ORDER BY $order LIMIT :numRows";
+        
+        // Prepare the SQL statement
         $st = $conn->prepare($sql);
+        $st->bindValue(":product_name", "%$search%", PDO::PARAM_STR);
         $st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
+        
+        // Execute the query
         $st->execute();
+        
+        // Fetch results
         $list = array();
-
         while ($row = $st->fetch()) {
             $product = new Product($row);
             $list[] = $product;
         }
-
-        // Now get the total number of products that matched the criteria
+        
+        // Get the total number of products
         $sql = "SELECT FOUND_ROWS() AS totalRows";
         $totalRows = $conn->query($sql)->fetch();
         $conn = null;
-        return (array("results" => $list, "totalRows" => $totalRows[0]));
+        
+        return array("results" => $list, "totalRows" => $totalRows['totalRows']);
     }
+    
+
+
+    // public static function getListSearchAndSort($numRows = 1000000, $sort = 'default', $search = '') {
+    //     $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+    
+    //     // Base SQL query
+    //     $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM Product";
+
+    //     // Handle search condition
+    //     if (!empty($search)) {
+    //         $sql .= "WHERE product_name LIKE :product_name";
+    //     }
+    
+    //     // Sorting logic
+    //     switch ($sort) {
+    //         case "price_asc":
+    //             $sql .= " ORDER BY product_mrp ASC";
+    //             break;
+    //         case "price_desc":
+    //             $sql .= " ORDER BY product_mrp DESC";
+    //             break;
+    //         case "newest":
+    //             $sql .= " ORDER BY product_created_on DESC"; 
+    //             break;
+    //         case "oldest":
+    //             $sql .= " ORDER BY product_created_on ASC"; 
+    //             break;
+    //         case "name_asc":
+    //             $sql .= " ORDER BY product_name ASC";
+    //             break;
+    //         case "name_desc":
+    //             $sql .= " ORDER BY product_name DESC";
+    //             break;
+    //         default:
+    //             $sql .= " ORDER BY product_id ASC"; // Default sorting
+    //     }
+    
+    //     // Add the limit clause
+    //     $sql .= " LIMIT :numRows";
+    
+    //     // Prepare the SQL statement
+    //     $st = $conn->prepare($sql);
+    
+    //     // Bind values
+    //     $st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
+    //     if (!empty($search)) {
+    //         $st->bindValue(":product_name", "%$search%", PDO::PARAM_STR);
+    //     }
+    
+    //     // Execute the query
+    //     $st->execute();
+    
+    //     // Fetch results
+    //     $list = array();
+    //     while ($row = $st->fetch()) {
+    //         $product = new Product($row);
+    //         $list[] = $product;
+    //     }
+    
+    //     // Get the total number of products
+    //     $sql = "SELECT FOUND_ROWS() AS totalRows";
+    //     $totalRows = $conn->query($sql)->fetch();
+    //     $conn = null;
+    
+    //     return array("results" => $list, "totalRows" => $totalRows[0]);
+    // }
+
+    // public static function getListSort($numRows = 1000000, $sort = 'default', $search = '') {
+    //     $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+    
+    //     // Base SQL query
+    //     $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM Product";
+
+    //     // Handle search condition
+    //     if (!empty($search)) {
+    //         $sql .= " WHERE product_name LIKE :product_name";
+    //     }
+    
+    //     // Sorting logic
+    //     switch ($sort) {
+    //         case "price_asc":
+    //             $sql .= " ORDER BY product_mrp ASC";
+    //             break;
+    //         case "price_desc":
+    //             $sql .= " ORDER BY product_mrp DESC";
+    //             break;
+    //         case "newest":
+    //             $sql .= " ORDER BY product_created_on DESC"; 
+    //             break;
+    //         case "oldest":
+    //             $sql .= " ORDER BY product_created_on ASC"; 
+    //             break;
+    //         case "name_asc":
+    //             $sql .= " ORDER BY product_name ASC";
+    //             break;
+    //         case "name_desc":
+    //             $sql .= " ORDER BY product_name DESC";
+    //             break;
+    //         default:
+    //             $sql .= " ORDER BY product_id ASC"; // Default sorting
+    //     }
+    
+    //     // Add the limit clause
+    //     $sql .= " LIMIT :numRows";
+    
+    //     // Prepare the SQL statement
+    //     $st = $conn->prepare($sql);
+    
+    //     // Bind values
+    //     $st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
+    //     if (!empty($search)) {
+    //         $st->bindValue(":product_name", "%$search%", PDO::PARAM_STR);
+    //     }
+    
+    //     // Execute the query
+    //     $st->execute();
+    
+    //     // Fetch results
+    //     $list = array();
+    //     while ($row = $st->fetch()) {
+    //         $product = new Product($row);
+    //         $list[] = $product;
+    //     }
+    
+    //     // Get the total number of products
+    //     $sql = "SELECT FOUND_ROWS() AS totalRows";
+    //     $totalRows = $conn->query($sql)->fetch();
+    //     $conn = null;
+    
+    //     return array("results" => $list, "totalRows" => $totalRows[0]);
+    // }
 
     /**
      * Inserts the current Product object into the database and sets its ID property.
