@@ -180,6 +180,19 @@ class Users
         return (array("results" => $list, "totalRows" => $totalRows[0]));
     }
 
+    public static function getByEmail($email) {
+        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $sql = "SELECT * FROM Users WHERE user_email = :email LIMIT 1";
+        $st = $conn->prepare($sql);
+        $st->bindValue(":email", $email, PDO::PARAM_STR);
+        $st->execute();
+        $row = $st->fetch();
+        $conn = null;
+        if ($row) return new Users($row);
+        return false;
+    }
+    
+
     public static function getStateById($state_id) {
         $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
         $sql = "SELECT state_name FROM State WHERE state_id = :state_id";

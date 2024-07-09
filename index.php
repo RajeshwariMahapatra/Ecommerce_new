@@ -75,28 +75,38 @@ function furniture()
     $results['pageTitle'] = "Furniture | Ecommerce";
     require(TEMPLATE_PATH . "/furniture.php");
 }
+ 
+function login() {
+    session_start();
 
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
+        // Get user by email
+        $user = Users::getByEmail($email);
 
-    
+        if ($user && password_verify($password, $user->user_password)) {
+            // Email and password match
+            $_SESSION['user_id'] = $user->user_id;
+            $_SESSION['user_name'] = $user->user_name;
+            $_SESSION['success_message'] = "You have successfully logged in.";
+            header("Location: index.php?action=home");
+            exit;
+        } else {
+            // Invalid login
+            $error = "Invalid email or password.";
+            $_SESSION['error_message'] = $error;
+            header("Location: index.php?action=login");
+            exit;
+        }
+    }
 
-
-
-
-
-
-
-
-function login()
-{
-    $results = array();
-
-    $categoryData = ProductCategory::getList();
-    $results['categories'] = $categoryData['results'];
-    $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "Login | Ecommerce";
     require(TEMPLATE_PATH . "/login.php");
 }
+
+
 
 function contact()
 {
