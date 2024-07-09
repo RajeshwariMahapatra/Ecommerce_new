@@ -1,153 +1,134 @@
 <?php include("templates/web/include/header.php"); ?>
 
 <div class="product">
-	<div class="container">
-		<div class="product-price1">
-			<div class="top-sing">
-				<div class="col-md-7 single-top">
-					<div class="flexslider">
-						<ul class="slides">
-							<li data-thumb="<?php echo htmlspecialchars($results['product']->product_product_image_1); ?>">
-								<div class="thumb-image">
-									<img src="<?php echo htmlspecialchars($results['product']->product_product_image_1); ?>" data-imagezoom="true" class="img-responsive" alt="" />
-								</div>
-							</li>
-							<li data-thumb="<?php echo htmlspecialchars($results['product']->product_product_image_2); ?>">
-								<div class="thumb-image">
-									<img src="<?php echo htmlspecialchars($results['product']->product_product_image_2); ?>" data-imagezoom="true" class="img-responsive" alt="" />
-								</div>
-							</li>
-							<li data-thumb="<?php echo htmlspecialchars($results['product']->product_product_image_3); ?>">
-								<div class="thumb-image">
-									<img src="<?php echo htmlspecialchars($results['product']->product_product_image_3); ?>" data-imagezoom="true" class="img-responsive" alt="" />
-								</div>
-							</li>
-						</ul>
-					</div>
-					<script src="templates/web/js/imagezoom.js"></script>
-					<script defer src="templates/web/js/jquery.flexslider.js"></script>
-					<script>
-						$(window).load(function() {
-							$('.flexslider').flexslider({
-								animation: "slide",
-								controlNav: "thumbnails"
-							});
-						});
-					</script>
-				</div>
-				<div class="col-md-5 single-top-in simpleCart_shelfItem">
-					<div class="single-para ">
-						<h4><?php echo htmlspecialchars($results['product']->product_name); ?></h4>
-						<h5 class="item_price"><?php echo htmlspecialchars($results['product']->product_selling_price); ?> Rs <del><?php echo htmlspecialchars($results['product']->product_mrp); ?> Rs</del></h5>
-						<!-- <h5 class="pric1"></h5> -->
+    <div class="container">
+        <div class="product-price1">
+            <div class="top-sing row">
+                <div class="col-md-7 single-top">
+                    <div class="flexslider">
+                        <ul class="slides">
+                            <li data-thumb="<?php echo htmlspecialchars($results['product']->product_product_image_1); ?>">
+                                <div class="thumb-image">
+                                    <img src="<?php echo htmlspecialchars($results['product']->product_product_image_1); ?>" data-imagezoom="true" class="img-responsive" alt="" />
+                                </div>
+                            </li>
+                            <li data-thumb="<?php echo htmlspecialchars($results['product']->product_product_image_2); ?>">
+                                <div class="thumb-image">
+                                    <img src="<?php echo htmlspecialchars($results['product']->product_product_image_2); ?>" data-imagezoom="true" class="img-responsive" alt="" />
+                                </div>
+                            </li>
+                            <li data-thumb="<?php echo htmlspecialchars($results['product']->product_product_image_3); ?>">
+                                <div class="thumb-image">
+                                    <img src="<?php echo htmlspecialchars($results['product']->product_product_image_3); ?>" data-imagezoom="true" class="img-responsive" alt="" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <script src="templates/web/js/imagezoom.js"></script>
+                    <script defer src="templates/web/js/jquery.flexslider.js"></script>
+                    <script>
+                        $(window).load(function() {
+                            $('.flexslider').flexslider({
+                                animation: "slide",
+                                controlNav: "thumbnails"
+                            });
+                        });
+                    </script>
+                </div>
+                <div class="col-md-5 single-top-in simpleCart_shelfItem">
+                    <div class="single-para">
+                        <h4><?php echo htmlspecialchars($results['product']->product_name); ?></h4>
+                        <div class="pricing">
+                            <?php
+                            $selling_price = htmlspecialchars($results['product']->product_selling_price);
+                            $mrp = htmlspecialchars($results['product']->product_mrp);
+                            $discount = round((($mrp - $selling_price) / $mrp) * 100);
+                            ?>
+                            <span class="badge bg-danger">-<?php echo $discount; ?>%</span>
+                            <h5 class="item_price d-inline"><sup>₹</sup><?php echo $selling_price; ?></h5>
+                            <small class="text-muted"><del><?php echo $mrp; ?> Rs</del></small>
+                        </div>
+                        <p class="para"><?php echo htmlspecialchars($results['product']->product_small_desc); ?></p>
+                        <div class="prdt-info-grid">
+                            <ul>
+                                <li>- Brand: <?php echo htmlspecialchars($results['brand']->brand_name); ?></li>
+                                <li>- Dimensions: (L x B x H) in cms of...</li>
+                                <li>- Color: Brown</li>
+                                <li>- Material: Wood</li>
+                            </ul>
+                        </div>
+                        <a href="#" class="add-cart item_add btn btn-primary">ADD TO CART</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-						<p class="para"><?php echo htmlspecialchars($results['product']->product_small_desc); ?></p>
-						<div class="prdt-info-grid">
-							<ul>
-								<li>- Brand : Fos Lighting</li>
-								<li>- Dimensions : (LXBXH) in cms of...</li>
-								<li>- Color : Brown</li>
-								<li>- Material : Wood</li>
-							</ul>
-						</div>
-						
-						<a href="#" class="add-cart item_add">ADD TO CART</a>
-					</div>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-		<div class="bottom-prdt">
-			<div class="btm-grid-sec">
-			<?php 
-			$counter = 0;
-			foreach ($results['products'] as $product) { 
-				if($counter>=5) break;
-				?>
-				<div class="col-md-2 btm-grid">
-					<a href="users.php?action=viewProductDetails&product_id=<?php echo $product->product_id; ?>">
-						<img src="<?php echo htmlspecialchars($product->product_product_image_1); ?>" alt="" />
-						<h4><?php echo htmlspecialchars($product->product_name); ?></h4>
-						<span><?php echo htmlspecialchars($product->product_selling_price); ?> Rs</span>
-					</a>
-				</div>
-				<?php 
-				$counter++;
-			} 
-			?>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
-</div>
-<!---->
-<div class="subscribe">
-	<div class="container">
-		<h3>Newsletter</h3>
-		<form>
-			<input type="text" class="text" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}">
-			<input type="submit" value="Subscribe">
-		</form>
-	</div>
-</div>
-<!---->
-<div class="footer">
-	<div class="container">
-		<div class="footer-grids">
-			<div class="col-md-3 about-us">
-				<h3>About Us</h3>
-				<p>Maecenas nec auctor sem. Vivamus porttitor tincidunt elementum nisi a, euismod rhoncus urna. Curabitur scelerisque vulputate arcu eu pulvinar. Fusce vel neque diam</p>
-			</div>
-			<div class="col-md-3 ftr-grid">
-				<h3>Information</h3>
-				<ul class="nav-bottom">
-					<li><a href="#">Track Order</a></li>
-					<li><a href="#">New Products</a></li>
-					<li><a href="#">Location</a></li>
-					<li><a href="#">Our Stores</a></li>
-					<li><a href="#">Best Sellers</a></li>
-				</ul>
-			</div>
-			<div class="col-md-3 ftr-grid">
-				<h3>More Info</h3>
-				<ul class="nav-bottom">
-					<li><a href="login.html">Login</a></li>
-					<li><a href="#">FAQ</a></li>
-					<li><a href="contact.html">Contact</a></li>
-					<li><a href="#">Shipping</a></li>
-					<li><a href="#">Membership</a></li>
-				</ul>
-			</div>
-			<div class="col-md-3 ftr-grid">
-				<h3>Categories</h3>
-				<ul class="nav-bottom">
-					<li><a href="#">Car Lights</a></li>
-					<li><a href="#">LED Lights</a></li>
-					<li><a href="#">Decorates</a></li>
-					<li><a href="#">Wall Lights</a></li>
-					<li><a href="#">Protectors</a></li>
-				</ul>
-			</div>
-			<div class="clearfix"></div>
-		</div>
-	</div>
-</div>
-<div class="copywrite">
-	<div class="container">
-		<div class="copy">
-			<p>© 2015 Lighting. All Rights Reserved | Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p>
-		</div>
-		<div class="social">
-			<a href="#"><i class="facebook"></i></a>
-			<a href="#"><i class="twitter"></i></a>
-			<a href="#"><i class="dribble"></i></a>
-			<a href="#"><i class="google"></i></a>
-			<a href="#"><i class="youtube"></i></a>
-		</div>
-		<div class="clearfix"></div>
-	</div>
-</div>
-<!---->
-</body>
+        <!-- About This Item Section -->
+        <div class="about-item mt-5">
+            <h3>About This Item</h3>
+            <p><?php echo htmlspecialchars($results['product']->product_desc); ?></p>
+			
+        </div>
+        <!-- End of About This Item Section -->
 
-</html>
+        <!-- Additional Product Information Section -->
+        <div class="additional-info mt-5">
+            <h3>Additional Information</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Stock:</strong> <?php echo htmlspecialchars($results['product']->product_stock); ?></li>
+                        <li class="list-group-item"><strong>Shipping Time Estimate:</strong> <?php echo htmlspecialchars($results['product']->product_shipping_time_est); ?></li>
+                        <li class="list-group-item"><strong>Breadth:</strong> <?php echo htmlspecialchars($results['product']->product_breadth); ?></li>
+                        <li class="list-group-item"><strong>Volume:</strong> <?php echo htmlspecialchars($results['product']->product_volume); ?></li>
+                        <li class="list-group-item"><strong>Height:</strong> <?php echo htmlspecialchars($results['product']->product_height); ?></li>
+                        <li class="list-group-item"><strong>Weight:</strong> <?php echo htmlspecialchars($results['product']->product_weight); ?></li>
+                        <li class="list-group-item"><strong>Tags:</strong> <?php echo htmlspecialchars($results['product']->product_tags); ?></li>
+                        <li class="list-group-item"><strong>Tax:</strong> <?php echo htmlspecialchars($results['product']->product_tax); ?></li>
+                        <li class="list-group-item"><strong>HSN Code:</strong> <?php echo htmlspecialchars($results['product']->product_hsn_code); ?></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Certification:</strong> <?php echo htmlspecialchars($results['product']->product_certification); ?></li>
+                        <li class="list-group-item"><strong>Barcode:</strong> <?php echo htmlspecialchars($results['product']->product_barcode); ?></li>
+                        <li class="list-group-item"><strong>SKU:</strong> <?php echo htmlspecialchars($results['product']->product_sku); ?></li>
+                        <li class="list-group-item"><strong>Product Code:</strong> <?php echo htmlspecialchars($results['product']->product_code); ?></li>
+                        <li class="list-group-item"><strong>Warranty:</strong> <?php echo htmlspecialchars($results['product']->product_warranty); ?></li>
+                        <li class="list-group-item"><strong>Guarantee:</strong> <?php echo htmlspecialchars($results['product']->product_guarantee); ?></li>
+                        <li class="list-group-item"><strong>Features:</strong> <?php echo htmlspecialchars($results['product']->product_features); ?></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End of Additional Product Information Section -->
+
+        <div class="bottom-prdt mt-5">
+            <h3>Related Products</h3>
+            <div class="row btm-grid-sec">
+                <?php 
+                $counter = 0;
+                foreach ($results['products'] as $product) { 
+                    if ($counter >= 5) break;
+                    ?>
+                    <div class="col-md-2 btm-grid">
+                        <div class="card mb-3">
+                            <a href="users.php?action=viewProductDetails&product_id=<?php echo $product->product_id; ?>">
+                                <img src="<?php echo htmlspecialchars($product->product_product_image_1); ?>" class="card-img-top" alt="" />
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($product->product_name); ?></h5>
+                                    <p class="card-text"><?php echo htmlspecialchars($product->product_selling_price); ?> Rs</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <?php 
+                    $counter++;
+                } 
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php include("include/footer.php"); ?>

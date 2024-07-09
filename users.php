@@ -1,5 +1,6 @@
 <?php
-require("config.php");
+// require("config.php");
+require("functions.php");
 
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 switch ($action) {
@@ -21,9 +22,9 @@ switch ($action) {
     case "viewCategories":
         viewCategories();
         break;
-    case "viewCategoryProducts":
-        viewCategoryProducts();
-        break;
+    // case "viewCategoryProducts":
+    //     viewCategoryProducts();
+    //     break;
     case "listPages":
         listPages();
         break;
@@ -37,9 +38,35 @@ switch ($action) {
 
 function userRegister()
 {
+
+    $results = array();
+    $results['pageTitle'] = "Add Users";
+    $results['formAction'] = "addUsers";
+    if(isset($_POST["saveChanges"])){
+
+        $_POST['user_identity'] = uniqueRandomString(12, 'Users', 'user_identity');
+        $_POST['user_password'] = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
+        $user = new Users;
+        $user->storeFormValues($_POST);
+        $user->insert();
+        header("Location: users.php?action=userRegister&status=changesSaved");
+
+    }
+    elseif (isset($_POST['cancel'])) {
+
+        header("Location: users.php?action=userRegister");
+    } 
+    else {
+
+    $results['user'] = new Users;
+    $results['states'] = State::getList()['results'];
+    $results['countries'] = Country::getList()['results'];
+    require(TEMPLATE_PATH_web . "/account.php");
+    }
 }
 function userLogin()
 {
+    require(TEMPLATE_PATH_web . "/login.php");
 }
 function userLogout()
 {
@@ -48,12 +75,14 @@ function viewProducts()
 {
 
     $results = array();
-
+    global $pdo;
 
     if (isset($_GET['category_id']) && $_GET['category_id'] != '') {
-        $categoryId = intval($_GET['category_id']);
-        $products = Product::getByCategoryId($categoryId);
-        $results['products'] = $products;
+        
+        $category_id = intval($_GET['category_id']);
+        $product = new Product();
+        $productsByCategory = $product->getProductsByCategory($category_id, $pdo);
+        $results['products'] = $productsByCategory;
     } else {
         $data = Product::getList();
         $results["products"] = $data['results'];
@@ -84,6 +113,9 @@ function viewProductDetails()
     $results['product'] = Product::getById((int)$_GET["product_id"]);
     $results["pageTitle"] = $results['product']->product_name;
 
+    $results['brand'] = Brand::getById($results['product']->product_brand_id);
+
+    
     $data = Product::getList();
     $results["products"] = $data['results'];
     $results["totalRows"] = $data['totalRows'];
@@ -94,23 +126,23 @@ function viewProductDetails()
     require(TEMPLATE_PATH_web . "/single.php");
 }
 
-function viewCategoryProducts()
-{
+// function viewCategoryProducts()
+// {
 
-    $_GET = [
-        "category_id" => 2,
-    ];
+//     $_GET = [
+//         "category_id" => 2,
+//     ];
 
-    $results = array();
-    $results['products'] = Product::getByCategoryId($_GET['category_id']);
-    // $results["pageTitle"]='Products List';
-    echo "<pre>";
-    var_dump($results);
+//     $results = array();
+//     $results['products'] = Product::getByCategoryId($_GET['category_id']);
+//     // $results["pageTitle"]='Products List';
+//     echo "<pre>";
+//     var_dump($results);
 
-    if (empty($results['products'])) {
-        echo "<p>No products found in this category.</p>";
-    }
-}
+//     if (empty($results['products'])) {
+//         echo "<p>No products found in this category.</p>";
+//     }
+// }
 
 function viewCategories()
 {
@@ -161,10 +193,6 @@ function viewPages()
     require(TEMPLATE_PATH_web . "/users.php");
   }
 }
-
-
-
-
 
 function homepage()
 {

@@ -10,7 +10,7 @@
 			<?php
 			foreach ($results['products'] as $product) {
 			?>
-				<a href="single.html">
+				<a href="users.php?action=viewProductDetails&product_id=<?php echo htmlspecialchars($product->product_id)?>">
 					<div class="product-grid">
 						<div class="more-product"><span> </span></div>
 						<div class="product-img b-link-stripe b-animate-go  thickbox">

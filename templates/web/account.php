@@ -1,135 +1,115 @@
-
-<?php include("include/header.php");?>
+<?php include("include/header.php"); ?>
 
 <div class="container">
-	  <ol class="breadcrumb">
-		  <li><a href="index.html">Home</a></li>
-		  <li class="active">Account</li>
-		 </ol>
-	 <div class="registration">
-		 <div class="registration_left">
-			 <h2>new user? <span> create an account </span></h2>
-			 <!-- [if IE] 
-				< link rel='stylesheet' type='text/css' href='ie.css'/>  
-			 [endif] -->  
-			  
-			 <!-- [if lt IE 7]>  
-				< link rel='stylesheet' type='text/css' href='ie6.css'/>  
-			 <! [endif] -->  
-			 <script>
-				(function() {
-			
-				// Create input element for testing
-				var inputs = document.createElement('input');
-				
-				// Create the supports object
-				var supports = {};
-				
-				supports.autofocus   = 'autofocus' in inputs;
-				supports.required    = 'required' in inputs;
-				supports.placeholder = 'placeholder' in inputs;
-			
-				// Fallback for autofocus attribute
-				if(!supports.autofocus) {
-					
-				}
-				
-				// Fallback for required attribute
-				if(!supports.required) {
-					
-				}
-			
-				// Fallback for placeholder attribute
-				if(!supports.placeholder) {
-					
-				}
-				
-				// Change text inside send button on submit
-				var send = document.getElementById('register-submit');
-				if(send) {
-					send.onclick = function () {
-						this.innerHTML = '...Sending';
-					}
-				}
-			
-			 })();
-			 </script>
-			 <div class="registration_form">
-			 <!-- Form -->
-				<form>
-					<div>
-						<label>
-							<input placeholder="first name" type="text" tabindex="1">
-						</label>
+	<ol class="breadcrumb">
+		<li><a href="index.html">Home</a></li>
+		<li class="active">Account</li>
+	</ol>
+	<div class="registration">
+		<div class="registration_left">
+			<h2>new user? <span> create an account </span></h2>
+			<div class="registration_form">
+
+				<?php if (!empty($results['errorMessage'])) : ?>
+					<div class="alert alert-danger" role="alert">
+						<?php echo $results['errorMessage']; ?>
 					</div>
-					<div>
-						<label>
-							<input placeholder="last name" type="text" tabindex="2">
-						</label>
+				<?php endif; ?>
+
+				<?php if (!empty($results['statusMessage'])) : ?>
+					<div class="alert alert-success" role="alert">
+						<?php echo $results['statusMessage']; ?>
 					</div>
-					<div>
-						<label>
-							<input placeholder="email address" type="email" tabindex="3">
-						</label>
+				<?php endif; ?>
+				<!-- Form -->
+				<form action="users.php?action=userRegister" method="POST">
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label>
+									<input class="form-control" placeholder="Name" name="user_name" type="text" tabindex="1" required>
+								</label>
+							</div>
+							<div class="form-group mt-4">
+								<label>
+									<input class="form-control" placeholder="Email Address" name="user_email" type="email" tabindex="2" required>
+								</label>
+							</div>
+							<div class="form-group mt-4">
+								<label>
+									<input class="form-control" placeholder="Password" name="user_password" type="password" tabindex="3" required>
+								</label>
+							</div>
+							<div class="form-group mt-4">
+								<label>
+									<input class="form-control" placeholder="Country Code" name="user_country_code" type="text" tabindex="4" required>
+								</label>
+							</div>
+							<div class="form-group mt-4">
+								<label>
+									<input class="form-control" placeholder="Contact No" name="user_contact_no" type="text" tabindex="5" required>
+								</label>
+							</div>
+							<div class="form-group mt-4">
+								<label>
+									<input class="form-control" placeholder="Birthdate (YYYY-MM-DD)" name="user_birthdate" type="date" tabindex="6" required>
+								</label>
+							</div>
+						</div>
+						<div class="col-md-2"></div> <!-- Empty column for spacing -->
+						<div class="col-md-5">
+							<div class="form-group">
+								<label>
+									<input class="form-control" placeholder="Address Line 1" name="user_address_line1" type="text" tabindex="7" required>
+								</label>
+							</div>
+							<div class="form-group mt-4">
+								<label>
+									<input class="form-control" placeholder="Address Line 2" name="user_address_line2" type="text" tabindex="8">
+								</label>
+							</div>
+							<div class="form-group mt-4">
+								<label>
+									<input class="form-control" placeholder="City" name="user_address_city" type="text" tabindex="9" required>
+								</label>
+							</div>
+							<div class="form-group mt-4">
+								<select name="user_address_state_id" id="user_address_state_id" class="form-control" required>
+									<?php foreach ($results['states'] as $state) { ?>
+										<option value="<?php echo htmlspecialchars($state->state_id); ?>" <?php echo ($state->state_id == $results['user']->user_address_state_id) ? 'selected' : ''; ?>>
+											<?php echo htmlspecialchars($state->state_name); ?>
+										</option>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="form-group mt-4">
+								<select name="user_address_country_id" id="user_address_country_id" class="form-control" required>
+									<?php foreach ($results['countries'] as $country) { ?>
+										<option value="<?php echo htmlspecialchars($country->country_id); ?>" <?php echo ($country->country_id == $results['user']->user_address_country_id) ? 'selected' : ''; ?>>
+											<?php echo htmlspecialchars($country->country_name); ?>
+										</option>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="form-group mt-4">
+								<label>
+									<input class="form-control" placeholder="Pin Code" name="user_address_pin_code" type="text" tabindex="12" required>
+								</label>
+							</div>
+						</div>
 					</div>
-					<div>
-						<label>
-							<input placeholder="Mobile" type="email" tabindex="3">
-						</label>
-					</div>					
-						<div class="sky_form1">
-							<ul>
-								<li><label class="radio left"><input type="radio" name="radio" checked=""><i></i>Male</label></li>
-								<li><label class="radio"><input type="radio" name="radio"><i></i>Female</label></li>								
-							</ul>
-							<div class="clearfix"></div>
-						</div>					
-					<div>
-						<label>
-							<input placeholder="password" type="password" tabindex="4">
-						</label>
-					</div>						
-					<div>
-						<label>
-							<input placeholder="retype password" type="password" tabindex="4">
-						</label>
-					</div>	
-					<div>
-						<input type="submit" value="create an account" id="register-submit">
+					<div class="form-group mt-4">
+						<input type="submit" value="Create an Account" name="saveChanges" id="saveChanges" class="btn btn-primary">
 					</div>
-					<div class="sky-form">
-						<label class="checkbox"><input type="checkbox" name="checkbox" ><i></i>i agree Terms & conditions &nbsp;<a class="terms" href="#"> terms of service</a> </label>
+					<div class="sky-form mt-3">
+						<label class="checkbox"><input type="checkbox" name="terms" required><i></i>I agree to the Terms & Conditions &nbsp;<a class="terms" href="#">terms of service</a> </label>
 					</div>
 				</form>
 				<!-- /Form -->
-			 </div>
-		 </div>
-		 <div class="registration_left">
-			 <h2>existing user</h2>
-			 <div class="registration_form">
-			 <!-- Form -->
-				<form>
-					<div>
-						<label>
-							<input placeholder="email" type="email" tabindex="3" required>
-						</label>
-					</div>
-					<div>
-						<label>
-							<input placeholder="password" type="password" tabindex="4" required>
-						</label>
-					</div>						
-					<div>
-						<input type="submit" value="sign in">
-					</div>
-					<div class="forget">
-						<a href="#">forgot your password</a>
-					</div>
-				</form>
-			 <!-- /Form -->
-			 </div>
-		 </div>
-		 <div class="clearfix"></div>
-	 </div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
 </div>
-<?php include("include/footer.php");?>
+
+<?php include("include/footer.php"); ?>
