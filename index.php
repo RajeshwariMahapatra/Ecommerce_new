@@ -1,4 +1,5 @@
 <?php
+// session_start();
 require("config.php");
 
 $action = isset($_GET['action']) ? $_GET['action'] : "";
@@ -34,8 +35,18 @@ switch ($action) {
     case 'list_categories':
         list_categories();
         break;
+    case 'logout':
+        logout();
+        break;
     default:
         home();
+}
+function logout() {
+    session_start(); // Ensure session is started
+    $_SESSION = array(); // Unset all session variables
+    session_destroy(); // Destroy the session
+    header("Location: index.php?action=home"); // Redirect to home page
+    exit;
 }
 
 function checkout()
@@ -79,6 +90,13 @@ function furniture()
 function login() {
     session_start();
 
+    // Check if user is already logged in
+    if (isset($_SESSION['user_id'])) {
+        // User is already logged in, redirect to home page or another appropriate page
+        header("Location: index.php?action=home");
+        exit;
+    }
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = $_POST['email'];
         $password = $_POST['password'];
@@ -102,10 +120,10 @@ function login() {
         }
     }
 
+    // Display login form if not logged in
     $results['pageTitle'] = "Login | Ecommerce";
     require(TEMPLATE_PATH . "/login.php");
 }
-
 
 
 function contact()
