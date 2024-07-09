@@ -1,3 +1,18 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php?action=login");
+    exit;
+}
+
+if (isset($_SESSION['success_message'])) {
+    echo "<p style='color: green;'>" . $_SESSION['success_message'] . "</p>";
+    unset($_SESSION['success_message']);
+}
+
+// Your existing home page logic here
+?>
 <?php include 'templates/include/user_header.php' ?>
 <!-- //header -->
 <!-- banner -->
