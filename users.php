@@ -1,6 +1,8 @@
 <?php
 // require("config.php");
 require("functions.php");
+session_name('user_session'); // For user section
+session_start();
 
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 switch ($action) {
@@ -22,14 +24,29 @@ switch ($action) {
     case "viewCategories":
         viewCategories();
         break;
-    // case "viewCategoryProducts":
-    //     viewCategoryProducts();
-    //     break;
+        // case "viewCategoryProducts":
+        //     viewCategoryProducts();
+        //     break;
     case "listPages":
         listPages();
         break;
     case "viewPages":
         viewPages();
+        break;
+    case "addToCart":
+        addToCart($_POST['product_id'], $_POST['product_name'], $_POST['product_selling_price'], $_POST['quantity']);
+        header("Location: users.php?action=viewProducts");
+        break;
+    case "removeFromCart":
+        removeFromCart($_POST['product_id']);
+        header("Location: users.php?action=viewCart");
+        break;
+    case "updateCart":
+        updateCart($_POST['product_id'], $_POST['quantity']);
+        header("Location: users.php?action=viewCart");
+        break;
+    case "viewCart":
+        viewCart();
         break;
     default:
         homepage();
@@ -42,34 +59,67 @@ function userRegister()
     $results = array();
     $results['pageTitle'] = "Add Users";
     $results['formAction'] = "addUsers";
-    if(isset($_POST["saveChanges"])){
+    if (isset($_POST["saveChanges"])) {
 
         $_POST['user_identity'] = uniqueRandomString(12, 'Users', 'user_identity');
         $_POST['user_password'] = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
         $user = new Users;
         $user->storeFormValues($_POST);
         $user->insert();
-        header("Location: users.php?action=userRegister&status=changesSaved");
-
-    }
-    elseif (isset($_POST['cancel'])) {
+        header("Location: users.php?action=homepage");
+    } elseif (isset($_POST['cancel'])) {
 
         header("Location: users.php?action=userRegister");
-    } 
-    else {
+    } else {
 
-    $results['user'] = new Users;
-    $results['states'] = State::getList()['results'];
-    $results['countries'] = Country::getList()['results'];
-    require(TEMPLATE_PATH_web . "/account.php");
+        $results['user'] = new Users;
+        $results['states'] = State::getList()['results'];
+        $results['countries'] = Country::getList()['results'];
+        require(TEMPLATE_PATH_web . "/account.php");
     }
 }
 function userLogin()
 {
-    require(TEMPLATE_PATH_web . "/login.php");
+    // session_start();
+
+    $results = array();
+    if (isset($_POST['saveChanges'])) {
+        if (isset($_POST['user_email']) && isset($_POST['user_password'])) {
+            $email = $_POST['user_email'];
+            $password = $_POST['user_password'];
+
+            $user = Users::getByEmail($email);
+
+            if ($user && password_verify($password, $user->user_password)) {
+                $_SESSION['user_id'] = $user->user_id;
+                $_SESSION['user_email'] = $user->user_email;
+                $_SESSION['user_name'] = $user->user_name;
+
+                // echo "successfully login";
+                // require(TEMPLATE_PATH_web . "/login.php");
+                header("Location: users.php?action=homepage");
+                exit();
+            } else {
+                $results['error'] = "Invalid email or password. Please try again.";
+                require(TEMPLATE_PATH_web . "/login.php");
+                exit();
+            }
+        } else {
+            $results['error'] = "Email and password are required.";
+            require(TEMPLATE_PATH_web . "/login.php");
+            exit();
+        }
+    } else {
+        $results["pageTitle"] = "User Login";
+        require(TEMPLATE_PATH_web . "/login.php");
+    }
 }
 function userLogout()
 {
+    session_start(); // Ensure session is started
+    $_SESSION = array(); // Unset all session variables
+    header("Location: users.php?action=homepage"); // Redirect to home page
+    exit;
 }
 function viewProducts()
 {
@@ -78,7 +128,7 @@ function viewProducts()
     global $pdo;
 
     if (isset($_GET['category_id']) && $_GET['category_id'] != '') {
-        
+
         $category_id = intval($_GET['category_id']);
         $product = new Product();
         $productsByCategory = $product->getProductsByCategory($category_id, $pdo);
@@ -115,7 +165,7 @@ function viewProductDetails()
 
     $results['brand'] = Brand::getById($results['product']->product_brand_id);
 
-    
+
     $data = Product::getList();
     $results["products"] = $data['results'];
     $results["totalRows"] = $data['totalRows'];
@@ -164,36 +214,95 @@ function listPages()
     $results["pages"] = $data["results"];
     $results["totalPagesRows"] = $data["totalRows"];
     $results["pageTitle"] = "Pages";
-    
-    require(TEMPLATE_PATH_web . "/pages.php");
 
+    require(TEMPLATE_PATH_web . "/pages.php");
 }
 
 function viewPages()
 {
 
-  $results = array();
+    $results = array();
 
-  $pageData = Pages::getList();
-  $results['pages'] = $pageData['results'];
-  $results['totalPagesRows'] = $pageData['totalRows'];
+    $pageData = Pages::getList();
+    $results['pages'] = $pageData['results'];
+    $results['totalPagesRows'] = $pageData['totalRows'];
 
 
-  if (isset($_GET['page_id'])) {
-    $page_id = $_GET['page_id'];
-    $page = Pages::getById($page_id);
-    if ($page) {
-      $results['page'] = $page;
-      require(TEMPLATE_PATH_web . "/viewPages.php");
+    if (isset($_GET['page_id'])) {
+        $page_id = $_GET['page_id'];
+        $page = Pages::getById($page_id);
+        if ($page) {
+            $results['page'] = $page;
+            require(TEMPLATE_PATH_web . "/viewPages.php");
+        } else {
+            // Handle page not found
+        }
     } else {
-      // Handle page not found
+        // Handle default or home page
+        require(TEMPLATE_PATH_web . "/users.php");
     }
-  } else {
-    // Handle default or home page
-    require(TEMPLATE_PATH_web . "/users.php");
-  }
+}
+function addToCart($productId, $productName, $productPrice, $quantity)
+{
+    $productDetails = Product::getById($productId);
+    $product = array(
+        'id' => $productId,
+        'name' => $productName,
+        'price' => $productPrice,
+        'quantity' => $quantity,
+        'image'=> $productDetails->product_product_image_1,
+        'productCode'=>$productDetails->product_code
+    );
+
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = array();
+    }
+
+    $productExists = false;
+    foreach ($_SESSION['cart'] as &$cartProduct) {
+        if ($cartProduct['id'] == $productId) {
+            $cartProduct['quantity'] += $quantity;
+            $productExists = true;
+            break;
+        }
+    }
+
+    if (!$productExists) {
+        $_SESSION['cart'][] = $product;
+    }
 }
 
+function updateCart($productId, $newQuantity)
+{
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as &$product) {
+            if ($product['id'] == $productId) {
+                $product['quantity'] = $newQuantity;
+                break;
+            }
+        }
+    }
+}
+
+function removeFromCart($productId)
+{
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $key => $product) {
+            if ($product['id'] == $productId) {
+                unset($_SESSION['cart'][$key]);
+                break;
+            }
+        }
+    }
+}
+
+function viewCart()
+{
+    $results = array();
+    $results['pageTitle'] = "View Cart";
+
+    require(TEMPLATE_PATH_web . "/checkout.php");
+}
 function homepage()
 {
     $results = array();

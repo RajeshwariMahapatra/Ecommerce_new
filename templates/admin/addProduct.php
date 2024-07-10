@@ -14,7 +14,7 @@
         <?php if (isset($errorcode) && $errorcode != 200) : ?>
             <div class="alert alert-danger">
                 <ul>
-                    <li><?php echo $errorstatus; ?></li>
+                    <p><?php echo $errorstatus; ?></p>
                 </ul>
             </div>
         <?php endif; ?>

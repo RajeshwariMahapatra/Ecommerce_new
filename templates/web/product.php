@@ -10,7 +10,7 @@
 			<?php
 			foreach ($results['products'] as $product) {
 			?>
-				<a href="users.php?action=viewProductDetails&product_id=<?php echo htmlspecialchars($product->product_id)?>">
+				<a href="users.php?action=viewProductDetails&product_id=<?php echo htmlspecialchars($product->product_id) ?>">
 					<div class="product-grid">
 						<div class="more-product"><span> </span></div>
 						<div class="product-img b-link-stripe b-animate-go  thickbox">
@@ -37,7 +37,16 @@
 							?>
 							<p class="disc">[<?php echo number_format($discountPercentage, 2); ?>% Off]</p>
 						</div>
-						<input type="button" class="item_add items" value="ADD">
+						<!-- <input type="button" class="item_add items" value="ADD"> -->
+						<form action="users.php?action=addToCart" method="post">
+							<!-- <input type="hidden" name="action" value="add"> -->
+							<input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+							<input type="hidden" name="product_name" value="<?php echo $product->product_name; ?>">
+							<input type="hidden" name="product_selling_price" value="<?php echo $product->product_selling_price; ?>">
+							<input type="number" class="item_quantity" name="quantity" value="1" min="1">
+							<button type="submit" class="item_add items">Add to Cart</button>
+						</form>
+
 						<div class="clearfix"> </div>
 					</div>
 
@@ -91,8 +100,8 @@
 			</ul>
 		</section>
 		<!---->
-		<script type="text/javascript" src="js/jquery-ui.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+		<script type="text/javascript" src="templates/js/jquery-ui.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="templates/css/jquery-ui.css">
 		<script type='text/javascript'>
 			//<![CDATA[ 
 			$(window).load(function() {

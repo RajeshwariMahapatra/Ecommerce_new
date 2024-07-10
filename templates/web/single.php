@@ -48,16 +48,20 @@
                             <h5 class="item_price d-inline"><sup>₹</sup><?php echo $selling_price; ?></h5>
                             <small class="text-muted"><del><?php echo $mrp; ?> Rs</del></small>
                         </div>
-                        <p class="para"><?php echo htmlspecialchars($results['product']->product_small_desc); ?></p>
+                        <p ><?php echo htmlspecialchars($results['product']->product_small_desc); ?></p>
                         <div class="prdt-info-grid">
                             <ul>
-                                <li>- Brand: <?php echo htmlspecialchars($results['brand']->brand_name); ?></li>
-                                <li>- Dimensions: (L x B x H) in cms of...</li>
-                                <li>- Color: Brown</li>
-                                <li>- Material: Wood</li>
+                                <p>Brand: <?php echo htmlspecialchars($results['brand']->brand_name); ?></p>
                             </ul>
                         </div>
-                        <a href="#" class="add-cart item_add btn btn-primary">ADD TO CART</a>
+                        <form action="users.php?action=addToCart" method="post">
+							<!-- <input type="hidden" name="action" value="add"> -->
+							<input type="hidden" name="product_id" value="<?php echo htmlspecialchars($results['product']->product_id); ?>">
+							<input type="hidden" name="product_name" value="<?php echo htmlspecialchars($results['product']->product_name); ?>">
+							<input type="hidden" name="product_selling_price" value="<?php echo htmlspecialchars($results['product']->product_selling_price); ?>">
+							<input type="number" class="item_quantity" name="quantity" value="1" min="1">
+							<button type="submit" class="item_add items">Add to Cart</button>
+						</form>
                     </div>
                 </div>
             </div>

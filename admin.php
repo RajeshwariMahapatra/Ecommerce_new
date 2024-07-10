@@ -3,7 +3,9 @@
 require("functions.php");
 require('validations.php');
 require('errors.php');
+session_name('admin_session'); // For admin section
 session_start();
+
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 
@@ -464,6 +466,13 @@ function addProduct()
             require(TEMPLATE_PATH . "/admin/addProduct.php");
             exit();
         } else {
+
+            foreach (['product_desc', 'product_small_desc'] as $field) {
+                if (!empty($_POST[$field])) {
+                    $_POST[$field] = htmlspecialchars($_POST[$field], ENT_QUOTES, 'UTF-8');
+                }
+            }
+
             $results['product'] = new Product($_POST); // Pass the submitted data back to the form
             $results['categories'] = ProductCategory::getList()['results'];
             $results['brands'] = Brand::getList()['results'];
