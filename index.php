@@ -1,6 +1,7 @@
 <?php
 // session_start();
-require("config.php");
+// require("config.php");
+require("functions.php");
 session_start();
 
 $action = isset($_GET['action']) ? $_GET['action'] : "";
@@ -48,13 +49,13 @@ switch ($action) {
         updateCart($_POST['product_id'], $_POST['quantity']);
         header("Location: index.php?action=checkout");
         break;
-    case "calculateTotal":
-        calculateTotal($_POST['product_id'], $_POST['quantity']);
-        header("Location: index.php?action=checkout");
-        break;
-    case "calculateGrandTotal":
-        calculateGrandTotal($_POST['product_id'], $_POST['quantity']);
-        header("Location: index.php?action=checkout");
+    // case "calculateTotal":
+    //     calculateTotal($_POST['product_id'], $_POST['quantity']);
+    //     header("Location: index.php?action=checkout");
+    //     break;
+    // case "calculateGrandTotal":
+    //     calculateGrandTotal($_POST['product_id'], $_POST['quantity']);
+    //     header("Location: index.php?action=checkout");
         break;
     case 'logout':
         logout();
@@ -122,23 +123,6 @@ function removeFromCart($productId)
             }
         }
     }
-}
-
-function calculateTotal() {
-	$total = 0;
-	if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-		foreach ($_SESSION['cart'] as $product) {
-			$total += ($product['price'] * $product['quantity']);
-		}
-	}
-	return $total;
-}
-function calculateGrandTotal() {
-	$total = calculateTotal();
-	$discount = 0; //add dynamicaly afterwards
-	$deliveryCharges = 0.00; 
-	$grandTotal = $total - ($total * ($discount / 100)) + $deliveryCharges;
-	return $grandTotal;
 }
 
 function checkout()
