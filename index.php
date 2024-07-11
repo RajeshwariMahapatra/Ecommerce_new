@@ -49,14 +49,6 @@ switch ($action) {
         updateCart($_POST['product_id'], $_POST['quantity']);
         header("Location: index.php?action=checkout");
         break;
-    // case "calculateTotal":
-    //     calculateTotal($_POST['product_id'], $_POST['quantity']);
-    //     header("Location: index.php?action=checkout");
-    //     break;
-    // case "calculateGrandTotal":
-    //     calculateGrandTotal($_POST['product_id'], $_POST['quantity']);
-    //     header("Location: index.php?action=checkout");
-        break;
     case 'logout':
         logout();
         break;
@@ -99,6 +91,8 @@ function addToCart($productId, $productName, $productPrice, $quantity)
     if (!$productExists) {
         $_SESSION['cart'][] = $product;
     }
+    saveCartToCookies();
+
 }
 
 function updateCart($productId, $newQuantity)
@@ -111,6 +105,8 @@ function updateCart($productId, $newQuantity)
             }
         }
     }
+    saveCartToCookies();
+
 }
 
 function removeFromCart($productId)
@@ -122,6 +118,19 @@ function removeFromCart($productId)
                 break;
             }
         }
+    }
+    saveCartToCookies();
+}
+function saveCartToCookies(){
+    setcookie('cart',json_encode($_SESSION['cart']), time() + (86400 * 30),'/');
+}
+
+function loadCartFromCookies(){
+    if(isset($_COOKIE['cart'])){
+        $_SESSION['cart'] = json_decode($_COOKIE['cart'],true);
+    }
+    else{
+        $_SESSION['cart'] = array();
     }
 }
 
@@ -186,6 +195,7 @@ function login()
             $_SESSION['user_id'] = $user->user_id;
             $_SESSION['user_name'] = $user->user_name;
             $_SESSION['success_message'] = "You have successfully logged in.";
+            loadCartFromCookies();
             header("Location: index.php?action=home");
             exit;
         } else {
