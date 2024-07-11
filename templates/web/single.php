@@ -46,7 +46,7 @@
                             ?>
                             <span class="badge bg-danger">-<?php echo $discount; ?>%</span>
                             <h5 class="item_price d-inline"><sup>₹</sup><?php echo $selling_price; ?></h5>
-                            <small class="text-muted"><del><?php echo $mrp; ?> Rs</del></small>
+                            <p class="text-muted"><del><?php echo $mrp; ?> Rs</del></p>
                         </div>
                         <p ><?php echo htmlspecialchars($results['product']->product_small_desc); ?></p>
                         <div class="prdt-info-grid">
@@ -70,8 +70,9 @@
         <!-- About This Item Section -->
         <div class="about-item mt-5">
             <h3>About This Item</h3>
+            <pre>
             <p><?php echo htmlspecialchars($results['product']->product_desc); ?></p>
-			
+			</pre>
         </div>
         <!-- End of About This Item Section -->
 

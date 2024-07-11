@@ -1,5 +1,22 @@
 <?php include("include/header.php"); ?>
-
+<?php
+function calculateTotal() {
+	$total = 0;
+	if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+		foreach ($_SESSION['cart'] as $product) {
+			$total += ($product['price'] * $product['quantity']);
+		}
+	}
+	return $total;
+}
+function calculateGrandTotal() {
+	$total = calculateTotal();
+	$discount = 0; //add dynamicaly afterwards
+	$deliveryCharges = 0.00; 
+	$grandTotal = $total - ($total * ($discount / 100)) + $deliveryCharges;
+	return $grandTotal;
+}
+?>
 <!-- check out -->
 <div class="container">
 	<div class="check-sec">
@@ -8,18 +25,18 @@
 			<div class="price-details">
 				<h3>Price Details</h3>
 				<span>Total</span>
-				<span class="simpleCart_total"></span>
+				<span class="total1">₹<?php echo calculateTotal(); ?></span>
 				<span>Discount</span>
-				<span class="total1">10%(Festival Offer)</span>
+				<span class="total1">0%(Festival Offer)</span>
 				<span>Delivery Charges</span>
-				<span class="total1">150.00</span>
+				<span class="total1">0.00</span>
 				<div class="clearfix"></div>
 			</div>
 			<ul class="total_price">
 				<li class="last_price">
 					<h4>TOTAL</h4>
 				</li>
-				<li class="last_price"><span>6150.00</span></li>
+				<li class="last_price"><span>₹<?php echo calculateGrandTotal(); ?></span></li>
 			</ul>
 			<div class="clearfix"></div>
 			<div class="clearfix"></div>

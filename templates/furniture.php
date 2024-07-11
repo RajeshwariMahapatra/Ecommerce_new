@@ -39,7 +39,17 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="simpleCart_shelfItem new-products-grid-right-add-cart">
-                                    <p> <span class="item_price"><?php echo $product->product_mrp; ?></span><a class="item_add" href="#">add to cart</a></p>
+                                    <p> <span class="item_price"><?php echo $product->product_mrp; ?></span>
+
+                                    <form action="index.php?action=addToCart" method="post">
+                                        <!-- <input type="hidden" name="action" value="add"> -->
+                                        <input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+                                        <input type="hidden" name="product_name" value="<?php echo $product->product_name; ?>">
+                                        <input type="hidden" name="product_selling_price" value="<?php echo $product->product_selling_price; ?>">
+                                        <input type="number" class="item_quantity" name="quantity" value="1" min="1">
+                                        <button type="submit" class="item_add">Add to Cart</button>
+                                    </form>
+                                    </p>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
@@ -80,7 +90,7 @@
                             <div class="new-collections-grid1-image">
                                 <a href="index.php?action=single&product_id=<?php echo $product->product_id; ?>" class="product-image"><img src="<?php echo $product->product_product_image_1; ?>" alt="<?php echo $product->product_name; ?>" class="img-responsive" /></a>
                                 <div class="new-collections-grid1-image-pos">
-                                    <a href="index.php?action=single">Quick View</a>
+                                    <a href="index.php?action=single&product_id=<?php echo $product->product_id; ?>">Quick View</a>
                                 </div>
                                 <div class="new-collections-grid1-right">
                                     <div class="rating">
@@ -92,7 +102,16 @@
                             <h4><a href="index.php?action=single"><?php echo $product->product_name; ?></a></h4>
                             <p><?php echo $product->product_small_desc; ?></p>
                             <div class="new-collections-grid1-left simpleCart_shelfItem">
-                                <p><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?></span> <a class="item_add" href="index.php?action=register">add to cart</a></p>
+                                <p><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?></span>
+                                <form action="index.php?action=addToCart" method="post">
+                                    <!-- <input type="hidden" name="action" value="add"> -->
+                                    <input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+                                    <input type="hidden" name="product_name" value="<?php echo $product->product_name; ?>">
+                                    <input type="hidden" name="product_selling_price" value="<?php echo $product->product_selling_price; ?>">
+                                    <input type="number" class="item_quantity" name="quantity" value="1" min="1">
+                                    <button type="submit" class="item_add">Add to Cart</button>
+                                </form>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -128,11 +147,10 @@
 
 
 <script>
-function sortProducts() {
-    const sort = document.getElementById('sort').value;
-    const searchParams = new URLSearchParams(window.location.search);
-    const search = searchParams.get('search') || '';
-    window.location.href = 'index.php?action=furniture&search=' + search + '&sort=' + sort;
-}
-
+    function sortProducts() {
+        const sort = document.getElementById('sort').value;
+        const searchParams = new URLSearchParams(window.location.search);
+        const search = searchParams.get('search') || '';
+        window.location.href = 'index.php?action=furniture&search=' + search + '&sort=' + sort;
+    }
 </script>

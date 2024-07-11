@@ -68,13 +68,13 @@
                     $product_features_array = explode(' ', $product_features_string);
                     ?>
                     <h5>Features :</h5>
-                    <?php foreach ($product_features_array as $index => $feature): ?>
-                    <div class="colr <?php echo $index === 0 ? 'ert' : ''; ?>">
-                        <label class="radio">
-                            <input type="radio" name="radio" <?php echo $index === 0 ? 'checked' : ''; ?>>
-                            <i></i><?php echo htmlspecialchars(trim($feature)); ?>
-                        </label>
-                    </div>
+                    <?php foreach ($product_features_array as $index => $feature) : ?>
+                        <div class="colr <?php echo $index === 0 ? 'ert' : ''; ?>">
+                            <label class="radio">
+                                <input type="radio" name="radio" <?php echo $index === 0 ? 'checked' : ''; ?>>
+                                <i></i><?php echo htmlspecialchars(trim($feature)); ?>
+                            </label>
+                        </div>
                     <?php endforeach; ?>
                     <div class="clearfix"> </div>
                 </div>
@@ -82,7 +82,14 @@
                     <h5>Estimated delivery by: Friday, July 2</h5>
                 </div>
                 <div class="occasion-cart">
-                    <a class="item_add" href="#">add to cart </a>
+                    <form action="index.php?action=addToCart" method="post">
+                        <!-- <input type="hidden" name="action" value="add"> -->
+                        <input type="hidden" name="product_id" value="<?php echo $product->product_id; ?>">
+                        <input type="hidden" name="product_name" value="<?php echo $product->product_name; ?>">
+                        <input type="hidden" name="product_selling_price" value="<?php echo $product->product_selling_price; ?>">
+                        <input type="number" class="item_quantity" name="quantity" value="1" min="1">
+                        <button type="submit" class="item_add">Add to Cart</button>
+                    </form>
                 </div>
                 <div class="clearfix"> </div>
             </div>
@@ -117,8 +124,8 @@
                                         <li><a href="#">Admin</a></li>
                                         <li><a href="#"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>Reply</a></li>
                                     </ul>
-                                    <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
-                                        suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem 
+                                    <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis
+                                        suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem
                                         vel eum iure reprehenderit.</p>
                                 </div>
                                 <div class="clearfix"> </div>
@@ -132,8 +139,8 @@
                                         <li><a href="#">Admin</a></li>
                                         <li><a href="#"><span class="glyphicon glyphicon-share" aria-hidden="true"></span>Reply</a></li>
                                     </ul>
-                                    <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
-                                        suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem 
+                                    <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis
+                                        suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem
                                         vel eum iure reprehenderit.</p>
                                 </div>
                                 <div class="clearfix"> </div>
@@ -168,36 +175,36 @@
 <div class="single-related-products">
     <div class="container">
         <h3 class="animated wow slideInUp" data-wow-delay=".5s">Related Products</h3>
-        <p class="est animated wow slideInUp" data-wow-delay=".5s">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+        <p class="est animated wow slideInUp" data-wow-delay=".5s">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
             deserunt mollit anim id est laborum.</p>
         <div class="new-collections-grids">
             <?php foreach ($results['singles'] as $product) { ?>
-            <div class="col-md-3 new-collections-grid">
-                <div class="new-collections-grid1 animated wow slideInUp" data-wow-delay=".5s">
-                    <div class="new-collections-grid1-image">
-                        <a href="index.php?action=single&product_id=<?php echo $product->product_id; ?>" class="product-image"><img src="<?php echo $product->product_product_image_1; ?>" alt="<?php echo $product->product_name; ?>" class="img-responsive" /></a>
-                        <div class="new-collections-grid1-image-pos">
-                            <a href="index.php?action=single">Quick View</a>
-                        </div>
-                        <div class="new-collections-grid1-right">
-                            <div class="rating">
-                                <div class="rating-left">
-                                    <img src="templates/images/2.png" alt=" " class="img-responsive" />
+                <div class="col-md-3 new-collections-grid">
+                    <div class="new-collections-grid1 animated wow slideInUp" data-wow-delay=".5s">
+                        <div class="new-collections-grid1-image">
+                            <a href="index.php?action=single&product_id=<?php echo $product->product_id; ?>" class="product-image"><img src="<?php echo $product->product_product_image_1; ?>" alt="<?php echo $product->product_name; ?>" class="img-responsive" /></a>
+                            <div class="new-collections-grid1-image-pos">
+                                <a href="index.php?action=single">Quick View</a>
+                            </div>
+                            <div class="new-collections-grid1-right">
+                                <div class="rating">
+                                    <div class="rating-left">
+                                        <img src="templates/images/2.png" alt=" " class="img-responsive" />
+                                    </div>
+                                    <div class="clearfix"> </div>
                                 </div>
-                                <div class="clearfix"> </div>
                             </div>
                         </div>
+                        <h4><a href="index.php?action=single"><?php echo $product->product_name; ?></a></h4>
+                        <p><?php echo $product->product_small_desc; ?></p>
+                        <div class="new-collections-grid1-left simpleCart_shelfItem">
+                            <p><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?>
+                                    <div class="occasion-cart">
+                                        <a class="item_add" href="index.php?action=register">add to cart </a>
+                                    </div>
+                        </div>
                     </div>
-                    <h4><a href="index.php?action=single"><?php echo $product->product_name; ?></a></h4>
-                    <p><?php echo $product->product_small_desc; ?></p>
-                    <div class="new-collections-grid1-left simpleCart_shelfItem">
-							<p><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?>
-									<div class="occasion-cart">
-										<a class="item_add" href="index.php?action=register">add to cart </a>
-									</div>
-						</div>
                 </div>
-            </div>
             <?php } ?>
             <div class="clearfix"> </div>
         </div>

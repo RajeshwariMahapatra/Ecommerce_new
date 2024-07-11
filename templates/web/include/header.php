@@ -1,11 +1,10 @@
-
-
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Lighting - E-commerce Category Flat Bootstrap Responsive Website Template | Login</title>
     <link href="templates/web/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    
     <!-- Custom Theme files -->
     <!--theme style-->
     <link href="templates/web/css/style.css" rel="stylesheet" type="text/css" media="all" />

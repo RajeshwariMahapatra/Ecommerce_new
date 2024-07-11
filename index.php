@@ -1,6 +1,7 @@
 <?php
 // session_start();
 require("config.php");
+session_start();
 
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 
@@ -35,19 +36,86 @@ switch ($action) {
     case 'list_categories':
         list_categories();
         break;
+    case "addToCart":
+        addToCart($_POST['product_id'], $_POST['product_name'], $_POST['product_selling_price'], $_POST['quantity']);
+        header("Location: index.php?action=furniture");
+        break;
+    case "removeFromCart":
+        removeFromCart($_POST['product_id']);
+        header("Location: index.php?action=checkout");
+        break;
+    case "updateCart":
+        updateCart($_POST['product_id'], $_POST['quantity']);
+        header("Location: index.php?action=checkout");
+        break;
     case 'logout':
         logout();
         break;
     default:
         home();
 }
-function logout() {
+function logout()
+{
     session_start(); // Ensure session is started
     $_SESSION = array(); // Unset all session variables
     session_destroy(); // Destroy the session
     header("Location: index.php?action=home"); // Redirect to home page
     exit;
 }
+function addToCart($productId, $productName, $productPrice, $quantity)
+{
+    $productDetails = Product::getById($productId);
+    $product = array(
+        'id' => $productId,
+        'name' => $productName,
+        'price' => $productPrice,
+        'quantity' => $quantity,
+        'image' => $productDetails->product_product_image_1,
+        'productCode' => $productDetails->product_code
+    );
+
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = array();
+    }
+
+    $productExists = false;
+    foreach ($_SESSION['cart'] as &$cartProduct) {
+        if ($cartProduct['id'] == $productId) {
+            $cartProduct['quantity'] += $quantity;
+            $productExists = true;
+            break;
+        }
+    }
+
+    if (!$productExists) {
+        $_SESSION['cart'][] = $product;
+    }
+}
+
+function updateCart($productId, $newQuantity)
+{
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as &$product) {
+            if ($product['id'] == $productId) {
+                $product['quantity'] = $newQuantity;
+                break;
+            }
+        }
+    }
+}
+
+function removeFromCart($productId)
+{
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $key => $product) {
+            if ($product['id'] == $productId) {
+                unset($_SESSION['cart'][$key]);
+                break;
+            }
+        }
+    }
+}
+
 
 function checkout()
 {
@@ -86,9 +154,10 @@ function furniture()
     $results['pageTitle'] = "Furniture | Ecommerce";
     require(TEMPLATE_PATH . "/furniture.php");
 }
- 
-function login() {
-    session_start();
+
+function login()
+{
+    // session_start();
 
     // Check if user is already logged in
     if (isset($_SESSION['user_id'])) {
@@ -175,7 +244,7 @@ function products()
     }
 }
 
-        
+
 
 function register()
 {
@@ -191,7 +260,7 @@ function register()
 function single()
 {
     $results = array();
-    
+
     $categoryData = ProductCategory::getList();
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
@@ -271,4 +340,3 @@ function home()
     $results['pageTitle'] = "Ecommerce";
     require(TEMPLATE_PATH . "/home.php");
 }
-?>
