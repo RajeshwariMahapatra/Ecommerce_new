@@ -95,6 +95,8 @@ function userLogin()
                 $_SESSION['user_email'] = $user->user_email;
                 $_SESSION['user_name'] = $user->user_name;
 
+                loadCartFromCookies();
+
                 // echo "successfully login";
                 // require(TEMPLATE_PATH_web . "/login.php");
                 header("Location: users.php?action=homepage");
@@ -270,6 +272,7 @@ function addToCart($productId, $productName, $productPrice, $quantity)
     if (!$productExists) {
         $_SESSION['cart'][] = $product;
     }
+    saveCartToCookies();
 }
 
 function updateCart($productId, $newQuantity)
@@ -282,6 +285,8 @@ function updateCart($productId, $newQuantity)
             }
         }
     }
+    saveCartToCookies();
+
 }
 
 function removeFromCart($productId)
@@ -294,8 +299,22 @@ function removeFromCart($productId)
             }
         }
     }
+    saveCartToCookies();
+
 }
 
+function saveCartToCookies(){
+    setcookie('cart',json_encode($_SESSION['cart']), time() + (86400 * 30),'/');
+}
+
+function loadCartFromCookies(){
+    if(isset($_COOKIE['cart'])){
+        $_SESSION['cart'] = json_decode($_COOKIE['cart'],true);
+    }
+    else{
+        $_SESSION['cart'] = array();
+    }
+}
 function viewCart()
 {
     $results = array();
