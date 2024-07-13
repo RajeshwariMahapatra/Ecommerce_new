@@ -16,15 +16,16 @@
         <h2>Register Here</h2>
         <div class="login-form-grids">
             <h5>Profile Information</h5>
-            <form action="insert.php" method="post">
-                <input type="text" name="username" placeholder="Full Name" required>
-                <input type="email" name="email" placeholder="Email Address" required>
-                <input type="password" name="password" placeholder="Password" required>
-                <input type="text" name="country_code" placeholder="Country Code" required>
-                <input type="text" name="contact_no" placeholder="Contact Number" required>
-                <input type="date" name="birthdate" placeholder="Birthdate" required>
-                <input type="submit" value="Register">
-            </form>
+            <form action="index.php?action=register" method="post">
+    <input type="text" name="username" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email Address" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="text" name="country_code" placeholder="Country Code" required>
+    <input type="text" name="contact_no" placeholder="Contact Number" required>
+    <input type="date" name="birthdate" placeholder="Birthdate" required>
+    <input type="submit" name="register" value="Register">
+</form>
+
         </div>
         <div class="register-home">
             <a href="index.php?action=home">Home</a>

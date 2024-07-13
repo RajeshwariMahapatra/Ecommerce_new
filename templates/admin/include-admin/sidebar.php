@@ -144,6 +144,22 @@ $current_page = getCurrentPage();
         </div>
     </li>
 
+
+    <!-- Nav Item - discounts Collapse Menu -->
+    <li class="nav-item <?php echo in_array($current_page, ['addDiscount', 'listDiscounts']) ? 'active' : ''; ?>">
+        <a class="nav-link <?php echo in_array($current_page, ['addDiscount', 'listDiscounts']) ? '' : 'collapsed'; ?>" href="#" data-toggle="collapse" data-target="#collapseDiscounts" aria-expanded="true" aria-controls="collapseDiscounts">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Discounts</span>
+        </a>
+        <div id="collapseDiscounts" class="collapse <?php echo in_array($current_page, ['addDiscount', 'listDiscounts']) ? 'show' : ''; ?>" aria-labelledby="headingDiscounts" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Discounts:</h6>
+                <a class="collapse-item <?php echo $current_page == 'addDiscount' ? 'active' : ''; ?>" href="admin.php?action=addDiscount">Add Discount</a>
+                <a class="collapse-item <?php echo $current_page == 'listDiscounts' ? 'active' : ''; ?>" href="admin.php?action=listDiscounts">View Discounts</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

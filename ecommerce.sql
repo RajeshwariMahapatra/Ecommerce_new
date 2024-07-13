@@ -104,3 +104,15 @@ CREATE TABLE `product` (
   FOREIGN KEY (`product_brand_id`) REFERENCES `brand`(`brand_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `discounts` (
+    discount_id INT AUTO_INCREMENT PRIMARY KEY,
+    discount_identity VARCHAR(12) DEFAULT NULL,
+    discount_code VARCHAR(50) UNIQUE NOT NULL,
+    discount_type ENUM('percentage', 'fixed') NOT NULL,
+    discount_value DECIMAL(10, 2) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    minimum_order_value DECIMAL(10, 2),
+    usage_limit INT DEFAULT 0,  -- 0 means unlimited usage
+    times_used INT DEFAULT 0
+);

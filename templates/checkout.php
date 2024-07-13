@@ -96,7 +96,7 @@
 				</ul>
 			</div>
 			<div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
-				<a href="index.php?action=single"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Continue Shopping</a>
+				<a href="index.php?action=furniture"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Continue Shopping</a>
 			</div>
 			<div class="clearfix"> </div>
 		</div>

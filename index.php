@@ -262,18 +262,61 @@ function products()
     }
 }
 
-
-
-function register()
-{
+function register() {
     $results = array();
 
-    $categoryData = ProductCategory::getList();
-    $results['categories'] = $categoryData['results'];
-    $results['totalCategoryRows'] = $categoryData['totalRows'];
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['country_code'], $_POST['contact_no'], $_POST['birthdate'])) {
+            // Debugging
+            echo "Form data received successfully.<br>";
+            echo "Username: " . htmlspecialchars($_POST['username']) . "<br>";
+            echo "Email: " . htmlspecialchars($_POST['email']) . "<br>";
+            echo "Password: " . htmlspecialchars($_POST['password']) . "<br>";
+            echo "Country Code: " . htmlspecialchars($_POST['country_code']) . "<br>";
+            echo "Contact No: " . htmlspecialchars($_POST['contact_no']) . "<br>";
+            echo "Birthdate: " . htmlspecialchars($_POST['birthdate']) . "<br>";
+
+            $user = new Users();
+            $user->user_identity = uniqueRandomString(12, 'Users', 'user_identity'); // Generating unique identifier
+            $user->user_name = $_POST['username'];
+            $user->user_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+            $user->user_email = $_POST['email'];
+            $user->user_country_code = $_POST['country_code'];
+            $user->user_contact_no = $_POST['contact_no'];
+            $user->user_birthdate = $_POST['birthdate'];
+            $user->user_created_at = time(); // Current timestamp
+            $user->user_status = 1; // Assuming new users are active by default
+
+            // Optional fields set to default values
+            $user->user_address_line1 = 'default';
+            $user->user_address_line2 = 'default';
+            $user->user_address_city = 'default';
+            $user->user_address_state_id = 0;
+            $user->user_address_country_id = 0;
+            $user->user_address_pin_code = 'default';
+
+            // Debugging
+            echo "Generated user identity: " . $user->user_identity . "<br>";
+            echo "Hashed Password: " . $user->user_password . "<br>";
+
+            try {
+                $user->insert();
+                echo "User inserted successfully.<br>";
+                // Redirect to login page after successful registration
+                header("Location: index.php?action=login");
+                exit;
+            } catch (Exception $e) {
+                echo "Error registering user: " . $e->getMessage();
+            }
+        } else {
+            $results['errorMessage'] = "Please fill in all required fields.";
+        }
+    }
+
     $results['pageTitle'] = "Register | Ecommerce";
     require(TEMPLATE_PATH . "/register.php");
 }
+
 
 function single()
 {
