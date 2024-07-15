@@ -26,21 +26,16 @@ function uniqueRandomString($length = 12,$tableName,$columnName) {
 }
 
 function calculateTotal() {
-	$total = 0;
-	if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-		foreach ($_SESSION['cart'] as $product) {
-			$total += ($product['price'] * $product['quantity']);
-		}
-	}
-	return $total;
+    $total = 0;
+    if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $product) {
+            $total += ($product['price'] * $product['quantity']);
+        }
+    }
+    return $total;
 }
-function calculateGrandTotal() {
-	$total = calculateTotal();
-	$discount = 0; //add dynamicaly afterwards
-	$deliveryCharges = 0.00; 
-	$grandTotal = $total - ($total * ($discount / 100)) + $deliveryCharges;
-	return $grandTotal;
-}
+
+
 // $something = uniqueRandomString(12,'Users','user_identity');
 // echo $something;
 

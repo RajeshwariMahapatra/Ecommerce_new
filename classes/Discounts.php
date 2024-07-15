@@ -105,6 +105,19 @@ class Discounts
         return false;
     }
 
+    public static function getByCode($discount_code)
+{
+    $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+    $sql = "SELECT * FROM discounts WHERE discount_code = :discount_code AND start_date <= NOW() AND end_date >= NOW()";
+    $st = $conn->prepare($sql);
+    $st->bindValue(":discount_code", $discount_code, PDO::PARAM_STR);
+    $st->execute();
+    $row = $st->fetch();
+    $conn = null;
+    if ($row) return new Discounts($row);
+    return false;
+}
+
     /**
      * Returns all (or a range of) Discount objects in the DB
      *

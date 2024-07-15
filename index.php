@@ -1,9 +1,10 @@
 <?php
-// session_start();
-// require("config.php");
 require("functions.php");
 session_start();
-
+// Unset the session variable related to the discounted price if it exists
+if (isset($_SESSION['discounted_price'])) {
+    unset($_SESSION['discounted_price']);
+}
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 
 switch ($action) {
@@ -49,6 +50,17 @@ switch ($action) {
         updateCart($_POST['product_id'], $_POST['quantity']);
         header("Location: index.php?action=checkout");
         break;
+    case 'applyDiscountToTotal':
+        applyDiscountToTotal();
+        header("Location: index.php?action=checkout");
+        break;
+    case 'applyDiscount':
+        applyDiscount();
+        header("Location: index.php?action=checkout");
+        break;
+    case 'calculateGrandTotal':
+        calculateGrandTotal();
+        break;
     case 'logout':
         logout();
         break;
@@ -58,13 +70,19 @@ switch ($action) {
 function logout()
 {
     session_start(); // Ensure session is started
-    $_SESSION = array(); // Unset all session variables
-    session_destroy(); // Destroy the session
-    header("Location: index.php?action=home"); // Redirect to home page
+
+    // Unset the session variable related to the discounted price
+    if (isset($_SESSION['discounted_price'])) {
+        unset($_SESSION['discounted_price']);
+    }
+
+    session_destroy(); // Destroy the session (if necessary)
+    
+    // Redirect to home page
+    header("Location: index.php?action=home");
     exit;
 }
-function addToCart($productId, $productName, $productPrice, $quantity)
-{
+function addToCart($productId, $productName, $productPrice, $quantity) {
     $productDetails = Product::getById($productId);
     $product = array(
         'id' => $productId,
@@ -91,12 +109,12 @@ function addToCart($productId, $productName, $productPrice, $quantity)
     if (!$productExists) {
         $_SESSION['cart'][] = $product;
     }
-    saveCartToCookies();
 
+    saveCartToCookies();
+    applyDiscountToTotal();
 }
 
-function updateCart($productId, $newQuantity)
-{
+function updateCart($productId, $newQuantity) {
     if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as &$product) {
             if ($product['id'] == $productId) {
@@ -106,11 +124,10 @@ function updateCart($productId, $newQuantity)
         }
     }
     saveCartToCookies();
-
+    applyDiscountToTotal();
 }
 
-function removeFromCart($productId)
-{
+function removeFromCart($productId) {
     if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $key => $product) {
             if ($product['id'] == $productId) {
@@ -120,22 +137,114 @@ function removeFromCart($productId)
         }
     }
     saveCartToCookies();
-}
-function saveCartToCookies(){
-    setcookie('cart',json_encode($_SESSION['cart']), time() + (86400 * 30),'/');
+    applyDiscountToTotal();
 }
 
-function loadCartFromCookies(){
-    if(isset($_COOKIE['cart'])){
-        $_SESSION['cart'] = json_decode($_COOKIE['cart'],true);
+function saveCartToCookies() {
+    setcookie('cart', json_encode($_SESSION['cart']), time() + (86400 * 30), '/');
+    if (isset($_SESSION['applied_discount'])) {
+        setcookie('applied_discount', json_encode($_SESSION['applied_discount']), time() + (86400 * 30), '/');
+    } else {
+        setcookie('applied_discount', '', time() - 3600, '/'); // Remove the discount cookie if no discount is applied
     }
-    else{
+}
+
+function loadCartFromCookies() {
+    if (isset($_COOKIE['cart'])) {
+        $_SESSION['cart'] = json_decode($_COOKIE['cart'], true);
+    } else {
         $_SESSION['cart'] = array();
     }
+
+    if (isset($_COOKIE['applied_discount'])) {
+        $_SESSION['applied_discount'] = json_decode($_COOKIE['applied_discount']);
+    } else {
+        unset($_SESSION['applied_discount']);
+    }
+
+    applyDiscountToTotal();
 }
 
-function checkout()
-{
+function applyDiscountToTotal() {
+    $order_total = calculateTotal(); // Calculate the total of the cart
+    if (isset($_SESSION['applied_discount'])) {
+        $discount = $_SESSION['applied_discount'];
+
+        // Check if discount code is within valid date range
+        $current_time = time();
+        $start_date = strtotime($discount->start_date);
+        $end_date = strtotime($discount->end_date);
+
+        if ($current_time >= $start_date && $current_time <= $end_date) {
+            // Check if order total meets the minimum requirement
+            if ($order_total >= $discount->minimum_order_value) {
+                // Apply discount based on type
+                if ($discount->discount_type === 'percentage') {
+                    $_SESSION['discounted_total'] = $order_total - ($discount->discount_value / 100 * $order_total);
+                } elseif ($discount->discount_type === 'fixed') {
+                    $_SESSION['discounted_total'] = $order_total - $discount->discount_value;
+                }
+            } else {
+                // Minimum order requirement not met, set discounted total to order total
+                $_SESSION['discounted_total'] = $order_total;
+            }
+        } else {
+            // Discount code is not currently valid, set discounted total to order total
+            $_SESSION['discounted_total'] = $order_total;
+        }
+    } else {
+        // No discount applied, set discounted total to order total
+        $_SESSION['discounted_total'] = $order_total;
+    }
+}
+
+
+function applyDiscount() {
+    if (isset($_POST['apply_discount'])) {
+        $discount_code = $_POST['discount_code'];
+
+        // Check if discount code exists and is valid
+        $discount = Discounts::getByCode($discount_code);
+
+        if ($discount) {
+            // Fetch discount details
+            $start_date = strtotime($discount->start_date);
+            $end_date = strtotime($discount->end_date);
+            $current_time = time();
+
+            // Check if discount code is within valid date range
+            if ($current_time >= $start_date && $current_time <= $end_date) {
+                // Store discount in session
+                $_SESSION['applied_discount'] = $discount;
+                saveCartToCookies();
+                // Apply discount to total
+                applyDiscountToTotal();
+            } else {
+                // Discount code is not currently valid
+                echo "Discount code is not currently valid.";
+            }
+        } else {
+            // Handle invalid discount code scenario
+            echo "Invalid discount code. Please try again.";
+        }
+    }
+}
+
+
+function calculateGrandTotal() {
+    $total = calculateTotal();
+    $deliveryCharges = 0.00; // Assuming no delivery charges for now
+
+    if (isset($_SESSION['discounted_total'])) {
+        $grandTotal = $_SESSION['discounted_total'] + $deliveryCharges;
+    } else {
+        $grandTotal = $total + $deliveryCharges;
+    }
+
+    return $grandTotal;
+}
+
+function checkout() {
     $results = array();
 
     $pageData = Pages::getList();
@@ -146,6 +255,18 @@ function checkout()
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "Checkout | Ecommerce";
+    
+    // Ensure the cart and discount data is loaded
+    loadCartFromCookies();
+    
+    // Unset the discounted total if it exists
+    if (isset($_SESSION['discounted_total'])) {
+        unset($_SESSION['discounted_total']);
+    }
+    
+    // Apply discount to total again
+    applyDiscountToTotal();
+
     require(TEMPLATE_PATH . "/checkout.php");
 }
 
@@ -169,8 +290,18 @@ function furniture()
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "Furniture | Ecommerce";
+    
+    // Unset the discounted total if it exists
+    if (isset($_SESSION['discounted_total'])) {
+        unset($_SESSION['discounted_total']);
+    }
+    
+    // Apply discount to total again
+    applyDiscountToTotal();
+
     require(TEMPLATE_PATH . "/furniture.php");
 }
+
 
 function login()
 {
