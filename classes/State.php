@@ -95,6 +95,16 @@ class State
         return (array("results" => $list, "totalRows" => $totalRows[0]));
     }
 
+    public static function getStates() {
+        $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
+        $sql = "SELECT * FROM State";
+        $st = $conn->prepare($sql);
+        $st->execute();
+        $states = $st->fetchAll(PDO::FETCH_OBJ);
+        $conn = null;
+        return $states;
+    }
+   
     /**
     * Inserts the current State object into the database, and sets its ID property.
     */

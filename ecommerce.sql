@@ -116,3 +116,42 @@ CREATE TABLE `discounts` (
     usage_limit INT DEFAULT 0,  -- 0 means unlimited usage
     times_used INT DEFAULT 0
 );
+
+CREATE TABLE Orders (
+    order_id INT AUTO_INCREMENT,
+    order_identity VARCHAR(12) DEFAULT NULL,
+    user_id INT(11) NOT NULL,
+    delivery_address_line1 VARCHAR(255) NOT NULL,
+    delivery_address_line2 VARCHAR(255),
+    delivery_city VARCHAR(50) NOT NULL,
+    delivery_state_id INT(11),
+    delivery_country_id INT(11),
+    delivery_pin_code VARCHAR(6) NOT NULL,
+    billing_name VARCHAR(255) NOT NULL,
+    billing_address TEXT NOT NULL,
+    billing_email VARCHAR(255) NOT NULL,
+    billing_phone VARCHAR(15) NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    shipping_method VARCHAR(50) NOT NULL,
+    order_notes TEXT,
+    order_total DECIMAL(10, 2) NOT NULL,
+    order_status VARCHAR(50) DEFAULT 'Pending',
+    order_created_at TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (order_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (delivery_state_id) REFERENCES State(state_id),
+    FOREIGN KEY (delivery_country_id) REFERENCES Country(country_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE OrderItems (
+    order_item_id INT AUTO_INCREMENT,
+    order_item_identity VARCHAR(12) DEFAULT NULL,
+    order_id INT(11) NOT NULL,
+    product_id INT(11) NOT NULL,
+    product_name VARCHAR(255) NOT NULL,
+    product_price DECIMAL(10, 2) NOT NULL,
+    quantity INT(11) NOT NULL,
+    subtotal DECIMAL(10, 2) NOT NULL,
+    PRIMARY KEY (order_item_id),
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

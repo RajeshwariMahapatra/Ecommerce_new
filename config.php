@@ -22,6 +22,8 @@ require(CLASS_PATH . "/Users.php");
 require(CLASS_PATH . "/State.php");
 require(CLASS_PATH . "/Country.php");
 require(CLASS_PATH . "/Discounts.php");
+require(CLASS_PATH . "/Orders.php");
+require(CLASS_PATH . "/OrderItems.php");
 
 function handleException($exception)
 {

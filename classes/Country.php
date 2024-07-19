@@ -106,6 +106,16 @@ class Country
         $conn = null;
         return (array("results" => $list, "totalRows" => $totalRows[0]));
     }
+  
+    public static function getCountries() {
+        $conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
+        $sql = "SELECT * FROM Country";
+        $st = $conn->prepare($sql);
+        $st->execute();
+        $countries = $st->fetchAll(PDO::FETCH_OBJ);
+        $conn = null;
+        return $countries;
+    }
 
     /**
     * Inserts the current Country object into the database, and sets its ID property.

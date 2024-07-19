@@ -397,7 +397,7 @@ function register() {
     $results = array();
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['country_code'], $_POST['contact_no'], $_POST['birthdate'])) {
+        if (isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['country_code'], $_POST['contact_no'], $_POST['birthdate'], $_POST['address_line1'], $_POST['city'], $_POST['state_id'], $_POST['country_id'], $_POST['pin_code'])) {
             // Debugging
             echo "Form data received successfully.<br>";
             echo "Username: " . htmlspecialchars($_POST['username']) . "<br>";
@@ -415,16 +415,14 @@ function register() {
             $user->user_country_code = $_POST['country_code'];
             $user->user_contact_no = $_POST['contact_no'];
             $user->user_birthdate = $_POST['birthdate'];
+            $user->user_address_line1 = $_POST['address_line1'];
+            $user->user_address_line2 = isset($_POST['address_line2']) ? $_POST['address_line2'] : '';
+            $user->user_address_city = $_POST['city'];
+            $user->user_address_state_id = $_POST['state_id'];
+            $user->user_address_country_id = $_POST['country_id'];
+            $user->user_address_pin_code = $_POST['pin_code'];
             $user->user_created_at = time(); // Current timestamp
             $user->user_status = 1; // Assuming new users are active by default
-
-            // Optional fields set to default values
-            $user->user_address_line1 = 'default';
-            $user->user_address_line2 = 'default';
-            $user->user_address_city = 'default';
-            $user->user_address_state_id = 0;
-            $user->user_address_country_id = 0;
-            $user->user_address_pin_code = 'default';
 
             // Debugging
             echo "Generated user identity: " . $user->user_identity . "<br>";
@@ -444,10 +442,15 @@ function register() {
         }
     }
 
+    // Fetch states and countries for dropdowns
+    $state = new State();
+    $country = new Country();
+    $results['states'] = $state->getStates();
+    $results['countries'] = $country->getCountries();
+
     $results['pageTitle'] = "Register | Ecommerce";
     require(TEMPLATE_PATH . "/register.php");
 }
-
 
 function single()
 {

@@ -215,71 +215,29 @@ class Users
      * Inserts the current User object into the database, and sets its ID property.
      */
     public function insert() {
-        if (!is_null($this->user_id)) {
-            trigger_error("Users::insert(): Attempt to insert a User object that already has its ID property set (to $this->user_id).", E_USER_ERROR);
-        }
-    
-        try {
-            $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Set PDO error mode to exception
-    
-            $sql = "INSERT INTO Users (
-                user_identity, user_name, user_password, user_email, user_contact_no, 
-                user_country_code, user_created_at, user_birthdate, user_status, 
-                user_address_line1, user_address_line2, user_address_city, 
-                user_address_state_id, user_address_country_id, user_address_pin_code
-            ) VALUES (
-                :user_identity, :user_name, :user_password, :user_email, :user_contact_no, 
-                :user_country_code, FROM_UNIXTIME(:user_created_at), :user_birthdate, :user_status, 
-                :user_address_line1, :user_address_line2, :user_address_city, 
-                :user_address_state_id, :user_address_country_id, :user_address_pin_code
-            )";
-    
-            $st = $conn->prepare($sql);
-            $st->bindValue(":user_identity", $this->user_identity, PDO::PARAM_STR);
-            $st->bindValue(":user_name", $this->user_name, PDO::PARAM_STR);
-            $st->bindValue(":user_password", $this->user_password, PDO::PARAM_STR);
-            $st->bindValue(":user_email", $this->user_email, PDO::PARAM_STR);
-            $st->bindValue(":user_contact_no", $this->user_contact_no, PDO::PARAM_STR);
-            $st->bindValue(":user_country_code", $this->user_country_code, PDO::PARAM_STR);
-            $st->bindValue(":user_created_at", $this->user_created_at, PDO::PARAM_INT);
-            $st->bindValue(":user_birthdate", $this->user_birthdate, PDO::PARAM_STR);
-            $st->bindValue(":user_status", $this->user_status, PDO::PARAM_BOOL);
-            $st->bindValue(":user_address_line1", $this->user_address_line1, PDO::PARAM_STR);
-            $st->bindValue(":user_address_line2", $this->user_address_line2, PDO::PARAM_STR);
-            $st->bindValue(":user_address_city", $this->user_address_city, PDO::PARAM_STR);
-            $st->bindValue(":user_address_state_id", $this->user_address_state_id, PDO::PARAM_INT);
-            $st->bindValue(":user_address_country_id", $this->user_address_country_id, PDO::PARAM_INT);
-            $st->bindValue(":user_address_pin_code", $this->user_address_pin_code, PDO::PARAM_STR);
-    
-            // Debugging: output the query and values being bound
-            echo "Executing SQL: $sql<br>";
-            echo "With values: <pre>";
-            print_r([
-                'user_identity' => $this->user_identity,
-                'user_name' => $this->user_name,
-                'user_password' => $this->user_password,
-                'user_email' => $this->user_email,
-                'user_contact_no' => $this->user_contact_no,
-                'user_country_code' => $this->user_country_code,
-                'user_created_at' => $this->user_created_at,
-                'user_birthdate' => $this->user_birthdate,
-                'user_status' => $this->user_status,
-                'user_address_line1' => $this->user_address_line1,
-                'user_address_line2' => $this->user_address_line2,
-                'user_address_city' => $this->user_address_city,
-                'user_address_state_id' => $this->user_address_state_id,
-                'user_address_country_id' => $this->user_address_country_id,
-                'user_address_pin_code' => $this->user_address_pin_code
-            ]);
-            echo "</pre>";
-    
-            $st->execute();
-            echo "SQL executed successfully.<br>";
-            $this->user_id = $conn->lastInsertId();
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
+        if (!is_null($this->user_id)) trigger_error("Users::insert(): Attempt to insert a User object that already has its ID property set (to $this->user_id).", E_USER_ERROR);
+
+        // Insert the user into the database
+        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $sql = "INSERT INTO users (user_identity, user_name, user_password, user_email, user_country_code, user_contact_no, user_birthdate, user_address_line1, user_address_line2, user_address_city, user_address_state_id, user_address_country_id, user_address_pin_code, user_created_at, user_status) VALUES (:user_identity, :user_name, :user_password, :user_email, :user_country_code, :user_contact_no, :user_birthdate, :user_address_line1, :user_address_line2, :user_address_city, :user_address_state_id, :user_address_country_id, :user_address_pin_code, :user_created_at, :user_status)";
+        $st = $conn->prepare($sql);
+        $st->bindValue(":user_identity", $this->user_identity, PDO::PARAM_STR);
+        $st->bindValue(":user_name", $this->user_name, PDO::PARAM_STR);
+        $st->bindValue(":user_password", $this->user_password, PDO::PARAM_STR);
+        $st->bindValue(":user_email", $this->user_email, PDO::PARAM_STR);
+        $st->bindValue(":user_country_code", $this->user_country_code, PDO::PARAM_STR);
+        $st->bindValue(":user_contact_no", $this->user_contact_no, PDO::PARAM_STR);
+        $st->bindValue(":user_birthdate", $this->user_birthdate, PDO::PARAM_STR);
+        $st->bindValue(":user_address_line1", $this->user_address_line1, PDO::PARAM_STR);
+        $st->bindValue(":user_address_line2", $this->user_address_line2, PDO::PARAM_STR);
+        $st->bindValue(":user_address_city", $this->user_address_city, PDO::PARAM_STR);
+        $st->bindValue(":user_address_state_id", $this->user_address_state_id, PDO::PARAM_INT);
+        $st->bindValue(":user_address_country_id", $this->user_address_country_id, PDO::PARAM_INT);
+        $st->bindValue(":user_address_pin_code", $this->user_address_pin_code, PDO::PARAM_STR);
+        $st->bindValue(":user_created_at", $this->user_created_at, PDO::PARAM_INT);
+        $st->bindValue(":user_status", $this->user_status, PDO::PARAM_INT);
+        $st->execute();
+        $this->user_id = $conn->lastInsertId();
         $conn = null;
     }
     

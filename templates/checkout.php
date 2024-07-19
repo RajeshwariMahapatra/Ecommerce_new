@@ -85,15 +85,22 @@
                 <ul>
                     <li>Total <i>before discount</i> <span>₹<?php echo calculateTotal(); ?></span></li>
                     <li>Total Service Charges <i>-</i> <span>0.00</span></li>
-                    <?php if (isset($_SESSION['discounted_total'])) : ?>
-                        <li>Total <i>after discount</i> <span>₹<?php echo calculateGrandTotal(); ?></span></li>
-                    <?php else : ?>
-                        <li>Total <i>after discount</i> <span>₹<?php echo calculateTotal(); ?></span></li>
-                    <?php endif; ?>
+                    <?php if (isset($_COOKIE['discounted_total'])) : ?>
+    <li>Total <i>after discount</i> <span>₹<?php echo $_COOKIE['discounted_total']; ?></span></li>
+<?php else : ?>
+    <li>Total <i>after discount</i> <span>₹<?php echo calculateTotal(); ?></span></li>
+<?php endif; ?>
+
+
+
+
                 </ul>
             </div>
             <div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
                 <a href="index.php?action=furniture"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Continue Shopping</a>
+            </div>
+            <div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s">
+                <a href="index.php?action=order"><span class="" aria-hidden="true"></span>Order now</a>
             </div>
             <div class="clearfix"> </div>
         </div>
