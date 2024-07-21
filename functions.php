@@ -27,9 +27,9 @@ function uniqueRandomString($length = 12,$tableName,$columnName) {
 
 function calculateTotal() {
     $total = 0;
-    if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+    if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $product) {
-            $total += ($product['price'] * $product['quantity']);
+            $total += $product['price'] * $product['quantity'];
         }
     }
     return $total;

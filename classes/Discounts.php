@@ -118,6 +118,23 @@ class Discounts
     return false;
 }
 
+public function applyDiscount($total)
+{
+    if ($this->discount_type === 'percentage') {
+        $discountedPrice = $total - ($total * ($this->discount_value / 100));
+    } else { // 'fixed'
+        $discountedPrice = $total - $this->discount_value;
+    }
+
+    // Ensure the discounted price is not less than zero
+    $discountedPrice = max(0, $discountedPrice);
+
+    // Store the discounted price in a cookie that expires when the browser is closed
+    setcookie('discounted_price', $discountedPrice, 0, '/');
+    
+    return $discountedPrice;
+}
+
     /**
      * Returns all (or a range of) Discount objects in the DB
      *

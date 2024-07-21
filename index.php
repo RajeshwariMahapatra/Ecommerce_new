@@ -58,8 +58,14 @@ switch ($action) {
         applyDiscount();
         header("Location: index.php?action=checkout");
         break;
+    case 'removeDiscount':
+        removeDiscount();
+        break;
     case 'calculateGrandTotal':
         calculateGrandTotal();
+        break;
+    case 'clearDiscount':
+        clearDiscount();
         break;
     case 'logout':
         logout();
@@ -129,15 +135,28 @@ function updateCart($productId, $newQuantity) {
 
 function removeFromCart($productId) {
     if (isset($_SESSION['cart'])) {
-        foreach ($_SESSION['cart'] as $key => $product) {
-            if ($product['id'] == $productId) {
+        foreach ($_SESSION['cart'] as $key => $item) {
+            if ($item['id'] == $productId) {
                 unset($_SESSION['cart'][$key]);
                 break;
             }
         }
+        $_SESSION['cart'] = array_values($_SESSION['cart']); // Reindex the cart array
     }
-    saveCartToCookies();
-    applyDiscountToTotal();
+}
+
+function removeDiscount() {
+    // Unset session variables
+    unset($_SESSION['applied_discount']);
+    unset($_SESSION['discounted_total']);
+    
+    // Expire cookies
+    setcookie('discounted_total', '', time() - 3600, '/');
+    setcookie('applied_discount', '', time() - 3600, '/');
+
+    // Redirect back to the checkout page
+    header("Location: index.php?action=checkout");
+    exit();
 }
 
 function saveCartToCookies() {
@@ -167,73 +186,107 @@ function loadCartFromCookies() {
 
 function applyDiscountToTotal() {
     $order_total = calculateTotal(); // Calculate the total of the cart
+
+    // Debugging: Check order total before applying discount
+    // echo "Order total before discount: $order_total<br>";
+
     if (isset($_SESSION['applied_discount'])) {
-        $discount = $_SESSION['applied_discount'];
+        $discount = (object)$_SESSION['applied_discount']; // Cast to object
 
-        // Check if discount code is within valid date range
-        $current_time = time();
-        $start_date = strtotime($discount->start_date);
-        $end_date = strtotime($discount->end_date);
+        // Debugging: Check the discount details
+        // echo "Applying discount: " . print_r($discount, true) . "<br>";
 
-        if ($current_time >= $start_date && $current_time <= $end_date) {
-            // Check if order total meets the minimum requirement
-            if ($order_total >= $discount->minimum_order_value) {
-                // Apply discount based on type
-                if ($discount->discount_type === 'percentage') {
-                    $_SESSION['discounted_total'] = $order_total - ($discount->discount_value / 100 * $order_total);
-                } elseif ($discount->discount_type === 'fixed') {
-                    $_SESSION['discounted_total'] = $order_total - $discount->discount_value;
+        // Ensure all necessary properties are present
+        if (isset($discount->start_date, $discount->end_date, $discount->discount_type, $discount->discount_value, $discount->minimum_order_value)) {
+            // Check if discount code is within valid date range
+            $current_time = time();
+            $start_date = strtotime($discount->start_date);
+            $end_date = strtotime($discount->end_date);
+
+            if ($current_time >= $start_date && $current_time <= $end_date) {
+                // Check if order total meets the minimum requirement
+                if ($order_total >= $discount->minimum_order_value) {
+                    // Apply discount based on type
+                    if ($discount->discount_type === 'percentage') {
+                        $_SESSION['discounted_total'] = $order_total - ($discount->discount_value / 100 * $order_total);
+                    } elseif ($discount->discount_type === 'fixed') {
+                        $_SESSION['discounted_total'] = $order_total - $discount->discount_value;
+                    }
+
+                    // Debugging: Check discounted total after applying discount
+                    // echo "Discounted total after applying discount: " . $_SESSION['discounted_total'] . "<br>";
+                } else {
+                    // Minimum order requirement not met, set discounted total to order total
+                    $_SESSION['discounted_total'] = $order_total;
+                    echo "Minimum order requirement not met. Discount not applied.<br>";
                 }
             } else {
-                // Minimum order requirement not met, set discounted total to order total
+                // Discount code is not currently valid, set discounted total to order total
                 $_SESSION['discounted_total'] = $order_total;
+                echo "Discount code is not valid currently. Discount not applied.<br>";
             }
         } else {
-            // Discount code is not currently valid, set discounted total to order total
-            $_SESSION['discounted_total'] = $order_total;
+            echo "Discount data is missing required properties.<br>";
         }
     } else {
         // No discount applied, set discounted total to order total
         $_SESSION['discounted_total'] = $order_total;
+        // echo "No discount applied.<br>";
     }
 }
 
-
 function applyDiscount() {
-    if (isset($_POST['apply_discount'])) {
+    if (isset($_POST['discount_code'])) {
         $discount_code = $_POST['discount_code'];
-
-        // Check if discount code exists and is valid
         $discount = Discounts::getByCode($discount_code);
 
         if ($discount) {
-            // Fetch discount details
-            $start_date = strtotime($discount->start_date);
-            $end_date = strtotime($discount->end_date);
-            $current_time = time();
+            // Ensure all necessary properties are present
+            if (isset($discount->start_date, $discount->end_date, $discount->discount_type, $discount->discount_value, $discount->minimum_order_value, $discount->usage_limit, $discount->times_used)) {
+                echo "Discount fetched: " . print_r($discount, true);
 
-            // Check if discount code is within valid date range
-            if ($current_time >= $start_date && $current_time <= $end_date) {
-                // Store discount in session
-                $_SESSION['applied_discount'] = $discount;
-                saveCartToCookies();
-                // Apply discount to total
-                applyDiscountToTotal();
+                $order_total = calculateTotal();
+
+                if ($order_total >= $discount->minimum_order_value) {
+                    if ($discount->usage_limit == 0 || $discount->times_used < $discount->usage_limit) {
+                        if ($discount->discount_type == 'percentage') {
+                            $discount_amount = $order_total * ($discount->discount_value / 100);
+                        } else if ($discount->discount_type == 'fixed') {
+                            $discount_amount = $discount->discount_value;
+                        }
+                        $new_order_total = $order_total - $discount_amount;
+                        echo "Discount applied. New order total: " . $new_order_total;
+
+                        // Update the session and cookies
+                        $_SESSION['applied_discount'] = $discount;
+                        $_SESSION['discounted_total'] = $new_order_total;
+                        setcookie('discounted_total', $new_order_total, time() + (86400 * 30), '/');
+                        setcookie('applied_discount', json_encode($discount), time() + (86400 * 30), '/');
+
+                        // Update the times_used in the database
+                        $discount->times_used++;
+                        $discount->update();
+                    } else {
+                        echo "Discount usage limit reached.";
+                    }
+                } else {
+                    echo "Order total does not meet the minimum order value.";
+                }
             } else {
-                // Discount code is not currently valid
-                echo "Discount code is not currently valid.";
+                echo "Discount fetched but missing required properties.";
             }
         } else {
-            // Handle invalid discount code scenario
-            echo "Invalid discount code. Please try again.";
+            echo "Discount not found or not valid.";
         }
     }
 }
 
-
 function calculateGrandTotal() {
     $total = calculateTotal();
     $deliveryCharges = 0.00; // Assuming no delivery charges for now
+
+    // Debugging: Check if discounted total exists in the session
+    echo "Discounted total in session: " . (isset($_SESSION['discounted_total']) ? $_SESSION['discounted_total'] : 'Not Set') . "<br>";
 
     if (isset($_SESSION['discounted_total'])) {
         $grandTotal = $_SESSION['discounted_total'] + $deliveryCharges;
@@ -259,19 +312,28 @@ function checkout() {
     // Ensure the cart and discount data is loaded
     loadCartFromCookies();
     
-    // Unset the discounted total if it exists
-    if (isset($_SESSION['discounted_total'])) {
-        unset($_SESSION['discounted_total']);
-    }
-    
     // Apply discount to total again
     applyDiscountToTotal();
 
     require(TEMPLATE_PATH . "/checkout.php");
 }
 
-function furniture()
-{
+function clearDiscount() {
+    // Clear session discount
+    if (isset($_SESSION['discounted_total'])) {
+        unset($_SESSION['discounted_total']);
+    }
+    if (isset($_SESSION['applied_discount'])) {
+        unset($_SESSION['applied_discount']);
+    }
+
+    // Clear cookies
+    setcookie('discounted_total', '', time() - 3600, '/');
+    setcookie('applied_discount', '', time() - 3600, '/');
+}
+
+
+function furniture(){
     $results = array();
 
     $pageData = Pages::getList();
@@ -302,9 +364,7 @@ function furniture()
     require(TEMPLATE_PATH . "/furniture.php");
 }
 
-
-function login()
-{
+function login(){
     // session_start();
 
     // Check if user is already logged in
@@ -343,9 +403,7 @@ function login()
     require(TEMPLATE_PATH . "/login.php");
 }
 
-
-function contact()
-{
+function contact(){
     $results = array();
 
     $pageData = Pages::getList();
@@ -359,8 +417,7 @@ function contact()
     require(TEMPLATE_PATH . "/contact.php");
 }
 
-function products()
-{
+function products(){
     $results = array();
 
     // Fetch all products by default
@@ -452,8 +509,7 @@ function register() {
     require(TEMPLATE_PATH . "/register.php");
 }
 
-function single()
-{
+function single(){
     $results = array();
 
     $categoryData = ProductCategory::getList();
@@ -471,8 +527,7 @@ function single()
     require(TEMPLATE_PATH . "/single.php");
 }
 
-function temporary()
-{
+function temporary(){
     $results = array();
 
     $pageData = Pages::getList();
@@ -494,8 +549,7 @@ function temporary()
     }
 }
 
-function list_pages()
-{
+function list_pages(){
     $results = array();
 
     $pageData = Pages::getList();
@@ -505,8 +559,7 @@ function list_pages()
     require(TEMPLATE_PATH . "/list_pages.php");
 }
 
-function list_categories()
-{
+function list_categories(){
     $results = array();
 
     $categoryData = ProductCategory::getList();
@@ -516,8 +569,7 @@ function list_categories()
     require(TEMPLATE_PATH . "/list_categories.php");
 }
 
-function home()
-{
+function home(){
     $results = array();
 
     $pageData = Pages::getList();
