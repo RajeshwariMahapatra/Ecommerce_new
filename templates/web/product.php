@@ -1,6 +1,12 @@
 <?php include("include/header.php"); ?>
+<div class="container">
+<div class="search-bar pull-right">
+                <form action="users.php?action=searchProducts" method="post">
+                    <input type="text" name="search_query" placeholder="Search for products...">
+                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+                </form>
+            </div>
 <div class="product-model">
-	<div class="container">
 		<ol class="breadcrumb">
 			<li><a href="index.html">Home</a></li>
 			<li class="active">Products</li>
