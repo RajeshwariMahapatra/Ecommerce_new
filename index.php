@@ -133,16 +133,17 @@ function updateCart($productId, $newQuantity) {
     applyDiscountToTotal();
 }
 
-function removeFromCart($productId) {
+function removeFromCart($productId)
+{
     if (isset($_SESSION['cart'])) {
-        foreach ($_SESSION['cart'] as $key => $item) {
-            if ($item['id'] == $productId) {
+        foreach ($_SESSION['cart'] as $key => $product) {
+            if ($product['id'] == $productId) {
                 unset($_SESSION['cart'][$key]);
                 break;
             }
         }
-        $_SESSION['cart'] = array_values($_SESSION['cart']); // Reindex the cart array
     }
+    saveCartToCookies();
 }
 
 function removeDiscount() {

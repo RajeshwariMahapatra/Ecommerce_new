@@ -29,7 +29,9 @@ function calculateTotal() {
     $total = 0;
     if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $product) {
-            $total += $product['price'] * $product['quantity'];
+            $price = floatval($product['price']);
+            $quantity = intval($product['quantity']);
+            $total += $price * $quantity;
         }
     }
     return $total;
