@@ -197,28 +197,51 @@ function applyDiscountToTotal() {
         // echo "Applying discount: " . print_r($discount, true) . "<br>";
 
         // Ensure all necessary properties are present
-        if (isset($discount->start_date, $discount->end_date, $discount->discount_type, $discount->discount_value, $discount->minimum_order_value)) {
+        if (isset($discount->start_date, $discount->end_date, $discount->discount_type, $discount->discount_value, $discount->minimum_order_value, $discount->usage_limit)) {
             // Check if discount code is within valid date range
             $current_time = time();
             $start_date = strtotime($discount->start_date);
             $end_date = strtotime($discount->end_date);
 
-            if ($current_time >= $start_date && $current_time <= $end_date) {
-                // Check if order total meets the minimum requirement
-                if ($order_total >= $discount->minimum_order_value) {
-                    // Apply discount based on type
-                    if ($discount->discount_type === 'percentage') {
-                        $_SESSION['discounted_total'] = $order_total - ($discount->discount_value / 100 * $order_total);
-                    } elseif ($discount->discount_type === 'fixed') {
-                        $_SESSION['discounted_total'] = $order_total - $discount->discount_value;
-                    }
+            // Debugging: Check current time and discount date range
+            // echo "Current time: " . date('Y-m-d H:i:s', $current_time) . "<br>";
+            // echo "Discount start date: " . date('Y-m-d H:i:s', $start_date) . "<br>";
+            // echo "Discount end date: " . date('Y-m-d H:i:s', $end_date) . "<br>";
 
-                    // Debugging: Check discounted total after applying discount
-                    // echo "Discounted total after applying discount: " . $_SESSION['discounted_total'] . "<br>";
+            // Initialize times_used if it is NULL
+            if (is_null($discount->times_used)) {
+                $discount->times_used = 0;
+            }
+
+            // echo "Times used: " . $discount->times_used . "<br>";
+
+            if ($current_time >= $start_date && $current_time <= $end_date) {
+                // Check if discount code has not exceeded its usage limit
+                if ($discount->times_used < $discount->usage_limit) {
+                    // Check if order total meets the minimum requirement
+                    if ($order_total >= $discount->minimum_order_value) {
+                        // Apply discount based on type
+                        if ($discount->discount_type === 'percentage') {
+                            $_SESSION['discounted_total'] = $order_total - ($discount->discount_value / 100 * $order_total);
+                        } elseif ($discount->discount_type === 'fixed') {
+                            $_SESSION['discounted_total'] = $order_total - $discount->discount_value;
+                        }
+
+                        // Increment the times_used
+                        $discount->times_used++;
+                        $_SESSION['applied_discount']->times_used = $discount->times_used;
+
+                        // Debugging: Check discounted total after applying discount
+                        // echo "Discounted total after applying discount: " . $_SESSION['discounted_total'] . "<br>";
+                    } else {
+                        // Minimum order requirement not met, set discounted total to order total
+                        $_SESSION['discounted_total'] = $order_total;
+                        echo "Minimum order requirement not met. Discount not applied.<br>";
+                    }
                 } else {
-                    // Minimum order requirement not met, set discounted total to order total
+                    // Usage limit exceeded, set discounted total to order total
                     $_SESSION['discounted_total'] = $order_total;
-                    echo "Minimum order requirement not met. Discount not applied.<br>";
+                    echo "Discount code usage limit exceeded. Discount not applied.<br>";
                 }
             } else {
                 // Discount code is not currently valid, set discounted total to order total
