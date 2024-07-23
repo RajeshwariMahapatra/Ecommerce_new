@@ -18,7 +18,7 @@
 				<li class="last_price">
 					<h4>TOTAL</h4>
 				</li>
-				<li class="last_price"><span>₹<?php echo calculateGrandTotal(); ?></span></li>
+				<li class="last_price"><span>₹<?php echo isset($_SESSION['discounted_total']) ? $_SESSION['discounted_total'] : (isset($_COOKIE['discounted_total']) ? $_COOKIE['discounted_total'] : calculateTotal()); ?></span></li>
 			</ul>
 			<div class="clearfix"></div>
 			<div class="clearfix"></div>

@@ -47,6 +47,9 @@ switch ($action) {
     case 'listDiscounts':
         listDiscounts();
         break;
+    case 'listDiscounts2':
+        listDiscounts2();
+        break;
     case 'addDiscount':
         addDiscount();
         break;
@@ -128,74 +131,6 @@ switch ($action) {
         showDashboard();
 }
 
-function listDiscounts() {
-    $results = array();
-    $discounts = Discounts::getList();
-    $results['discounts'] = $discounts['results'];
-    $results['totaldiscountRows'] = $discounts['totalRows'];
-    $results['pageTitle'] = "All Discounts";
-    require(TEMPLATE_PATH . "/admin/listDiscounts.php");
-}
-
-// Function to add a new discount
-function addDiscount() {
-    $results = array();
-    $results['pageTitle'] = 'New Discount';
-    $results['formAction'] = 'addDiscount';
-    if (isset($_POST['saveChanges'])) {
-        $_POST['state_identity'] = uniqueRandomString(12, 'Discounts', 'discount_identity');
-        $discounts = new Discounts;
-        $discounts->storeFormValues($_POST);
-        $discounts->insert();
-
-        header("Location: admin.php?action=listDiscounts&status=changesSaved");
-    } elseif (isset($_POST["cancel"])) {
-        header("Location: admin.php?action=listDiscounts");
-    } else {
-        $results['discounts'] = new Discounts;
-        require(TEMPLATE_PATH . "/admin/addDiscount.php");
-    }
-}
-
-// Function to edit an existing discount
-function editDiscount() {
-    $results = array();
-    $results['pageTitle'] = 'Edit Discount';
-    $results['formAction'] = 'editDiscount';
-
-    if (isset($_POST['saveChanges'])) {
-
-        if (!$discounts = Discounts::getById((int)$_POST['discount_id'])) {
-            header("Location: admin.php?error=discountNotFound");
-            return;
-        }
-
-        $discounts->storeFormValues($_POST);
-        $discounts->update();
-
-        header("Location: admin.php?action=listDiscounts&status=changesSaved");
-
-    } elseif (isset($_POST["cancel"])) {
-        header("Location: admin.php?action=listDiscounts");
-    } else {
-        $results['discounts'] = Discounts::getById((int)($_GET['discount_id']));
-        require(TEMPLATE_PATH . "/admin/addDiscount.php");
-    }
-}
-
-// Function to delete an existing discount
-function deleteDiscount() {
-    if (!$discounts = Discounts::getById((int)$_GET['discount_id'])) {
-        header("Location: admin.php?error=discountNotFound");
-        return;
-    }
-
-    // Delete the category from the database
-    $discounts->delete();
-
-    // Redirect to the admin page with a status message
-    header("Location: admin.php?action=listDiscounts&status=discountDeleted");
-}
 
 function login()
 {
@@ -1053,6 +988,97 @@ function deletePage()
     // Redirect to the listpage page with a status message
     header("Location: admin.php?action=listPage&status=pageDeleted");
 }
+function listDiscounts() {
+    $results = array();
+    $discounts = Discounts::getList();
+    $results['discounts'] = $discounts['results'];
+    $results['totaldiscountRows'] = $discounts['totalRows'];
+    $results['pageTitle'] = "All Discounts";
+    require(TEMPLATE_PATH . "/admin/listDiscounts.php");
+}
+
+function listDiscounts2() {
+
+    $results = array();
+    if (!isset($_GET['discount_id'])) {
+        header("Location: admin.php?error=pageNotFound");
+        return;
+    }
+    $discountId = (int)$_GET['discount_id']; // Assuming product_id is passed in GET data
+
+    // Get the product details
+    $discount = Discounts::getById($discountId);
+    if (!$discount) {
+        header("Location: admin.php?error=discountIDNotFound");
+        return;
+    }
+
+    $results['discount'] = $discount;
+    require(TEMPLATE_PATH . "/admin/discountDetails.php");
+
+}
+
+// Function to add a new discount
+function addDiscount() {
+    $results = array();
+    $results['pageTitle'] = 'New Discount';
+    $results['formAction'] = 'addDiscount';
+    if (isset($_POST['saveChanges'])) {
+        $_POST['state_identity'] = uniqueRandomString(12, 'Discounts', 'discount_identity');
+        $discounts = new Discounts;
+        $discounts->storeFormValues($_POST);
+        $discounts->insert();
+
+        header("Location: admin.php?action=listDiscounts&status=changesSaved");
+    } elseif (isset($_POST["cancel"])) {
+        header("Location: admin.php?action=listDiscounts");
+    } else {
+        $results['discounts'] = new Discounts;
+        require(TEMPLATE_PATH . "/admin/addDiscount.php");
+    }
+}
+
+// Function to edit an existing discount
+function editDiscount() {
+    $results = array();
+    $results['pageTitle'] = 'Edit Discount';
+    $results['formAction'] = 'editDiscount';
+
+    if (isset($_POST['saveChanges'])) {
+
+        if (!$discounts = Discounts::getById((int)$_POST['discount_id'])) {
+            header("Location: admin.php?error=discountNotFound");
+            return;
+        }
+
+        $discounts->storeFormValues($_POST);
+        $discounts->update();
+
+        header("Location: admin.php?action=listDiscounts&status=changesSaved");
+
+    } elseif (isset($_POST["cancel"])) {
+        header("Location: admin.php?action=listDiscounts");
+    } else {
+        $results['discounts'] = Discounts::getById((int)($_GET['discount_id']));
+        require(TEMPLATE_PATH . "/admin/addDiscount.php");
+    }
+}
+
+// Function to delete an existing discount
+function deleteDiscount() {
+    if (!$discounts = Discounts::getById((int)$_GET['discount_id'])) {
+        header("Location: admin.php?error=discountNotFound");
+        return;
+    }
+
+    // Delete the category from the database
+    $discounts->delete();
+
+    // Redirect to the admin page with a status message
+    header("Location: admin.php?action=listDiscounts&status=discountDeleted");
+}
+
+
 
 function showDashboard()
 {

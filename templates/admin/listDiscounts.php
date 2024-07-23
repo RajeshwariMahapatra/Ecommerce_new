@@ -22,7 +22,7 @@
                 <?php foreach ($results['discounts'] as $discounts) : ?>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                            <a href="admin.php?action=viewDiscount&discount_id=<?php echo $discounts->discount_id; ?>" class="text-decoration-none">
+                            <a href="admin.php?action=listDiscounts2&discount_id=<?php echo $discounts->discount_id; ?>" class="text-decoration-none">
                                 <strong>Code:</strong> <?php echo htmlspecialchars($discounts->discount_code); ?>
                                 <br>
                                 <?php echo htmlspecialchars($discounts->discount_type); ?> - <?php echo htmlspecialchars($discounts->discount_value); ?>
