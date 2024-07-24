@@ -159,59 +159,120 @@ class Orders
         return false;
     }
 
+/**
+     * Get user checkout data including user details, states, countries, and discounted price
+     *
+     * @param int $user_id
+     * @return array
+     */
+    public function getUserCheckoutData($user_id) {
+        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        
+        // Fetch user details from the database
+        $sql = "SELECT user_name, user_email, user_contact_no, user_address_line1, user_address_line2, user_address_city, user_address_state_id, user_address_country_id, user_address_pin_code FROM Users WHERE user_id = :user_id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        // Fetch states and countries for dropdowns
+        $states = $conn->query("SELECT state_id, state_name FROM State")->fetchAll(PDO::FETCH_ASSOC);
+        $countries = $conn->query("SELECT country_id, country_name FROM Country")->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Fetch discounted price from cookies
+        $discounted_price = isset($_COOKIE['discounted_price']) ? $_COOKIE['discounted_price'] : '0.00';
+    
+        return [
+            'user' => $user,
+            'states' => $states,
+            'countries' => $countries,
+            'discounted_price' => $discounted_price
+        ];
+    }
+
+    /**
+     * Place an order
+     *
+     * @param array $order_data
+     * @return bool
+     */
+    public function placeOrder($order_data) {
+        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $sql = "INSERT INTO orders (user_id, delivery_address_line1, delivery_address_line2, delivery_city, delivery_state_id, delivery_country_id, delivery_pin_code, payment_method, shipping_method, order_notes, billing_name, billing_address, billing_email, billing_phone, order_total) 
+                VALUES (:user_id, :delivery_address_line1, :delivery_address_line2, :delivery_city, :delivery_state_id, :delivery_country_id, :delivery_pin_code, :payment_method, :shipping_method, :order_notes, :billing_name, :billing_address, :billing_email, :billing_phone, :order_total)";
+        $stmt = $conn->prepare($sql);
+        return $stmt->execute($order_data);
+    }
+
+
+/**
+ * Retrieves the ID of the currently logged-in user from the session.
+ *
+ * @return int|null The ID of the logged-in user, or null if no user is logged in.
+ */
+public static function getLoggedInUserId() {
+    // Check if the user is logged in
+    if (isset($_SESSION['user_id'])) {
+        // Return the user ID from the session
+        return (int) $_SESSION['user_id'];
+    }
+    
+    // Return null if no user is logged in
+    return null;
+}
+
     /**
      * Inserts the current Order object into the database, and sets its ID property.
      */
-    public function insert()
-{
-    if (!is_null($this->order_id)) {
-        trigger_error("Orders::insert(): Attempt to insert an Order object that already has its ID property set (to $this->order_id).", E_USER_ERROR);
+    public function insert() {
+        if (!is_null($this->order_id)) {
+            trigger_error("Orders::insert(): Attempt to insert an Order object that already has its ID property set (to $this->order_id).", E_USER_ERROR);
+        }
+
+        // Ensure all required fields are not null
+        if (is_null($this->order_identity) || is_null($this->user_id) || is_null($this->billing_name)) {
+            throw new Exception("Error: Required fields cannot be null");
+        }
+
+        try {
+            $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $sql = "INSERT INTO orders (
+                order_identity, user_id, delivery_address_line1, delivery_address_line2, delivery_city, delivery_state_id, delivery_country_id, 
+                delivery_pin_code, billing_name, billing_address, billing_email, billing_phone, payment_method, shipping_method, 
+                order_notes, order_total, order_status, order_created_at
+            ) VALUES (
+                :order_identity, :user_id, :delivery_address_line1, :delivery_address_line2, :delivery_city, :delivery_state_id, :delivery_country_id, 
+                :delivery_pin_code, :billing_name, :billing_address, :billing_email, :billing_phone, :payment_method, :shipping_method, 
+                :order_notes, :order_total, :order_status, :order_created_at
+            )";
+
+            $st = $conn->prepare($sql);
+            $st->bindParam(':order_identity', $this->order_identity);
+            $st->bindParam(':user_id', $this->user_id);
+            $st->bindParam(':delivery_address_line1', $this->delivery_address_line1);
+            $st->bindParam(':delivery_address_line2', $this->delivery_address_line2);
+            $st->bindParam(':delivery_city', $this->delivery_city);
+            $st->bindParam(':delivery_state_id', $this->delivery_state_id);
+            $st->bindParam(':delivery_country_id', $this->delivery_country_id);
+            $st->bindParam(':delivery_pin_code', $this->delivery_pin_code);
+            $st->bindParam(':billing_name', $this->billing_name);
+            $st->bindParam(':billing_address', $this->billing_address);
+            $st->bindParam(':billing_email', $this->billing_email);
+            $st->bindParam(':billing_phone', $this->billing_phone);
+            $st->bindParam(':payment_method', $this->payment_method);
+            $st->bindParam(':shipping_method', $this->shipping_method);
+            $st->bindParam(':order_notes', $this->order_notes);
+            $st->bindParam(':order_total', $this->order_total);
+            $st->bindParam(':order_status', $this->order_status);
+            $st->bindParam(':order_created_at', $this->order_created_at);
+            $st->execute();
+            $this->order_id = $conn->lastInsertId();
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
     }
-
-    // Ensure all required fields are not null
-    if (is_null($this->order_identity) || is_null($this->user_id) || is_null($this->billing_name)) {
-        throw new Exception("Error: Required fields cannot be null");
-    }
-
-    try {
-        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $sql = "INSERT INTO orders (
-            order_identity, user_id, delivery_address_line1, delivery_address_line2, delivery_city, delivery_state_id, delivery_country_id, 
-            delivery_pin_code, billing_name, billing_address, billing_email, billing_phone, payment_method, shipping_method, 
-            order_notes, order_total, order_status, order_created_at
-        ) VALUES (
-            :order_identity, :user_id, :delivery_address_line1, :delivery_address_line2, :delivery_city, :delivery_state_id, :delivery_country_id, 
-            :delivery_pin_code, :billing_name, :billing_address, :billing_email, :billing_phone, :payment_method, :shipping_method, 
-            :order_notes, :order_total, :order_status, :order_created_at
-        )";
-
-        $st = $conn->prepare($sql);
-        $st->bindValue(":order_identity", $this->order_identity, PDO::PARAM_STR);
-        $st->bindValue(":user_id", $this->user_id, PDO::PARAM_INT);
-        $st->bindValue(":delivery_address_line1", $this->delivery_address_line1, PDO::PARAM_STR);
-        $st->bindValue(":delivery_address_line2", $this->delivery_address_line2, PDO::PARAM_STR);
-        $st->bindValue(":delivery_city", $this->delivery_city, PDO::PARAM_STR);
-        $st->bindValue(":delivery_state_id", $this->delivery_state_id, PDO::PARAM_INT);
-        $st->bindValue(":delivery_country_id", $this->delivery_country_id, PDO::PARAM_INT);
-        $st->bindValue(":delivery_pin_code", $this->delivery_pin_code, PDO::PARAM_STR);
-        $st->bindValue(":billing_name", $this->billing_name, PDO::PARAM_STR);
-        $st->bindValue(":billing_address", $this->billing_address, PDO::PARAM_STR);
-        $st->bindValue(":billing_email", $this->billing_email, PDO::PARAM_STR);
-        $st->bindValue(":billing_phone", $this->billing_phone, PDO::PARAM_STR);
-        $st->bindValue(":payment_method", $this->payment_method, PDO::PARAM_STR);
-        $st->bindValue(":shipping_method", $this->shipping_method, PDO::PARAM_STR);
-        $st->bindValue(":order_notes", $this->order_notes, PDO::PARAM_STR);
-        $st->bindValue(":order_total", $this->order_total, PDO::PARAM_STR);
-        $st->bindValue(":order_status", $this->order_status, PDO::PARAM_STR);
-        $st->bindValue(":order_created_at", $this->order_created_at, PDO::PARAM_STR);
-        $st->execute();
-        $this->order_id = $conn->lastInsertId();
-    } catch (PDOException $e) {
-        throw new Exception("Database error: " . $e->getMessage());
-    }
-}
 
     /**
      * Updates the current Order object in the database.

@@ -211,6 +211,24 @@ class Users
         return $st->fetch(PDO::FETCH_OBJ);
     }
 
+    public function getUserInfo($user_id) {
+        $stmt = $this->db->prepare("SELECT * FROM Users WHERE user_id = ?");
+        $stmt->execute([$user_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function getUserAddresses($user_id) {
+        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $sql = "SELECT DISTINCT user_address_line1, user_address_line2, user_address_city FROM Users WHERE user_id = :user_id";
+        $st = $conn->prepare($sql);
+        $st->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+        $st->execute();
+        $addresses = $st->fetchAll(PDO::FETCH_OBJ);
+        $conn = null;
+        return $addresses;
+    }
+    
+
     /**
      * Inserts the current User object into the database, and sets its ID property.
      */

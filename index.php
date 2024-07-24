@@ -67,6 +67,9 @@ switch ($action) {
     case 'clearDiscount':
         clearDiscount();
         break;
+    case 'order':
+        order();
+        break;
     case 'logout':
         logout();
         break;
@@ -356,7 +359,6 @@ function clearDiscount() {
     setcookie('applied_discount', '', time() - 3600, '/');
 }
 
-
 function furniture(){
     $results = array();
 
@@ -386,6 +388,64 @@ function furniture(){
     applyDiscountToTotal();
 
     require(TEMPLATE_PATH . "/furniture.php");
+}
+
+function order() {
+    $results = array();
+
+    // Load user data
+    $user_id = $_SESSION['user_id'] ?? null;
+    if ($user_id) {
+        $results['user'] = Users::getById($user_id);
+    }
+
+    // Load all delivery addresses for the user
+    if ($user_id) {
+        $results['addresses'] = Users::getUserAddresses($user_id);
+    }
+
+    // Load states and countries data
+    $results['states'] = State::getStates();
+    $results['countries'] = Country::getCountries();
+
+    // Process the order form if it has been submitted
+    if (isset($_POST['place_order'])) {
+        $order = new Orders();
+        $order->order_identity = uniqueRandomString(12, 'Orders', 'order_identity'); // Assuming order_identity is a unique identifier
+        $order->user_id = $user_id;
+        $order->delivery_address_line1 = $_POST['delivery_address_line1'];
+        $order->delivery_address_line2 = $_POST['delivery_address_line2'];
+        $order->delivery_city = $_POST['delivery_city'];
+        $order->delivery_state_id = $_POST['delivery_state_id'];
+        $order->delivery_country_id = $_POST['delivery_country_id'];
+        $order->delivery_pin_code = $_POST['delivery_pin_code'];
+        $order->billing_name = $_POST['billing_name'];
+        $order->billing_address = $_POST['billing_address'];
+        $order->billing_email = $_POST['billing_email'];
+        $order->billing_phone = $_POST['billing_phone'];
+        $order->payment_method = $_POST['payment_method'];
+        $order->shipping_method = $_POST['shipping_method'];
+        $order->order_notes = $_POST['order_notes'];
+        
+        // Retrieve discounted price from cookie
+        $order_total = isset($_COOKIE['discounted_price']) ? floatval($_COOKIE['discounted_price']) : 0;
+        $order->order_total = $order_total;
+
+        $order->order_status = 'pending'; // Example status
+        $order->order_created_at = date("Y-m-d H:i:s");
+
+        try {
+            $order->insert();
+            $results['orderSuccess'] = true;
+            $results['orderID'] = $order->order_id;
+        } catch (Exception $e) {
+            $results['orderError'] = $e->getMessage();
+        }
+    }
+
+    // Load the page template
+    $results['pageTitle'] = "Order | Ecommerce";
+    require(TEMPLATE_PATH . "/order.php");
 }
 
 function login(){
