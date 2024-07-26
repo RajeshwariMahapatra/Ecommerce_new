@@ -327,20 +327,23 @@ function calculateGrandTotal() {
 function checkout() {
     $results = array();
 
-    $pageData = Pages::getList();
-    $results['pages'] = $pageData['results'];
-    $results['totalPagesRows'] = $pageData['totalRows'];
+    // Ensure the cart and discount data is loaded
+    loadCartFromCookies();
 
+    // Apply discount to total again
+    applyDiscountToTotal();
+
+    // Calculate total
+    $results['cartTotal'] = calculateTotal();
+
+    // Calculate discounted total
+    $results['discountedTotal'] = isset($_SESSION['discounted_total']) ? $_SESSION['discounted_total'] : (isset($_COOKIE['discounted_price']) ? $_COOKIE['discounted_price'] : calculateTotal());
+
+    // Load categories
     $categoryData = ProductCategory::getList();
     $results['categories'] = $categoryData['results'];
     $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "Checkout | Ecommerce";
-    
-    // Ensure the cart and discount data is loaded
-    loadCartFromCookies();
-    
-    // Apply discount to total again
-    applyDiscountToTotal();
 
     require(TEMPLATE_PATH . "/checkout.php");
 }
@@ -411,7 +414,7 @@ function order() {
     // Process the order form if it has been submitted
     if (isset($_POST['place_order'])) {
         $order = new Orders();
-        $order->order_identity = uniqueRandomString(12, 'Orders', 'order_identity'); // Assuming order_identity is a unique identifier
+        $order->order_identity = uniqid(); // Ensure you set a unique order identity
         $order->user_id = $user_id;
         $order->delivery_address_line1 = $_POST['delivery_address_line1'];
         $order->delivery_address_line2 = $_POST['delivery_address_line2'];
@@ -426,18 +429,17 @@ function order() {
         $order->payment_method = $_POST['payment_method'];
         $order->shipping_method = $_POST['shipping_method'];
         $order->order_notes = $_POST['order_notes'];
-        
-        // Retrieve discounted price from cookie
-        $order_total = isset($_COOKIE['discounted_price']) ? floatval($_COOKIE['discounted_price']) : 0;
-        $order->order_total = $order_total;
 
+        // Ensure the discounted price is retrieved correctly
+        $order->order_total = isset($_COOKIE['discounted_price']) ? floatval($_COOKIE['discounted_price']) : 0;
+        echo "Order total to be stored: " . $order->order_total; // Debugging line
         $order->order_status = 'pending'; // Example status
         $order->order_created_at = date("Y-m-d H:i:s");
 
         try {
-            $order->insert();
+            $orderID = $order->insert();
             $results['orderSuccess'] = true;
-            $results['orderID'] = $order->order_id;
+            $results['orderID'] = $orderID;
         } catch (Exception $e) {
             $results['orderError'] = $e->getMessage();
         }
@@ -446,6 +448,30 @@ function order() {
     // Load the page template
     $results['pageTitle'] = "Order | Ecommerce";
     require(TEMPLATE_PATH . "/order.php");
+}
+
+// Apply Discount Function
+if (isset($_POST['apply_discount'])) {
+    $discount_code = $_POST['discount_code'];
+    // Assuming you have logic to calculate the discounted price
+    $discounted_price = calculateDiscountedPrice($discount_code);
+    
+    // Set the discounted price in a cookie
+    setcookie('discounted_price', $discounted_price, time() + (86400 * 30), "/"); // 30 days
+    $_COOKIE['discounted_price'] = $discounted_price; // Also set it in the current request
+    echo "Discounted price set: $discounted_price"; // Debugging line
+}
+
+// Apply Discount Function
+if (isset($_POST['apply_discount'])) {
+    $discount_code = $_POST['discount_code'];
+    // Assuming you have logic to calculate the discounted price
+    $discounted_price = calculateDiscountedPrice($discount_code);
+    
+    // Set the discounted price in a cookie
+    setcookie('discounted_price', $discounted_price, time() + (86400 * 30), "/"); // 30 days
+    $_COOKIE['discounted_price'] = $discounted_price; // Also set it in the current request
+    echo "Discounted price set: $discounted_price"; // Debugging line
 }
 
 function login(){

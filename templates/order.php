@@ -5,8 +5,8 @@
 
     <?php if (isset($results['orderSuccess'])): ?>
         <div class="alert alert-success">
-            Order placed successfully! Your Order ID is: <?php echo htmlspecialchars($results['orderID']); ?>
-        </div>
+            Order placed successfully! 
+                </div>
     <?php elseif (isset($results['orderError'])): ?>
         <div class="alert alert-danger">
             Error: <?php echo htmlspecialchars($results['orderError']); ?>
