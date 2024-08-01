@@ -393,7 +393,7 @@ function applyDiscountToTotal() {
                     } else {
                         // Minimum order requirement not met, set discounted total to order total
                         $_SESSION['discounted_total'] = $order_total;
-                        echo "Minimum order requirement not met. Discount not applied.<br>";
+                        // echo "Minimum order requirement not met. Discount not applied.<br>";
                     }
                 } else {
                     // Usage limit exceeded, set discounted total to order total

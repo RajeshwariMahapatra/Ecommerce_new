@@ -9,8 +9,6 @@ if (isset($_POST['place_order'])) {
     $delivery_state_id = $_POST['delivery_state_id'];
     $delivery_country_id = $_POST['delivery_country_id'];
     $delivery_pin_code = $_POST['delivery_pin_code'];
-    $payment_method = $_POST['payment_method'];
-    $shipping_method = $_POST['shipping_method'];
     $order_notes = $_POST['order_notes'];
     $billing_name = $_POST['billing_name'];
     $billing_address = $_POST['billing_address'];
@@ -18,8 +16,8 @@ if (isset($_POST['place_order'])) {
     $billing_phone = $_POST['billing_phone'];
     $order_total = 100.00; // Placeholder value, calculate accordingly
 
-    $stmt = $conn->prepare("INSERT INTO Orders (user_id, delivery_address_line1, delivery_address_line2, delivery_city, delivery_state_id, delivery_country_id, delivery_pin_code, billing_name, billing_address, billing_email, billing_phone, payment_method, shipping_method, order_notes, order_total, order_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')");
-    $stmt->bind_param("isssiissssssssd", $_SESSION['user_id'], $delivery_address_line1, $delivery_address_line2, $delivery_city, $delivery_state_id, $delivery_country_id, $delivery_pin_code, $billing_name, $billing_address, $billing_email, $billing_phone, $payment_method, $shipping_method, $order_notes, $order_total);
+    $stmt = $conn->prepare("INSERT INTO Orders (user_id, delivery_address_line1, delivery_address_line2, delivery_city, delivery_state_id, delivery_country_id, delivery_pin_code, billing_name, billing_address, billing_email, billing_phone, order_notes, order_total, order_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')");
+    $stmt->bind_param("isssiissssssssd", $_SESSION['user_id'], $delivery_address_line1, $delivery_address_line2, $delivery_city, $delivery_state_id, $delivery_country_id, $delivery_pin_code, $billing_name, $billing_address, $billing_email, $billing_phone, $order_notes, $order_total);
 
     if ($stmt->execute()) {
         $order_id = $stmt->insert_id;
@@ -32,8 +30,6 @@ if (isset($_POST['place_order'])) {
         echo "<p><strong>State ID:</strong> " . htmlspecialchars($delivery_state_id) . "</p>";
         echo "<p><strong>Country ID:</strong> " . htmlspecialchars($delivery_country_id) . "</p>";
         echo "<p><strong>Pin Code:</strong> " . htmlspecialchars($delivery_pin_code) . "</p>";
-        echo "<p><strong>Payment Method:</strong> " . htmlspecialchars($payment_method) . "</p>";
-        echo "<p><strong>Shipping Method:</strong> " . htmlspecialchars($shipping_method) . "</p>";
         echo "<p><strong>Billing Name:</strong> " . htmlspecialchars($billing_name) . "</p>";
         echo "<p><strong>Billing Address:</strong> " . htmlspecialchars($billing_address) . "</p>";
         echo "<p><strong>Email:</strong> " . htmlspecialchars($billing_email) . "</p>";

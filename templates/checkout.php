@@ -1,3 +1,8 @@
+<?php if (isset($_GET['order_success']) && $_GET['order_success'] == 'true'): ?>
+    <div class="alert alert-success">
+        Your order has been placed successfully!
+    </div>
+<?php endif; ?>
 <?php include 'templates/include/user_header.php'; ?>
 <!-- //header -->
 <!-- breadcrumbs -->

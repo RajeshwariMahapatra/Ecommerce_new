@@ -76,8 +76,7 @@ switch ($action) {
     default:
         home();
 }
-function logout()
-{
+function logout(){
     session_start(); // Ensure session is started
 
     // Unset the session variable related to the discounted price
@@ -91,6 +90,7 @@ function logout()
     header("Location: index.php?action=home");
     exit;
 }
+
 function addToCart($productId, $productName, $productPrice, $quantity) {
     $productDetails = Product::getById($productId);
     $product = array(
@@ -136,8 +136,7 @@ function updateCart($productId, $newQuantity) {
     applyDiscountToTotal();
 }
 
-function removeFromCart($productId)
-{
+function removeFromCart($productId){
     if (isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $key => $product) {
             if ($product['id'] == $productId) {
@@ -240,7 +239,7 @@ function applyDiscountToTotal() {
                     } else {
                         // Minimum order requirement not met, set discounted total to order total
                         $_SESSION['discounted_total'] = $order_total;
-                        echo "Minimum order requirement not met. Discount not applied.<br>";
+                        // echo "Minimum order requirement not met. Discount not applied.<br>";
                     }
                 } else {
                     // Usage limit exceeded, set discounted total to order total
@@ -348,6 +347,99 @@ function checkout() {
     require(TEMPLATE_PATH . "/checkout.php");
 }
 
+function order() {
+    $results = array();
+
+    // Load user data
+    $user_id = $_SESSION['user_id'] ?? null;
+    if ($user_id) {
+        $results['user'] = Users::getById($user_id);
+    }
+
+    // Load all delivery addresses for the user
+    if ($user_id) {
+        $results['addresses'] = Users::getUserAddresses($user_id);
+    }
+
+    // Load states and countries data
+    $results['states'] = State::getStates();
+    $results['countries'] = Country::getCountries();
+
+    // Process the order form if it has been submitted
+    if (isset($_POST['place_order'])) {
+        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $order = new Orders();
+        $order->order_identity = uniqueRandomString(12, 'Orders', 'order_identity'); // Ensure you set a unique order identity
+        $order->user_id = $user_id;
+        $order->delivery_address_line1 = $_POST['delivery_address_line1'];
+        $order->delivery_address_line2 = $_POST['delivery_address_line2'];
+        $order->delivery_city = $_POST['delivery_city'];
+        $order->delivery_state_id = $_POST['delivery_state_id'];
+        $order->delivery_country_id = $_POST['delivery_country_id'];
+        $order->delivery_pin_code = $_POST['delivery_pin_code'];
+        $order->billing_name = $_POST['billing_name'];
+        $order->billing_address = $_POST['billing_address'];
+        $order->billing_email = $_POST['billing_email'];
+        $order->billing_phone = $_POST['billing_phone'];
+        $order->order_notes = $_POST['order_notes'];
+
+        // Ensure the discounted price is retrieved correctly
+        if (isset($_COOKIE['discounted_total'])) {
+            $order->order_total = floatval($_COOKIE['discounted_total']);
+        } else {
+            // Fallback to the total calculated without discount
+            $order->order_total = calculateTotal();
+        }
+
+        $order->order_status = 'pending'; // Example status
+        $order->order_created_at = date("Y-m-d H:i:s");
+
+        try {
+            $conn->beginTransaction();
+
+            // Insert order
+            $order->insert();
+            $orderId = Orders::getLastOrderId(); // Get the last inserted order ID
+
+            // Insert order items
+            foreach ($_SESSION['cart'] as $cartItem) {
+                $orderItem = new OrderItems();
+                $orderItem->order_item_identity = uniqueRandomString(12, 'OrderItems', 'order_item_identity');
+                $orderItem->order_id = $orderId;
+                $orderItem->product_id = $cartItem['id'];
+                $orderItem->product_name = $cartItem['name'];
+                $orderItem->product_price = $cartItem['price'];
+                $orderItem->quantity = $cartItem['quantity'];
+                $orderItem->subtotal = $cartItem['price'] * $cartItem['quantity'];
+                $orderItem->insert();
+            }
+
+            $conn->commit();
+
+            // Clear the cart
+            unset($_SESSION['cart']);
+            setcookie('cart', '', time() - 3600, '/'); // Remove cart cookie
+
+            // Set results for success
+            $results['orderSuccess'] = true;
+            $results['orderID'] = $orderId;
+
+            // Redirect to checkout with success message
+            header("Location: index.php?action=checkout&order_success=true");
+            exit();
+        } catch (Exception $e) {
+            $conn->rollBack();
+            $results['orderError'] = $e->getMessage();
+        }
+    }
+
+    // Load the page template
+    $results['pageTitle'] = "Order | Ecommerce";
+    require(TEMPLATE_PATH . "/order.php");
+}
+
 function clearDiscount() {
     // Clear session discount
     if (isset($_SESSION['discounted_total'])) {
@@ -391,87 +483,6 @@ function furniture(){
     applyDiscountToTotal();
 
     require(TEMPLATE_PATH . "/furniture.php");
-}
-
-function order() {
-    $results = array();
-
-    // Load user data
-    $user_id = $_SESSION['user_id'] ?? null;
-    if ($user_id) {
-        $results['user'] = Users::getById($user_id);
-    }
-
-    // Load all delivery addresses for the user
-    if ($user_id) {
-        $results['addresses'] = Users::getUserAddresses($user_id);
-    }
-
-    // Load states and countries data
-    $results['states'] = State::getStates();
-    $results['countries'] = Country::getCountries();
-
-    // Process the order form if it has been submitted
-    if (isset($_POST['place_order'])) {
-        $order = new Orders();
-        $order->order_identity = uniqid(); // Ensure you set a unique order identity
-        $order->user_id = $user_id;
-        $order->delivery_address_line1 = $_POST['delivery_address_line1'];
-        $order->delivery_address_line2 = $_POST['delivery_address_line2'];
-        $order->delivery_city = $_POST['delivery_city'];
-        $order->delivery_state_id = $_POST['delivery_state_id'];
-        $order->delivery_country_id = $_POST['delivery_country_id'];
-        $order->delivery_pin_code = $_POST['delivery_pin_code'];
-        $order->billing_name = $_POST['billing_name'];
-        $order->billing_address = $_POST['billing_address'];
-        $order->billing_email = $_POST['billing_email'];
-        $order->billing_phone = $_POST['billing_phone'];
-        $order->payment_method = $_POST['payment_method'];
-        $order->shipping_method = $_POST['shipping_method'];
-        $order->order_notes = $_POST['order_notes'];
-
-        // Ensure the discounted price is retrieved correctly
-        $order->order_total = isset($_COOKIE['discounted_price']) ? floatval($_COOKIE['discounted_price']) : 0;
-        echo "Order total to be stored: " . $order->order_total; // Debugging line
-        $order->order_status = 'pending'; // Example status
-        $order->order_created_at = date("Y-m-d H:i:s");
-
-        try {
-            $orderID = $order->insert();
-            $results['orderSuccess'] = true;
-            $results['orderID'] = $orderID;
-        } catch (Exception $e) {
-            $results['orderError'] = $e->getMessage();
-        }
-    }
-
-    // Load the page template
-    $results['pageTitle'] = "Order | Ecommerce";
-    require(TEMPLATE_PATH . "/order.php");
-}
-
-// Apply Discount Function
-if (isset($_POST['apply_discount'])) {
-    $discount_code = $_POST['discount_code'];
-    // Assuming you have logic to calculate the discounted price
-    $discounted_price = calculateDiscountedPrice($discount_code);
-    
-    // Set the discounted price in a cookie
-    setcookie('discounted_price', $discounted_price, time() + (86400 * 30), "/"); // 30 days
-    $_COOKIE['discounted_price'] = $discounted_price; // Also set it in the current request
-    echo "Discounted price set: $discounted_price"; // Debugging line
-}
-
-// Apply Discount Function
-if (isset($_POST['apply_discount'])) {
-    $discount_code = $_POST['discount_code'];
-    // Assuming you have logic to calculate the discounted price
-    $discounted_price = calculateDiscountedPrice($discount_code);
-    
-    // Set the discounted price in a cookie
-    setcookie('discounted_price', $discounted_price, time() + (86400 * 30), "/"); // 30 days
-    $_COOKIE['discounted_price'] = $discounted_price; // Also set it in the current request
-    echo "Discounted price set: $discounted_price"; // Debugging line
 }
 
 function login(){

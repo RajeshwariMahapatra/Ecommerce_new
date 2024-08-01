@@ -6,7 +6,7 @@
     <?php if (isset($results['orderSuccess'])): ?>
         <div class="alert alert-success">
             Order placed successfully! 
-                </div>
+        </div>
     <?php elseif (isset($results['orderError'])): ?>
         <div class="alert alert-danger">
             Error: <?php echo htmlspecialchars($results['orderError']); ?>
@@ -73,7 +73,7 @@
 
         <div class="form-group">
             <label for="delivery_pin_code">Delivery PIN Code</label>
-            <input type="text" class="form-control" id="delivery_pin_code" name="delivery_pin_code" value="<?php echo htmlspecialchars($results['user']->user_address_pin_code ?? ''); ?>" required>
+            <input type="text" class="form-control" id="delivery_pin_code" name="delivery_pin_code" value="<?php echo htmlspecialchars($results['user']->user_address_pin_code ?? ''); ?>" readonly required>
         </div>
 
         <div class="form-check">
@@ -101,25 +101,6 @@
             <label for="billing_phone">Billing Phone</label>
             <input type="tel" class="form-control" id="billing_phone" name="billing_phone" required oninput="validatePhone()">
             <div id="billing_phone_error" class="invalid-feedback"></div>
-        </div>
-
-        <div class="form-group">
-            <label for="payment_method">Payment Method</label>
-            <select class="form-control" id="payment_method" name="payment_method" required>
-                <option value="Credit Card">Credit Card</option>
-                <option value="Debit Card">Debit Card</option>
-                <option value="PayPal">PayPal</option>
-                <option value="Cash on Delivery">Cash on Delivery</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="shipping_method">Shipping Method</label>
-            <select class="form-control" id="shipping_method" name="shipping_method" required>
-                <option value="Standard Shipping">Standard Shipping</option>
-                <option value="Express Shipping">Express Shipping</option>
-                <option value="Next Day Delivery">Next Day Delivery</option>
-            </select>
         </div>
 
         <div class="form-group">
@@ -161,39 +142,18 @@ function copyDeliveryToBilling() {
     var deliveryAddressLine1 = document.getElementById("delivery_address_line1");
     var deliveryAddressLine2 = document.getElementById("delivery_address_line2");
     var deliveryCity = document.getElementById("delivery_city");
+    var deliveryState = document.getElementById("delivery_state_id");
+    var deliveryCountry = document.getElementById("delivery_country_id");
+    var deliveryPinCode = document.getElementById("delivery_pin_code");
 
     var billingAddress = document.getElementById("billing_address");
-    var billingCity = document.getElementById("billing_city");
 
     if (checkbox.checked) {
-        billingAddress.value = deliveryAddressLine1.value + ", " + deliveryAddressLine2.value + ", " + deliveryCity.value;
-        billingCity.value = deliveryCity.value;
+        billingAddress.value = deliveryAddressLine1.options[deliveryAddressLine1.selectedIndex].text + ", " + deliveryAddressLine2.options[deliveryAddressLine2.selectedIndex].text + ", " + deliveryCity.options[deliveryCity.selectedIndex].text + ", " + deliveryState.options[deliveryState.selectedIndex].text + ", " + deliveryCountry.options[deliveryCountry.selectedIndex].text + ", " + deliveryPinCode.value;
     } else {
         billingAddress.value = "";
-        billingCity.value = "";
     }
 }
 
-document.getElementById('billing_email').oninput = function() {
-        var email = this.value;
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        var emailError = document.getElementById('emailError');
-        if (!emailPattern.test(email)) {
-            emailError.style.display = 'block';
-        } else {
-            emailError.style.display = 'none';
-        }
-    };
-
-    document.getElementById('billing_phone').oninput = function() {
-        var phone = this.value;
-        var phonePattern = /^[0-9]{10}$/;
-        var phoneError = document.getElementById('phoneError');
-        if (!phonePattern.test(phone)) {
-            phoneError.style.display = 'block';
-        } else {
-            phoneError.style.display = 'none';
-        }
-    };
 </script>
 <?php include "templates/include/user_footer.php" ?>

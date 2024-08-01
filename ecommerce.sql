@@ -118,7 +118,7 @@ CREATE TABLE `discounts` (
 );
 
 CREATE TABLE Orders (
-    order_id INT AUTO_INCREMENT,
+    order_id INT NOT NULL AUTO_INCREMENT,
     order_identity VARCHAR(12) DEFAULT NULL,
     user_id INT(11) NOT NULL,
     delivery_address_line1 VARCHAR(255) NOT NULL,
@@ -131,8 +131,6 @@ CREATE TABLE Orders (
     billing_address TEXT NOT NULL,
     billing_email VARCHAR(255) NOT NULL,
     billing_phone VARCHAR(15) NOT NULL,
-    payment_method VARCHAR(50) NOT NULL,
-    shipping_method VARCHAR(50) NOT NULL,
     order_notes TEXT,
     order_total DECIMAL(10, 2) NOT NULL,
     order_status VARCHAR(50) DEFAULT 'Pending',
