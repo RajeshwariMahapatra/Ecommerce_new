@@ -80,6 +80,34 @@ class OrderItems
     }
 
     /**
+ * Returns a list of OrderItems objects associated with a specific user ID
+ *
+ * @param int $user_id The user ID
+ * @return array The order item objects, or an empty array if no items were found
+ */
+public static function getOrderItemsByUserId($userId) {
+    $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+    $sql = "SELECT 
+                    o.order_id,
+                    GROUP_CONCAT(oi.product_name SEPARATOR ', ') AS products,
+                    GROUP_CONCAT(oi.product_price SEPARATOR ', ') AS prices,
+                    GROUP_CONCAT(oi.quantity SEPARATOR ', ') AS quantities,
+                    GROUP_CONCAT(oi.subtotal SEPARATOR ', ') AS subtotals,
+                    o.order_created_at
+                FROM OrderItems oi
+                INNER JOIN Orders o ON oi.order_id = o.order_id
+                WHERE o.user_id = :user_id
+                GROUP BY o.order_id
+                ORDER BY o.order_created_at DESC";
+    $st = $conn->prepare($sql);
+    $st->bindValue(":user_id", $userId, PDO::PARAM_INT);
+    $st->execute();
+    $orderItems = $st->fetchAll(PDO::FETCH_ASSOC); // Use associative array fetch style
+    $conn = null;
+    return $orderItems;
+}
+
+    /**
      * Inserts the current OrderItems object into the database, and sets its ID property.
      */
     public function insert()

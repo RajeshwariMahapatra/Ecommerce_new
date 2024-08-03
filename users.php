@@ -398,12 +398,12 @@ function applyDiscountToTotal() {
                 } else {
                     // Usage limit exceeded, set discounted total to order total
                     $_SESSION['discounted_total'] = $order_total;
-                    echo "Discount code usage limit exceeded. Discount not applied.<br>";
+                    // echo "Discount code usage limit exceeded. Discount not applied.<br>";
                 }
             } else {
                 // Discount code is not currently valid, set discounted total to order total
                 $_SESSION['discounted_total'] = $order_total;
-                echo "Discount code is not valid currently. Discount not applied.<br>";
+                // echo "Discount code is not valid currently. Discount not applied.<br>";
             }
         } else {
             echo "Discount data is missing required properties.<br>";

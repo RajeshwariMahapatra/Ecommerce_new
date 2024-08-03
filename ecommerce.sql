@@ -117,6 +117,8 @@ CREATE TABLE `discounts` (
     times_used INT DEFAULT 0
 );
 
+ALTER TABLE discounts MODIFY times_used INT NOT NULL DEFAULT 0;
+
 CREATE TABLE Orders (
     order_id INT NOT NULL AUTO_INCREMENT,
     order_identity VARCHAR(12) DEFAULT NULL,

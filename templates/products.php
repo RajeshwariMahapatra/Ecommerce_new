@@ -40,7 +40,7 @@
 						<div class="new-collections-grid1-left simpleCart_shelfItem">
 							<p><i>$<?php echo $product->product_selling_price; ?></i> <span class="item_price">$<?php echo $product->product_mrp; ?>
 									<div class="occasion-cart">
-										<a class="item_add" href="index.php?action=register">add to cart </a>
+										<a class="item_add" href="index.php?action=addToCart">add to cart </a>
 									</div>
 						</div>
 					</div>

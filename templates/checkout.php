@@ -106,7 +106,10 @@
             <div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
                 <a href="index.php?action=furniture"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Continue Shopping</a>
             </div>
-            <div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s">
+            <div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
+                <a href="index.php?action=order_history"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Order history</a>
+            </div>
+            <div class="checkout-right-basket animated wow slideInLeft" data-wow-delay=".5s">
                 <a href="index.php?action=order"><span class="" aria-hidden="true"></span>Order now</a>
             </div>
             <div class="clearfix"></div>

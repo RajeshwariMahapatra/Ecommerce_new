@@ -38,6 +38,9 @@ switch ($action) {
     case 'list_categories':
         list_categories();
         break;
+    case 'order_history':
+        order_history();
+        break;
     case "addToCart":
         addToCart($_POST['product_id'], $_POST['product_name'], $_POST['product_selling_price'], $_POST['quantity']);
         header("Location: index.php?action=furniture");
@@ -244,12 +247,12 @@ function applyDiscountToTotal() {
                 } else {
                     // Usage limit exceeded, set discounted total to order total
                     $_SESSION['discounted_total'] = $order_total;
-                    echo "Discount code usage limit exceeded. Discount not applied.<br>";
+                    // echo "Discount code usage limit exceeded. Discount not applied.<br>";
                 }
             } else {
                 // Discount code is not currently valid, set discounted total to order total
                 $_SESSION['discounted_total'] = $order_total;
-                echo "Discount code is not valid currently. Discount not applied.<br>";
+                // echo "Discount code is not valid currently. Discount not applied.<br>";
             }
         } else {
             echo "Discount data is missing required properties.<br>";
@@ -688,6 +691,18 @@ function list_categories(){
     $results['totalCategoryRows'] = $categoryData['totalRows'];
     $results['pageTitle'] = "List Categories | Ecommerce";
     require(TEMPLATE_PATH . "/list_categories.php");
+}
+
+function order_history(){
+    if (isset($_SESSION['user_id'])) {
+        $userId = $_SESSION['user_id'];
+        $orderItems = OrderItems::getOrderItemsByUserId($userId);
+        $results['orderItems'] = $orderItems;
+    } else {
+        $results['orderItems'] = [];
+    }
+    $results['pageTitle'] = "Ecommerce";
+    require(TEMPLATE_PATH . "/order_history.php");
 }
 
 function home(){

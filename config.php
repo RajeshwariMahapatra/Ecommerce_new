@@ -1,7 +1,7 @@
 <?php
 ini_set("display_errors", true);
 date_default_timezone_set("Asia/Kolkata");
-define("DB_DSN", "mysql:host=localhost;dbname=ecommerce_new_db");
+define("DB_DSN", "mysql:host=localhost;dbname=ecom");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", ""); // Change this to your actual database password if set
 define("CLASS_PATH", "classes");
