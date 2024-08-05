@@ -213,7 +213,18 @@ public static function getOrderItemsByUserId($userId) {
             throw new Exception("Database error: " . $e->getMessage());
         }
     }
+    public static function deleteByOrderId($order_id) {
+        try {
+            $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+            $st = $conn->prepare("DELETE FROM OrderItems WHERE order_id = :order_id");
+            $st->bindValue(":order_id", $order_id, PDO::PARAM_INT);
+            $st->execute();
+        } catch (PDOException $e) {
+            throw new Exception("Database error: " . $e->getMessage());
+        }
+    }
     /**
      * Returns a list of OrderItems objects associated with a specific order ID
      *

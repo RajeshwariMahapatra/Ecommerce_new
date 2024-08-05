@@ -18,7 +18,7 @@
             <table class="table table-bordered animated wow slideInUp" data-wow-delay=".5s">
                 <thead>
                     <tr>
-                        <th>Order ID</th>
+                        
                         <th>Products</th>
                         <th>Prices</th>
                         <th>Quantities</th>
@@ -30,7 +30,7 @@
                     <?php if (!empty($results['orderItems'])): ?>
                         <?php foreach ($results['orderItems'] as $orderItem): ?>
                             <tr>
-                                <td><?php echo htmlspecialchars($orderItem['order_id']); ?></td>
+                                
                                 <td><?php echo htmlspecialchars($orderItem['products']); ?></td>
                                 <td><?php echo htmlspecialchars($orderItem['prices']); ?></td>
                                 <td><?php echo htmlspecialchars($orderItem['quantities']); ?></td>

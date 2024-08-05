@@ -126,14 +126,24 @@ switch ($action) {
     case 'deletePage':
         deletePage();
         break;
-
+    case 'listOrders':
+        listOrders();
+        break;
+    case 'listOrders2':
+        listOrders2();
+        break;
+    case 'editOrder':
+        editOrder();
+        break;
+    case 'deleteOrder':
+        deleteOrder();
+        break;
     default:
         showDashboard();
 }
 
 
-function login()
-{
+function login(){
     $results = array();
     $results['pageTitle'] = "Admin Login";
 
@@ -155,14 +165,12 @@ function login()
     }
 }
 
-function logout()
-{
+function logout(){
     unset($_SESSION['username']);
     header("Location: admin.php");
 }
 
-function addUsers()
-{
+function addUsers(){
 
     $results = array();
     $results['pageTitle'] = "Add Users";
@@ -227,8 +235,7 @@ function editUsers(){
         require(TEMPLATE_PATH . "/admin/addUsers.php");
     }
 }
-function listUsers()
-{
+function listUsers(){
 
     $results = array();
     $data = Users::getList();
@@ -248,8 +255,7 @@ function listUsers()
     require(TEMPLATE_PATH . "/admin/view_users.php");
 }
 
-function listUsers2()
-{
+function listUsers2(){
     $results = array();
     if (!$user = Users::getById((int)$_GET['user_id'])) {
         header("Location: admin.php?error=userNotFound");
@@ -459,8 +465,7 @@ function deleteCountry(){
     header("Location: admin.php?action=listCountries&status=countryDeleted");
 }
 
-function addProduct()
-{
+function addProduct(){
     // Initialize results array'i
 
 
@@ -529,8 +534,8 @@ function addProduct()
         require(TEMPLATE_PATH . "/admin/addProduct.php");
     }
 }
-function listProducts()
-{
+
+function listProducts(){
     $results = array();
     $data = Product::getList();
     $results['products'] = $data['results'];
@@ -552,8 +557,7 @@ function listProducts()
     // require(TEMPLATE_PATH . "/admin/view_product.php");
 }
 
-function listProducts2()
-{
+function listProducts2(){
     $results = array();
     if (!isset($_GET['product_id'])) {
         header("Location: admin.php?error=productNotFound");
@@ -591,8 +595,7 @@ function listProducts2()
     require(TEMPLATE_PATH . "/admin/productDetails.php");
 }
 
-function editProduct()
-{
+function editProduct(){
     $results = array();
     $results['pageTitle'] = "Edit Product";
     $results['formAction'] = "editProduct";
@@ -629,8 +632,7 @@ function editProduct()
     }
 }
 
-function deleteProduct()
-{
+function deleteProduct(){
 
     if (!$product = Product::getById((int)$_GET['product_id'])) {
         header("Location: admin.php?action=listProducts&error=productNotFound");
@@ -642,8 +644,7 @@ function deleteProduct()
     header("Location: admin.php?action=listProducts&status=productDeleted");
 }
 
-function addProductCategory()
-{
+function addProductCategory(){
     // Initialize results array
     $results = array();
     $results['pageTitle'] = "Add Category";
@@ -1078,10 +1079,125 @@ function deleteDiscount() {
     header("Location: admin.php?action=listDiscounts&status=discountDeleted");
 }
 
+function listOrders2() {
+    $results = array();
+    if (!isset($_GET['order_id'])) {
+        header("Location: admin.php?error=orderNotFound");
+        return;
+    }
+    $orderId = (int)$_GET['order_id'];
 
+    // Get the order details
+    $order = Orders::getById($orderId);
+    if (!$order) {
+        header("Location: admin.php?error=orderNotFound");
+        return;
+    }
 
-function showDashboard()
-{
+    // Get user details
+    $user = Users::getById($order->user_id);
+    $order->user_name = $user->user_name;
+    $order->user_email = $user->user_email;
+
+    // Get state name
+    $state = State::getById($order->delivery_state_id);
+    $order->state_name = $state ? $state->state_name : null;
+
+    // Get country name
+    $country = Country::getById($order->delivery_country_id);
+    $order->country_name = $country ? $country->country_name : null;
+
+    // Get order items
+    $orderItems = OrderItems::getByOrderId($orderId);
+    $order->items = $orderItems;
+
+    $results['order'] = $order;
+    require(TEMPLATE_PATH . "/admin/orderDetails.php");
+}
+
+function listOrders() {
+    $results = array();
+    $data = Orders::getAllOrders();  // Assuming you have a method in Orders class to get all orders
+    $results['orders'] = $data['orders'];
+    $results['totalRows'] = $data['totalRows'];
+    $results['pageTitle'] = "All Orders";
+
+    if (isset($_GET['status'])) {
+        if ($_GET['status'] == "success") {
+            $results['statusMessage'] = "Order updated successfully.";
+        } else if ($_GET['status'] == "deleted") {
+            $results['statusMessage'] = "Order deleted successfully.";
+        }
+    }
+
+    require(TEMPLATE_PATH . "/admin/listOrders.php");
+}
+
+function editOrder() {
+    $results = array();
+    $results['pageTitle'] = "Edit Order Status";
+    $results['formAction'] = "editOrder";
+
+    if (isset($_POST['saveChanges'])) {
+        if (!$order = Orders::getById((int)$_POST['order_id'])) {
+            header("Location: admin.php?error=orderNotFound");
+            return;
+        }
+
+        $orderData = array(
+            'order_id' => (int)$_POST['order_id'],
+            'order_status' => $_POST['order_status']
+        );
+
+        $order->storeFormValues($orderData);
+        $order->update();
+
+        header("Location: admin.php?action=listOrders&status=changesSaved");
+    } elseif (isset($_POST['cancel'])) {
+        header("Location: admin.php?action=listOrders");
+    } else {
+        $results['order'] = Orders::getById((int)$_GET['order_id']);
+        require(TEMPLATE_PATH . "/admin/editOrder.php");
+    }
+}
+
+function deleteOrder() {
+    // Validate the order ID from the GET parameter
+    $order_id = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
+
+    // Check if the order ID is valid and the order exists
+    if ($order_id <= 0 || !$order = Orders::getById($order_id)) {
+        header("Location: admin.php?error=orderNotFound");
+        exit;
+    }
+
+    try {
+        // Start a transaction
+        Orders::beginTransaction();
+
+        // Delete associated order items
+        OrderItems::deleteByOrderId($order_id);
+
+        // Delete the order from the database
+        $order->delete();
+
+        // Commit the transaction
+        Orders::commit();
+
+        // Redirect to the admin page with a success message
+        header("Location: admin.php?action=listOrders&status=orderDeleted");
+        exit;
+    } catch (Exception $e) {
+        // Rollback the transaction in case of an error
+        Orders::rollback();
+
+        // Handle potential exceptions and redirect with an error message
+        header("Location: admin.php?error=orderDeletionFailed&message=" . urlencode($e->getMessage()));
+        exit;
+    }
+}
+
+function showDashboard(){
     $results = array();
     $results['pageTitle'] = "Admin Dashboard";
 

@@ -160,6 +160,20 @@ $current_page = getCurrentPage();
         </div>
     </li>
 
+    <!-- Nav Item - orders Collapse Menu -->
+    <li class="nav-item <?php echo in_array($current_page, ['listOrders']) ? 'active' : ''; ?>">
+        <a class="nav-link <?php echo in_array($current_page, ['listOrders']) ? '' : 'collapsed'; ?>" href="#" data-toggle="collapse" data-target="#collapseOrders" aria-expanded="true" aria-controls="collapseOrders">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Orders</span>
+        </a>
+        <div id="collapseOrders" class="collapse <?php echo in_array($current_page, ['listOrders']) ? 'show' : ''; ?>" aria-labelledby="headingOrders" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Orders:</h6>
+                <a class="collapse-item <?php echo $current_page == 'listOrders' ? 'active' : ''; ?>" href="admin.php?action=listOrders">View Orders</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

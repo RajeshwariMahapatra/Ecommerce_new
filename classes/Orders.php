@@ -128,23 +128,64 @@ class Orders
         $this->__construct($params);
     }
 
+    public static function getConnection() {
+        return Database::getConnection();
+    }
+
+    // Method to begin a transaction
+    public static function beginTransaction() {
+        $db = self::getConnection();
+        $db->beginTransaction();
+    }
+
+    // Method to commit a transaction
+    public static function commit() {
+        $db = self::getConnection();
+        $db->commit();
+    }
+
+    // Method to rollback a transaction
+    public static function rollback() {
+        $db = self::getConnection();
+        $db->rollBack();
+    }
     /**
      * Returns an Orders object matching the given order ID
      *
      * @param int The order ID
      * @return Orders|false The order object, or false if the record was not found or there was a problem
      */
-    public static function getById($order_id)
-    {
+    public static function getById($order_id) {
         $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-        $sql = "SELECT * FROM orders WHERE order_id = :order_id";
+        $sql = "SELECT * FROM Orders WHERE order_id = :order_id";
         $st = $conn->prepare($sql);
         $st->bindValue(":order_id", $order_id, PDO::PARAM_INT);
         $st->execute();
         $row = $st->fetch();
         $conn = null;
+
         if ($row) return new Orders($row);
-        return false;
+        return null;
+    }
+
+    public static function getAllOrders() {
+        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $sql = "SELECT * FROM Orders";
+        $st = $conn->prepare($sql);
+        $st->execute();
+        $orders = array();
+
+        while ($row = $st->fetch()) {
+            $orders[] = new Orders($row);
+        }
+
+        $sql = "SELECT COUNT(*) AS totalRows FROM Orders";
+        $st = $conn->prepare($sql);
+        $st->execute();
+        $totalRows = $st->fetchColumn();
+
+        $conn = null;
+        return array("orders" => $orders, "totalRows" => $totalRows);
     }
 
     /**
@@ -336,5 +377,32 @@ public function insert() {
             throw new Exception("General Error: " . $e->getMessage());
         }
     }
+
+    /**
+ * Deletes the current Order object from the database.
+ */
+public function delete() {
+    if (is_null($this->order_id)) {
+        trigger_error("Orders::delete(): Attempt to delete an Order object that does not have its ID property set.", E_USER_ERROR);
+    }
+
+    try {
+        $conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "DELETE FROM orders WHERE order_id = :order_id";
+        $st = $conn->prepare($sql);
+        $st->bindValue(":order_id", $this->order_id, PDO::PARAM_INT);
+
+        $st->execute();
+
+        $conn = null;
+    } catch (PDOException $e) {
+        throw new Exception("Database Error: " . $e->getMessage());
+    } catch (Exception $e) {
+        throw new Exception("General Error: " . $e->getMessage());
+    }
+}
+
 }
 ?>
